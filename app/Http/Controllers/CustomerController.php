@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
-// use Yajra\Datatables\Html\Builder;
-// use Yajra\Datatables\Datatables;
+use App\Models\Tube;
+use App\User;
 use Session;
-
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 
 class CustomerController extends Controller
 {
@@ -18,18 +19,14 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('customer.index');
-        // if ($request->ajax()) {
-        //     $customer = Customer::select('id', 'nama','email', 'tgl_member');
-        //     return Datatables::of($customer)->make(true);
-        // }
+        $customers = Customer::all();
+        $tabungs = Tube::with(['customer',])->get();
+        return view('inventory.index', array(
+            'customers' => $customers,
+            'tabungs' => $tabungs
+            ));
 
-        // $html = $htmlBuilder
-        // ->addColumn(['data'=>'nama', 'name'=>'nama', 'title'=>'Nama'])
-        // ->addColumn(['data'=>'email', 'name'=>'email', 'title'=>'Email'])
-        // ->addColumn(['data'=>'tgl_member', 'name'=>'tgl_member', 'title'=>'Tanggal Member']);
-
-        // return view('customer.index')->with(compact('html'));
+        
     }
 
     /**
@@ -39,7 +36,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.create');
+        return view('inventory.customer.create');
     }
 
     /**
@@ -48,22 +45,18 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCustomerRequest $request)
     {
-        // $this->validate($request,[
-        //     'nama' => 'required',
-        //     'alamat' => 'required',
-        //     'email' => 'required|unique:customers',
-        //     'tgl_member' => 'required|date'
-        //     ]);
+        $data = $request->all();
 
-        // $customer = Customer::create($request->all());
-        // Session::flash("flash_notification", [
-        //     "level"=>"success",
-        //     "message" => "Input <b> $customer->nama </b> as to Database is Success"
-        //     ]);
+        $customers = Customer::create($data);
 
-        // return redirect()->route('customer.index');
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil menambah data customer <b> $customers->nama </b>"
+            ]);
+
+        return redirect()->route('customer.index');
     }
 
     /**
@@ -74,7 +67,14 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customers = Customer::find($id);
+        $tabungs = Tube::where('customer_id', $id)->get();
+        return view('inventory.customer.show', array(
+            'customers' => $customers,
+            'tabungs' => $tabungs
+            ));
+
+        // return view('customer.show')->with(compact('customers'));
     }
 
     /**
@@ -85,7 +85,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customers = Customer::find($id);
+        return view('inventory.customer.edit')->with(compact('customers'));
     }
 
     /**
@@ -95,9 +96,17 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCustomerRequest $request, $id)
     {
-        //
+        $customers = Customer::find($id);
+        $customers->update($request->all());
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Data customer <b> $customers->nama </b> berhasil diperbaharui"
+            ]);
+
+        return redirect()->route('customer.index');
     }
 
     /**
@@ -108,15 +117,15 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        // $customer = Customer::find($id);
+        $customers = Customer::findOrFail($id);
+        $customers->delete();
 
-        // if (!$customer::destroy($id)) {
-        //     return redirect()->back();
-        // }
-        // Session::flash("flash_notification", [
-        //     "level"=>"success",
-        //     "message"=>" <b> $customer->name </b> as Customer has been deleted!"
-        //     ]);
-        // return redirect()->route('customer.index');
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Data Customer <b> $customers->nama </b> berhasil di hapus"
+            ]);
+
+        return redirect()->route('customer.index');
     }
+
 }

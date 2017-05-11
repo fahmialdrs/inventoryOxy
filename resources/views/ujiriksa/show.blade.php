@@ -1,0 +1,98 @@
+@extends('layouts.app')
+
+@section('title', 'Detail Form Ujiriksa |' )
+
+@section('content')
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="breadcrumb">
+					<li><a href="{{ url('/home') }}"> Dashboard</a></li>
+					<li><a href="{{ url('/admin/ujiriksa') }}"> Ujiriksa</a></li>
+					<li class="active">Detail Form Ujiriksa {{ $form->no_registrasi }} </li>
+				</ul>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2 class="panel-title">Detail Form Ujiriksa {{ $form->no_registrasi }}</h2>
+					</div>
+					<div class="panel-body">					
+						<a href="{{ route('ujiriksa.edit', $form->id) }}" class="btn btn-primary">Edit</a>
+						<br><br><br>
+						<div class="col-md 2">
+						<table class="table table-responsive">
+							<tr>
+								<td class="text-muted">No Registrasi</td>
+								<td>{{ $form->no_registrasi }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Nama Pelanggan</td>
+								<td>{{ $form->customer->nama }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Jenis uji</td>
+								<td>{{ $form->jenis_uji }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Keterangan</td>
+								<td>{{ $form->keterangan }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Progress</td>
+								<td>{{ $form->progress }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Tanggal Perkiraan Selesai</td>
+								<td>{{ $form->perkiraan_selesai }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Tanggal Pengerjaan</td>
+								<td>{{ $form->progress_at }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Tanggal Selesai</td>
+								<td>{{ $form->done_at }}</td>
+							</tr>
+						</table>
+					</div>
+						<table class="table">
+						    <thead>
+						        <tr>
+						        	<th>No</th>
+						            <th>Jumlah Barang</th>
+						            <th>Nama Barang</th>
+						            <th>No Tabung</th>
+						            <th>Keluhan</th>
+						            <th>Foto</th>
+						            <th>Hasil</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    <?php $a = 0; ?>
+						    @foreach ($itemujiriksa as $t)
+						        <tr>
+						        	<td><?php $a++ ?> {{ $a }}</td>
+						            <td>{{ $t->jumlah_barang or '' }}</td>
+						            <td>{{ $t->nama_barang or '' }}</td>
+						            <td><a href="{{ route('tabung.show', $t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
+						            <td>{{ $t->keluhan or '' }}</td>
+						            <td>Foto</td>
+						            @if( $form->jenis_uji == "Hydrostatic")
+						            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil Hydrostatic</a></td>
+						            @endif
+						            @if( $form->jenis_uji == "Visualstatic")
+						            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil Visualstatic</a></td>
+						            @endif
+						            @if( $form->jenis_uji == "Service")
+						            <td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil Service</a></td>
+						            @endif
+						        </tr>
+						    @endforeach
+						    </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection

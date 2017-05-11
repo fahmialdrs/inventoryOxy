@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tube;
+use App\Models\Customer;
+use App\Models\Itemujiriksa;
+use Session;
+use App\Http\Requests\StoreTabungRequest;
+use App\Http\Requests\UpdateTabungRequest;
 
 class TabungController extends Controller
 {
@@ -13,7 +19,8 @@ class TabungController extends Controller
      */
     public function index()
     {
-        return view('Tabung.index');
+        $tabungs = Tube::with('customer')->get();
+        return view('inventory.tabung.index')->with(compact('tabungs'));
     }
 
     /**
@@ -23,7 +30,7 @@ class TabungController extends Controller
      */
     public function create()
     {
-        return view('tabung.create');
+        return  view('inventory.tabung.create');
     }
 
     /**
@@ -32,9 +39,17 @@ class TabungController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTabungRequest $request)
     {
-        //
+        $data = $request->all();
+        $tabungs = Tube::create($data);
+
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil menambah data Tabung untuk Customer <b>  </b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
+            ]);
+
+        return redirect()->route('customer.index');
     }
 
     /**
@@ -45,7 +60,8 @@ class TabungController extends Controller
      */
     public function show($id)
     {
-        //
+        $tabungs = Tube::with(['itemujiriksa'])->findOrFail($id);        
+        return view('inventory.tabung.show')->with(compact('tabungs'));
     }
 
     /**
@@ -56,7 +72,8 @@ class TabungController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tabungs = Tube::find($id);
+        return view('tabung.edit')->with(compact('tabungs'));
     }
 
     /**
@@ -66,9 +83,18 @@ class TabungController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTabungRequest $request, $id)
     {
-        //
+        $tabungs = Tube::find($id);
+
+        $tabungs->update($request->all());
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Data tabung <b> $tabungs->no_tabung </b> berhasil diperbaharui"
+            ]);
+
+        return redirect()->route('tabung.index');
     }
 
     /**
@@ -79,6 +105,15 @@ class TabungController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tabungs = Tube::findOrFail($id);
+
+        $tabungs->delete();
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Data tabung <b> $tabungs->no_tabung </b> berhasil dihapus"
+            ]);
+
+        return redirect()->route('tabung.index');
     }
 }

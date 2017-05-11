@@ -1,44 +1,101 @@
-@extends('template.main')
-@section('title', 'Ujiriksa')
-@section('classUjiriksa','active')
+@extends('layouts.app')
+@section('title', 'Ujiriksa | ')
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <ul class="breadcrumb">
-            <li><a href="{{ url('/home') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-            <li class="active">Ujiriksa</li>
-        </ul>
-    </div>
-</div>
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header">Data Ujiriksa</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="breadcrumb">
+					<li><a href="{{ url('/home') }}">Dashboard</a></li>
+					<li class="active">Ujiriksa</li>
+				</ul>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2 class="panel-title">Ujiriksa</h2>
+					</div>
+					<div class="panel-body">
+					<p class="btn-group"> 
+						<a class="btn btn-info" href="{{ route('ujiriksa.create') }}">Registrasi Uji</a> 
+					</p>
+					<p class="btn-group pull-right"> 
+						<a class="btn btn-primary" href="{{ route('hydrostatic.createImport') }}">Import Hasil Hydrostatic</a>
+					</p>
+						<table id="table_id" class="display">
+						    <thead>
+						        <tr>
+						        	<th>No Registrasi Uji</th>
+						            <th>Jenis Uji</th>
+						            <th>Progress</th>
+						            <th>Tanggal Masuk</th>
+						            <th>Tanggal Selesai</th>
+						            <th>Nama Pemilik</th>
+						            <th>Action</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    @foreach($formujiriksas as $fu)
+						        <tr>
+						        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
+						            <td>{{ $fu->jenis_uji }}</td>
+						        	<td>{{ $fu->progress }}</td>
+						            <td>{{ $fu->created_at }}</td>
+						            <td>{{ $fu->done_at	}}</td>
+						            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+						            <td>
+						            	<div class="btn-group dropdown" role="group" aria-label="...">
+										  <div class="btn-group navbar-right">
+											  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											    Action <span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu ">
+											  @if($fu->jenis_uji == 'Hydrostatic')
+											  	<li>
+													<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
+											  	</li>
+											  @endif
+											  @if($fu->jenis_uji == 'Visualstatic')
+											  	<li>
+													<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
+											  	</li>
+											  @endif
+											  @if($fu->jenis_uji == 'Service')
+											  	<li>
+													<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
+											  	</li>
+											  @endif
+											  	<li>
+													<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
+											  	</li>
+											  	<li>
+													<a type="button" href="#">Delete</a>
+											  	</li>
+											  	<li role="separator" class="divider"></li>
+											    <li><a href="#">Unduh Label</a></li>
+											  </ul>
+											</div>
+										</div>
+						            </td>
+						        </tr>
+						    @endforeach
+						    </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</div><!--/.row-->
+@endsection
 
-<div class="row">
-	<div class="col-lg-12">
-    	<div class="panel panel-default">
-        	<div class="panel-heading">Data Ujiriksa</div>
-            	<div class="panel-body">
-					<div class="col-md-12">
-						<a href="{{ route('ujiriksa.create') }}" class="btn btn-default">Tambah Hydrostatic Test</a>
-						<a href="{{ route('ujiriksa.create') }}" class="btn btn-default">Tambah Visual Test</a>
-						<a href="{{ route('ujiriksa.create') }}" class="btn btn-default">Tambah Service</a>
-					</div>            	
-                	<table data-toggle="table" data-url="{{ asset('tables/data1.json') }}"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                    	<thead>
-                        	<tr>
-                                <th data-field="state" data-checkbox="true" >Item ID</th>
-                                <th data-field="id" data-sortable="true">Item ID</th>
-                                <th data-field="name"  data-sortable="true">Item Name</th>
-                                <th data-field="price" data-sortable="true">Item Price</th>
-                            </tr>
-                        </thead>
-            		</table>
-        		</div>
-    	</div>
-	</div>
-</div><!--/.row-->
+@section('scripts')
+<script>
+	$(document).ready( function () {
+	    $('#table_id').DataTable({
+	  	"columnDefs": [ {
+		    "targets": [ 6 ],
+		    "searchable": false,
+		    "orderable": false
+	    } ]
+});
+	} );
+</script>
 @endsection

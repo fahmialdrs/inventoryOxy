@@ -1,56 +1,218 @@
-<div class="col-md-5">
-	<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-		<div class="col-md-12">
-			<div class="panel-body">
-				{!! Form::label('name', 'Nama', ['class'=>'col-md-2 control-label']) !!}
-				{!! Form::text('name', null, ['class'=>'form-control']) !!}
-				{!! $errors->first('name', '<p class="help-block">:message</p>') !!}
-			</div>
-		</div>
-	</div>
-	<div class="form-group{{ $errors->has('no_telp') ? ' has-error' : '' }}">
-		<div class="col-md-12">
-			<div class="panel-body">
-				{!! Form::label('no_telp', 'Telpon', ['class'=>'col-md-2 control-label']) !!}
-				{!! Form::text('no_telp', null, ['class'=>'form-control']) !!}
-				{!! $errors->first('no_telp', '<p class="help-block">:message</p>') !!}
-			</div>
-		</div>
-	</div>
-	<div class="form-group{{ $errors->has('alamat') ? ' has-error' : '' }}">
-		<div class="col-md-12">
-			<div class="panel-body">
-				{!! Form::label('alamat', 'Alamat', ['class'=>'col-md-2 control-label']) !!}
-				{!! Form::text('alamat', null, ['class'=>'form-control']) !!}
-				{!! $errors->first('alamat', '<p class="help-block">:message</p>') !!}
-			</div>
-			{!! Form::submit('Save', ['class'=>'btn btn-primary']) !!}
-		</div>
-	</div>	
-</div>
-<div class="col-md-7">
-	<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-		<div class="col-md-8">
-			<div class="panel-body">
-				{!! Form::label('email', 'Email', ['class'=>'col-md-2 control-label']) !!}
-				{!! Form::email('email', null, ['class'=>'form-control']) !!}
-				{!! $errors->first('email', '<p class="help-block">:message</p>') !!}
-			</div>
-		</div>
-	</div>
-	<div class="form-group{{ $errors->has('tgl_member') ? ' has-error' : '' }}">
-		<div class="col-md-8">
-			<div class="panel-body">
-				{!! Form::label('tgl_member', 'Tanggal Member', ['class'=>'col-md-2 control-label']) !!}
-				{!! Form::date('tgl_member', null, ['class'=>'form-control']) !!}
-				{!! $errors->first('tgl_member', '<p class="help-block">:message</p>') !!}
-			</div>
-		</div>
-	</div>
+<div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
+    {!! Form::label('customer_id', 'Nama Pemilik', ['class'=>'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih Nama Customer']) !!}
+        {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
+    </div>
 </div>
 
-<div class="form-group">
-	<div class="col-md-10 col-md-offset-2">
-		
-	</div>
+<!-- <div class="form-group{{ $errors->has('tube_id') ? ' has-error' : '' }}">
+    {!! Form::label('tube_id', 'No Tabung', ['class'=>'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+        {!! Form::select('tube_id', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
+        {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}     
+    </div>
+</div> -->
+
+<!-- <div class="form-group{{ $errors->has('alamat') ? ' has-error' : '' }}">
+    <label for="alamat" class="col-md-4 control-label">Alamat</label>
+
+    <div class="col-md-4">
+        <textarea id="alamat" type="text" class="form-control" name="alamat" required></textarea>
+
+        @if ($errors->has('alamat'))
+            <span class="help-block">
+                <strong>{{ $errors->first('alamat') }}</strong>
+            </span>
+        @endif
+    </div>
+</div> -->
+
+
+<div class="form-group{{ $errors->has('jenis_uji') ? ' has-error' : '' }}">
+    <label for="jenis_uji" class="col-md-4 control-label">Jenis Uji</label>
+
+    <div class="col-md-4">
+    	<label class="radio-inline">
+        	<input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
+		</label>
+		<label class="radio-inline">
+        	<input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
+		</label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+        </label>
+        @if ($errors->has('jenis_uji'))
+            <span class="help-block">
+                <strong>{{ $errors->first('jenis_uji') }}</strong>
+            </span>
+        @endif
+    </div>
 </div>
+
+<!-- <div class="form-group{{ $errors->has('kondisi_tabung') ? ' has-error' : '' }}">
+    <label for="kondisi_tabung" class="col-md-4 control-label">Kondisi Tabung</label>
+
+    <div class="col-md-4">
+        <input id="kondisi_tabung" type="text" class="form-control" name="kondisi_tabung" required>
+
+        @if ($errors->has('kondisi_tabung'))
+            <span class="help-block">
+                <strong>{{ $errors->first('kondisi_tabung') }}</strong>
+            </span>
+        @endif
+    </div>
+</div> -->
+
+<div class="form-group{{ $errors->has('keterangan') ? ' has-error' : '' }}">
+    <label for="keterangan" class="col-md-4 control-label">Keterangan</label>
+
+    <div class="col-md-4">
+        <textarea id="keterangan" type="text" class="form-control" name="keterangan" value="{{ old('keterangan') }}" required></textarea>
+
+        @if ($errors->has('keterangan'))
+            <span class="help-block">
+                <strong>{{ $errors->first('keterangan') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('perkiraan_selesai') ? ' has-error' : '' }}">
+    <label for="perkiraan_selesai" class="col-md-4 control-label">Tanggal Perkiraan Selesai</label>
+
+    <div class="col-md-4">
+        <input id="perkiraan_selesai" type="date" class="form-control" name="perkiraan_selesai" value="{{ old('perkiraan_selesai') }}" required>
+
+        @if ($errors->has('perkiraan_selesai'))
+            <span class="help-block">
+                <strong>{{ $errors->first('perkiraan_selesai') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('perkiraan_biaya') ? ' has-error' : '' }}">
+    <label for="perkiraan_biaya" class="col-md-4 control-label">Perkiraan Biaya</label>
+
+    <div class="col-md-4">
+        <div class="input-group">
+            <div class="input-group-addon">Rp.</div>
+            <input id="perkiraan_biaya" type="number" class="form-control" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
+        </div>
+
+        @if ($errors->has('perkiraan_biaya'))
+            <span class="help-block">
+                <strong>{{ $errors->first('perkiraan_biaya') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+
+
+<div class="form-group{{ $errors->has('nama_penyerah') ? ' has-error' : '' }}">
+    <label for="nama_penyerah" class="col-md-4 control-label">Nama Yang Menyerahkan</label>
+
+    <div class="col-md-4">
+        <input id="nama_penyerah" type="text" class="form-control" name="nama_penyerah" value="{{ old('nama_penyerah') }}" required>
+
+        @if ($errors->has('nama_penyerah'))
+            <span class="help-block">
+                <strong>{{ $errors->first('nama_penyerah') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jumlah Barang</th>
+            <th>Nama Barang</th>
+            <th>No Tabung</th>
+            <th>Keluhan</th>
+            <th>Foto</th>
+            <th><a class="btn btn-default" id='add_field_button'>Tambah Kolom</a></th>
+        </tr>
+    </thead>
+    <tbody id='input_fields_wrap'>
+        <tr>
+            <td>
+                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="jumlah_barang[]">
+            </td>                
+            <td>
+                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="nama_barang[]">
+            </td>
+            <td>
+                {!! Form::select('tube_id', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
+            </td>
+            <td>
+                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="keluhan">
+            </td>
+            <td>
+                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="foto_tabung_masuk[]" multiple>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- <select name="tube_id" class="js-selectize form-control" placeholder="Pilih No Tabung">
+    
+</select> -->
+
+<div class="form-group">
+    <div class="col-md-6 col-md-offset-4">
+        <button type="submit" class="btn btn-primary">
+        <!-- <i class="fa fa-btn fa-user"></i> -->
+            Simpan
+        </button>
+        <button type="submit" class="btn btn-success">
+            Simpan & Buat Baru
+        </button>
+        <button type="reset" class="btn btn-warning">
+            Batal
+        </button>
+    </div>
+</div>
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $("#input_fields_wrap"); //Fields wrapper
+    var add_button      = $("#add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<tr>\
+            <td>\
+                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="jumlah_barang[' + x +']">\
+            </td>\
+            <td>\
+                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="nama_barang[' + x +']">\
+            </td>\
+            <td>\
+                {!! Form::select("tube_id", [""=>""]+App\Models\Tube::pluck("no_tabung","id")->all(), null, ["class" => "js-selectize form-control", "placeholder" => "Pilih No Tabung"]) !!}\
+            </td>\
+            <td>\
+                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="keluhan[' + x +']">\
+            </td>\
+            <td>\
+                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="foto_tabung_masuk[' + x +']" multiple>\
+            </td>\
+            <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
+        </tr>'); //add input box
+        }
+    });
+    
+    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parents("tr").remove(); x--;
+    })
+});
+</script>
+@endsection
+

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Customer;
-use App\Models\Tabung;
+use App\Models\Tube;
 
 class TabungsSeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class TabungsSeeder extends Seeder
         	'no_telp'=>'+6281219252331', 
         	'alamat'=>'Kalibata Timur', 
         	'email'=>'fahmialdrs@gmail.com', 
-        	'tgl_member'=>'1995-07-12'
+        	'tanggal_member'=>'1995-07-12'
         	]);
 
         $customer2 = Customer::create([
@@ -28,41 +28,53 @@ class TabungsSeeder extends Seeder
         	'no_telp'=>'+628161881292', 
         	'alamat'=>'Condet', 
         	'email'=>'irfanaldrs@gmail.com', 
-        	'tgl_member'=>'1994-04-21'
+        	'tanggal_member'=>'1994-04-21'
         	]);
 
         //sample tabung
 
-        $tabung1 = Tabung::create([
+        $tabung1 = Tube::create([
         	'no_tabung'=>'9876543210',
-        	'isi_gas'=>'Oxygen',
+        	'gas_diisikan'=>'Oxygen',
         	'kode_tabung'=>'O2',
         	'warna_tabung'=>'Silver',
-        	'kapasitas_isiTabung'=>'47',
-        	'tgl_pembuatan'=>'2017-03-30',
-        	'status'=>'Good',
+        	'isi_tabung'=>'47',
+        	'tanggal_pembuatan'=>'2017-03-30',
+            'terakhir_hydrostatic'=>'2017-01-01',
+            'terakhir_visualstatic'=>'2017-01-01',
+            'terakhir_service'=>'2017-01-01',
+        	'status'=>'Baik',
+            'barcode'=>'barcode1',
         	'customer_id'=>$customer1->id
         	]);
 
-        $tabung2 = Tabung::create([
+        $tabung2 = Tube::create([
         	'no_tabung'=>'01234565432',
-        	'isi_gas'=>'Oxygen',
+        	'gas_diisikan'=>'Oxygen',
         	'kode_tabung'=>'O2',
         	'warna_tabung'=>'Green',
-        	'kapasitas_isiTabung'=>'47',
-        	'tgl_pembuatan'=>'2016-08-10',
-        	'status'=>'Good',
+        	'isi_tabung'=>'47',
+        	'tanggal_pembuatan'=>'2016-08-10',
+            'terakhir_hydrostatic'=>'2017-01-01',
+            'terakhir_visualstatic'=>'2017-01-01',
+            'terakhir_service'=>'2017-01-01',
+        	'status'=>'Baik',
+            'barcode'=>'barcode2',
         	'customer_id'=>$customer1->id
         	]);
 
-        $tabung3 = Tabung::create([
+        $tabung3 = Tube::create([
         	'no_tabung'=>'123456789',
-        	'isi_gas'=>'Oxygen',
+        	'gas_diisikan'=>'Oxygen',
         	'kode_tabung'=>'O2',
         	'warna_tabung'=>'Blue',
-        	'kapasitas_isiTabung'=>'47',
-        	'tgl_pembuatan'=>'2017-01-01',
-        	'status'=>'Good',
+        	'isi_tabung'=>'47',
+        	'tanggal_pembuatan'=>'2017-01-01',
+            'terakhir_hydrostatic'=>'2017-01-01',
+            'terakhir_visualstatic'=>'2017-01-01',
+            'terakhir_service'=>'2017-01-01',
+        	'status'=>'Baik',
+            'barcode'=>'barcode3',
         	'customer_id'=>$customer2->id
         	]);
     }

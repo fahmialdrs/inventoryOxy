@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+Use App\User;
+use App\Role;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -13,7 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $users = User::with(['roles'])->get();
+        return view('user.index')->with(compact('users'));
     }
 
     /**
@@ -23,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.create');
     }
 
     /**
@@ -32,9 +38,32 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $data = $request->all();
+        $password = $request->input('password');
+        $data['password'] = bcrypt($password);
+
+        $users = User::create($data);
+
+        // set role
+        $role = $request->input('role');
+        
+        $assignRole = Role::where('name', $role)->first();
+        $users->attachRole($assignRole);
+
+        
+
+        // kirim email
+        // Mail::send('auth.email.invite', compact('member', 'password'), function ($m) use ($member) {
+        //     $m->to($member->email, $member->name)->subject('You already registered in Online Library');
+        // });
+
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Pendaftaran Pengguna Dengan Nama " . "<strong>" . $data['email'] ."</strong>" . " Password <strong>" . $password . "</strong> Berhasil Di Daftarkan" 
+            ]);
+        return redirect()->route('user.index');
     }
 
     /**
@@ -56,7 +85,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $users = User::find($id);
+        return view('user.edit')->with(compact('users'));
     }
 
     /**
@@ -66,9 +96,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $users = User::find($id);
+        $users->update($request->all());
+        $password = $request->input('password');
+
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Perubahan Pengguna Dengan Nama " . "<strong>" . $users->email ."</strong>" . " Password <strong>" . $password . "</strong> Berhasil Di Ubah" 
+            ]);
+
+        return redirect()->route('user.index');
     }
 
     /**

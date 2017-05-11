@@ -6,9 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    protected $fillable = ['nama', 'no_telp', 'alamat', 'email', 'tgl_member'];
+    protected $guarded = [];
 
-    public function tabungs() {
-    	return $this->hasMany('App\Models\Tabung');
+    public function tube() {
+    	return $this->hasMany('App\Models\Tube');
+    }
+
+    public function formujiriksa() {
+    	return $this->hasMany('App\Models\Formujiriksa');
+    }
+
+    public function billing() {
+    	return $this->hasMany('App\Models\Billing');
     }
 }

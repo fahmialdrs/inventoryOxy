@@ -1,23 +1,29 @@
-@extends('template.main')
-@section('title', 'Input Billing')
-@section('classTabung','active')
+@extends('layouts.app')
+@section('title', 'Input Invoice')
 
 @section('content')
-<div class="row">
-	<div class="col-lg-12">
-		<ul class="breadcrumb">
-			<li><a href="{{ url('/home') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-			<li><a href="{{ route('billing.create') }}">Billing</a></li>
-			<li class="active">Input Billing</li>
-		</ul>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href="{{ url('/home') }}">Dashboard</a></li>
+				<li><a href="{{ url('/admin/billing') }}">Billing</a></li>
+				<li class="active">Input Invoice</li>
+			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">Input Invoice</h2>
+				</div>
+
+				<div class="panel-body">
+					{!! Form::open(['url'=> route('billing.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
+					@include('billing._form')
+					{!! Form::close() !!}
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<div class="panel panel-info">
-	<div class="panel-heading">
-		Input Billing
-	</div>
-		{!! Form::open(['url'=> route('customer.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
-			@include('tabung._form')
-		{!! Form::close() !!}
-	</div>
+
 @endsection

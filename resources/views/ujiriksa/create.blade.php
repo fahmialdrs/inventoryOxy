@@ -1,23 +1,30 @@
-@extends('template.main')
-@section('title', 'Input Ujiriksa')
-@section('classTabung','active')
+@extends('layouts.app')
+@section('title', 'Registrasi Ujiriksa')
 
 @section('content')
-<div class="row">
-	<div class="col-lg-12">
-		<ul class="breadcrumb">
-			<li><a href="{{ url('/home') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-			<li><a href="{{ route('ujiriksa.index') }}">Ujiriksa</a></li>
-			<li class="active">Input Ujiriksa</li>
-		</ul>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<ul class="breadcrumb">
+				<li><a href="{{ url('/home') }}">Dashboard</a></li>
+				<li><a href="{{ url('/admin/ujiriksa') }}">Ujiriksa</a></li>
+				<li class="active">Registrasi Ujiriksa</li>
+			</ul>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">Form Registrasi Ujiriksa</h2>
+				</div>
+
+				<div class="panel-body">
+					<form class="form-horizontal" role="form" method="POST" action="{{ route('ujiriksa.store') }}">
+                        {{ csrf_field() }}
+					@include('ujiriksa._form')
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<div class="panel panel-info">
-	<div class="panel-heading">
-		Input Data Tabung
-	</div>
-		{!! Form::open(['url'=> route('customer.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
-			@include('tabung._form')
-		{!! Form::close() !!}
-	</div>
+
 @endsection

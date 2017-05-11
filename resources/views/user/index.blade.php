@@ -1,51 +1,75 @@
-@extends('template.main')
-@section('title', 'User')
-@section('classUser','active')
+@extends('layouts.app')
+@section('title', 'Manajemen User | ')
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <ul class="breadcrumb">
-            <li><a href="{{ url('/home') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
-            <li class="active">User</li>
-        </ul>
-    </div>
-</div>
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header">Data User</h1>
-	</div>
-</div><!--/.row-->
-<div class="row">
-	<div class="col-md-12">
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				Input Data User
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="breadcrumb">
+					<li><a href="{{ url('/home') }}">Dashboard</a></li>
+					<li class="active">User</li>
+				</ul>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2 class="panel-title">User</h2>
+					</div>
+					<div class="panel-body">
+					<p> <a class="btn btn-primary" href="{{ route('user.create') }}">Tambah Pengguna</a> </p>
+						<table id="table_id" class="display">
+						    <thead>
+						        <tr>
+						            <th>Nama</th>
+						            <th>Email</th>
+						            <th>Role</th>
+						            <th>Tanggal Dibuat</th>
+						            <th class="action">Action</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    @foreach($users as $u)
+						        <tr>
+						            <td><a href="#">{{ $u->name }}</a></td>
+						            <td>{{ $u->email }}</td>
+						            <td>{{ $u->roles->first()->display_name }}</td>
+						            <td>{{ $u->created_at }}</td>
+						            <td>
+						            	<div class="btn-group dropdown" role="group" aria-label="...">
+										  <div class="btn-group navbar-right">
+											  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											    Action <span class="caret"></span>
+											  </button>
+											  <ul class="dropdown-menu ">
+											  	<li>
+													<a type="button" href="{{ route('user.edit', $u->id)}}">Edit</a>
+											  	</li>
+											  	<li>
+													<a type="button" href="#">Delete</a>
+											  	</li>
+											  </ul>
+											</div>
+										</div>
+						            </td>
+						        </tr>
+						    @endforeach
+						    </tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-    		{!! Form::open(['url'=>'#', 'class' => 'form-horizontal']) !!}
-    		@include('user._form')
-			{!! Form::close() !!}
 		</div>
-	</div>			
-</div><!-- /.row -->
-
-<div class="row">
-	<div class="col-lg-12">
-    	<div class="panel panel-default">
-        	<div class="panel-heading">Data User</div>
-            	<div class="panel-body">
-                	<table data-toggle="table" data-url="{{ asset('tables/data1.json') }}"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                    	<thead>
-                        	<tr>
-                                <th data-field="state" data-checkbox="true" >Item ID</th>
-                                <th data-field="id" data-sortable="true">Item ID</th>
-                                <th data-field="name"  data-sortable="true">Item Name</th>
-                                <th data-field="price" data-sortable="true">Item Price</th>
-                            </tr>
-                        </thead>
-            		</table>
-        		</div>
-    	</div>
 	</div>
-</div><!--/.row-->
+@endsection
+
+@section('scripts')
+<script>
+	$(document).ready( function () {
+	    $('#table_id').dataTable( {
+	  	"columnDefs": [ {
+		    "targets": [ 4 ],
+		    "searchable": false,
+		    "orderable": false
+	    } ]
+} );
+	} );
+</script>
 @endsection
