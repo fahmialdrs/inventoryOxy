@@ -10,6 +10,6 @@ class Fototabung extends Model
     public $timestamps = false;
     
     public function itemujiriksa() {
-    	return $this->belongsToMany('App\Models\Itemujiriksa');
+    	return $this->belongsTo('App\Models\Itemujiriksa');
     }
 }

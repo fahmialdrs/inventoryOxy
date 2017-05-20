@@ -46,7 +46,7 @@ class TabungController extends Controller
 
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Berhasil menambah data Tabung untuk Customer <b>  </b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
+            "message" => "Berhasil menambah data Tabung untuk Customer <b> $tabungs->customer->nama </b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
             ]);
 
         return redirect()->route('customer.index');
@@ -60,7 +60,8 @@ class TabungController extends Controller
      */
     public function show($id)
     {
-        $tabungs = Tube::with(['itemujiriksa'])->findOrFail($id);        
+        $tabungs = Tube::with(['itemujiriksa.formujiriksa','customer.billing'])->findOrFail($id);
+        // dd($tabungs);        
         return view('inventory.tabung.show')->with(compact('tabungs'));
     }
 
@@ -73,7 +74,7 @@ class TabungController extends Controller
     public function edit($id)
     {
         $tabungs = Tube::find($id);
-        return view('tabung.edit')->with(compact('tabungs'));
+        return view('inventory.tabung.edit')->with(compact('tabungs'));
     }
 
     /**

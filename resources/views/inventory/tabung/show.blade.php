@@ -37,7 +37,7 @@
 							</tr>
 							<tr>
 								<td class="text-muted">Warna Tabung</td>
-								<td>{{ $tabungs->warna_tabung }} Liter</td>
+								<td>{{ $tabungs->warna_tabung }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Isi Tabung</td>
@@ -53,15 +53,15 @@
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
-								<td>{{ $tabungs->itemujiriksa->first()->done_at or '' }}</td>
+								<td>{{ $tabungs->terakhir_hydrostatic or '' }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Terakhir Visualstatic</td>
-								<td>{{ $tabungs->itemujiriksa->first()->done_at or '' }}</td>
+								<td>{{ $tabungs->terakhir_visualstatic or '' }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Terakhir Service</td>
-								<td>{{ $tabungs->itemujiriksa->first()->done_at or '' }}</td>
+								<td>{{ $tabungs->terakhir_service or '' }}</td>
 							</tr>
 						</table>
 						<ul class="nav nav-tabs" role="tablist">
@@ -122,7 +122,7 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								    @foreach ($tabungs->itemujiriksa as $t)
+								    @foreach ($tabungs->itemujiriksa as $t)								    
 								        <tr>
 								            <td>{{ $t->formujiriksa->no_registrasi or '' }}</td>
 								            <td>{{ $t->keluhan or '' }}</td>
@@ -170,7 +170,7 @@
 		$(document).ready( function () {
 		    $('.display').dataTable( {
 			  	"columnDefs": [ {
-				    "targets": [ 4 ],
+				    "targets": [ 6 ],
 				    "searchable": false,
 				    "orderable": false
 			    } ]

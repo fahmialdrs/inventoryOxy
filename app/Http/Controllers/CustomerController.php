@@ -20,7 +20,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        $tabungs = Tube::with(['customer',])->get();
+        $tabungs = Tube::with(['customer'])->get();
         return view('inventory.index', array(
             'customers' => $customers,
             'tabungs' => $tabungs
@@ -67,11 +67,12 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customers = Customer::find($id);
-        $tabungs = Tube::where('customer_id', $id)->get();
+        $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->find($id);
+        // $tabungs = Tube::where('customer_id', $id)->with(['itemujiriksa.formujiriksa'])->get();
+        // dd($tabungs->itemujiriksa);
         return view('inventory.customer.show', array(
-            'customers' => $customers,
-            'tabungs' => $tabungs
+            'customers' => $customers
+            // 'tabungs' => $tabungs
             ));
 
         // return view('customer.show')->with(compact('customers'));

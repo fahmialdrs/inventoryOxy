@@ -10,7 +10,7 @@ class Formujiriksa extends Model
     protected $dates = array('progress_at','done_at');
     
     public function itemujiriksa() {
-        return $this->hasMany('App\Models\itemujiriksa');
+        return $this->hasMany('App\Models\Itemujiriksa');
     }
 
     public function customer() {

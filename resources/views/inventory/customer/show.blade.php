@@ -66,7 +66,7 @@
 								        </tr>
 								    </thead>
 								    <tbody>
-								    @foreach ($tabungs as $t)
+								    @foreach ($customers->tube as $t)
 								        <tr>
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->gas_diisikan }}</td>
@@ -92,17 +92,20 @@
 								        <tr>
 								            <th>No Tabung</th>
 								            <th>Jenis Kegiatan</th>
+								            <th>Keluhan</th>
 								            <th>Tanggal Kegiatan</th>
 								            <th>Attachment</th>
 								            <th>Action</th>
 								        </tr>
 								    </thead>
-								    <tbody>
-								    @foreach ($tabungs as $t)
-								        <tr>
-								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung or '' }}</a></td>
-								            <td>{{ $ti->itemujiriksa or '' }}</td>
-								            <td>{{ $ti->itemujiriksa->nama_barang or '' }}</td>
+								    <tbody>								    
+								    @foreach ($customers->tube as $tb)	
+								    @foreach ($tb->itemujiriksa as $t)							    
+								        <tr>								    
+								            <td><a href="{{ route('tabung.show',$t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
+								            <td>{{ $t->keluhan or '' }}</td>
+								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
+								            <td>{{ $t->formujiriksa->done_at or 'Belum Selesai' }}</td>
 								            <td><a href="#">File</a></td>
 								            <td>
 								            	<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
@@ -113,6 +116,7 @@
 				                        		</form>
 								            </td>
 								        </tr>
+								        @endforeach
 								    @endforeach
 								    </tbody>
 								</table>

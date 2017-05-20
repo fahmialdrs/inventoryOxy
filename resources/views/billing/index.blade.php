@@ -43,17 +43,21 @@
 											    Action <span class="caret"></span>
 											  </button>
 											  <ul class="dropdown-menu ">
-											  	<li>
-													<a type="button" href="#">Input Hasil Hydrostatic</a>
-											  	</li>
+											  	@if($b->status != "Sudah Bayar")
 											  	<li>
 													<a type="button" href="{{ route('billing.edit', $b->id) }}">Edit</a>
 											  	</li>
+												@endif
 											  	<li>
-													<a type="button" href="#">Delete</a>
+													<a type="button" href="{{ route('billing.destroy', ['id' => $b->id]) }}">Delete</a>
 											  	</li>
 											  	<li role="separator" class="divider"></li>
-											    <li><a href="#">Unduh Label</a></li>
+											  	@if($b->status != "Sudah Bayar")
+											    <li><a href="{{ route('billing.changeStatus', $b->id) }}">Ubah Status Dibayar</a></li>
+											    @endif
+
+											    <li><a href="{{ route('billing.exportPdf', ['id' => $b->id]) }}" target="_blank">Export PDF</a></li>
+											    <li><a href="#">Kirim Email</a></li>
 											  </ul>
 											</div>
 										</div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Formujiriksa;
 use App\Models\Itemujiriksa;
 use App\Models\Fototabung;
+use App\Models\Tube;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -30,7 +31,8 @@ class UjiriksaController extends Controller
      */
     public function create()
     {
-        return view('ujiriksa.create');
+        $tabungs = Tube::all();
+        return view('ujiriksa.create')->with(compact('tabungs'));
     }
 
     /**
@@ -41,64 +43,91 @@ class UjiriksaController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'tube_id' => 'required|exists:tubes,id',
-            'keluhan' => 'required|max:255',
-            'jenis_uji' => 'required|max:255',
-            'foto_tabung_masuk'=> 'image|max:8192',
-        ]);
+        // $this->validate($request, [
+        //     'tube_id' => 'required|exists:tubes,id',
+        //     'keluhan' => 'required|max:255',
+        //     'jenis_uji' => 'required|max:255',
+        //     'foto_tabung_masuk'=> 'image|max:8192',
+        // ]);
 
         // request semua data
-        $data = $request->except(['jumlah_barang', 'nama_barang', 'no_tabung', 'keluhan', 'foto_tabung_masuk', 'keterangan_foto']);
+        $data = $request->except('keterangan_foto');
 
         // tarik jenis uji
         $jenisuji = $request->input('jenis_uji');
+
+        $date = Carbon::parse('now');
+        $kode = $date->format('dm').'-'. '1' . '/UJI/NDT/' . $date->format('Y');
         
         // penentuan nomer registrasi berdasarkan jenis uji
         if ($jenisuji == 'Hydrostatic') {
-            $nouji = "HYDR-" . Carbon::now();
+            $nouji = "HYDR-" . $kode;
         }
         elseif ($jenisuji == 'Visualstatic') {
-            $nouji = "VSL-". Carbon::now();
+            $nouji = "VSL-". $kode;
         }
         elseif ($jenisuji == 'Service') {
-            $nouji = "SVC-". Carbon::now();
+            $nouji = "SVC-". $kode;
         }
         $data['no_registrasi'] = $nouji;
+        $data['jenis_uji'] = $jenisuji;
         $data['progress'] = 'Waiting List';
         $data['user_id'] = Auth::user()->id;
+        array_forget($data,'itemujiriksa');
+        array_forget($data,'fototabung');
+        // dd($data);
+        $table = new Formujiriksa;
+        $table->fill($data);
+        $table->save();
 
-        $uji = Formujiriksa::create($data);
+        if (isset($request->itemujiriksa)) {
+            foreach ($request->itemujiriksa as $key ) {
+                    $item = new Itemujiriksa([
+                        'jumlah_barang' => $key['jumlah_barang'],
+                        'nama_barang' => $key['nama_barang'],
+                        'tube_id' => $key['tube_id'],
+                        'keluhan' => $key['keluhan']
+                    ]);
+                    $table->itemujiriksa()->save($item);
+                    
 
-        
-        // isi field cover jika ada cover yg di upload
+                if (isset($request->itemujriksa->foto_tabung_masuk)) {
+                    foreach ($request->foto_tabung_masuk as $foto) {
+                        foreach ($foto as $f){
+                            // isi field cover jika ada cover yg di upload
+                            if ($request->hasFile('foto_tabung_masuk')) {
+                                
+                                //ambil file yang di upload
+                                $uploaded = $request->file('foto_tabung_masuk');
 
-        if ($request->hasFile('foto_tabung_masuk')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_masuk');
+                                // ambil extension file
+                                $extension = $uploaded->getClientOriginalExtension();
 
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
+                                // membuat nama file random
+                                $filename = md5(time()) . '.' . $extension;
 
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
+                                // simpan file ke folder public/img
 
-            // simpan file ke folder public/img
+                                $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
+                                $uploaded->move($destinationPath, $filename);
 
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
+                                // mengisi field cover di book dengan filename yg baru dibuat
+                                
+                                $fototabungs = new Fototabung([
+                                    'foto_tabung_masuk' => $key['foto_tabung_masuk']
+                                    ]);
+                                $fototabungs->foto_tabung_masuk = $filename;
 
-            // mengisi field cover di book dengan filename yg baru dibuat
-            $fototabung = Fototabung::create([
-                'foto_tabung_masuk'=>$filename,
-                'keterangan_foto'=> $request->input('keterangan_foto')
-            ]);
+                                // save ke table fototabungs
+                                // $item->fototabung()->save($fototabungs); 
 
-            // save ke pivot table
-            $uji->fototabung()->sync([$fototabung->id]);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
+        
         Session::flash("flash_notification", [
             "level"=>"success",
             "message" => "Registrasi Ujiriksa dengan no Registrasi <b> $nouji </b> Berhasil"
@@ -207,5 +236,44 @@ class UjiriksaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function changeStatus($id)
+    {
+        $ujiriksas = Formujiriksa::find($id);
+        $status = $ujiriksas->progress;
+        if($status == "Waiting List") {
+            $ujiriksas->progress = "Sedang Dikerjakan";
+            $ujiriksas->progress_at = Carbon::now();    
+        }
+        else{
+            $ujiriksas->progress = "Selesai";
+            $ujiriksas->done_at = Carbon::now();
+        }
+
+        $ujiriksas->save();
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Status Formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diperbaharui"
+            ]);
+
+        return redirect()->route('ujiriksa.index');
+    }
+
+    public function storePengambil(Request $request, $id)
+    {
+        $ujiriksas = Formujiriksa::find($id);
+        $pengambil = $request->only('nama_pengambil');
+        $ujiriksas->nama_pengambil = $pengambil;
+        
+        $ujiriksas->save();
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Item formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diambil oleh <b>$pengambil</b>"
+            ]);
+
+        return redirect()->route('ujiriksa.index');
     }
 }
