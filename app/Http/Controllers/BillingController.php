@@ -9,6 +9,8 @@ use App\Http\Requests\StoreBillingRequest;
 use App\Http\Requests\UpdateBillingRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use PDF;
+use Illuminate\Support\Facades\Mail;
 
 class BillingController extends Controller
 {
@@ -39,19 +41,21 @@ class BillingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBillingRequest $request)
     {
         $data = $request->except(['alamat', 'email']);
-        $data['no_invoice'] = "INV-" . Carbon::now();
-        $data['status'] = 'Terkirim';
-
+        $counter = Billing::whereDate('created_at','=',date('Y-m-d'))->count();
+        $date = Carbon::parse('now');
+        $noinv = $date->format('dm').'-'. '1' . '/INV/NDT/EB/';
+        $data['no_invoice'] = $noinv;
+        $data['status'] = 'Belum Bayar';
+        
         array_forget($data,'itembiling');
         $table = new Billing;
         $table->fill($data);
+        // dd($table);
         $table->save();
-        // dd($data);
-        // $input = $request->except(['tanggal_invoice', 'customer_id', 'alamat', 'email', 'perihal', 'subtotal', , 'ongkir', , 'discount', , 'email', 'total', 'terbilang']);
-        // $input['billing_id'] = $billings->id;
+        
 
         if (isset($request->itembiling)) {
             foreach ($request->itembiling as $key ) {
@@ -62,9 +66,13 @@ class BillingController extends Controller
                         'amount' => $key['amount']
                     ]);
                     $table->itembilling()->save($item);
-                    // dd($item);
+                    // dd($data);
             }
-        }        
+        }
+
+        Mail::send('billing.email', compact('table'), function ($m) use ($table) {
+            $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
+        });
 
         Session::flash("flash_notification", [
             "level" => "success",
@@ -98,7 +106,7 @@ class BillingController extends Controller
      */
     public function edit($id)
     {
-        $billings = Billing::with('customer')->findOrFail($id);
+        $billings = Billing::with(['customer','itembilling'])->findOrFail($id);
         return view('billing.edit')->with(compact('billings'));
     }
 
@@ -130,6 +138,43 @@ class BillingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $billings = Billing::find($id);
+        $billings->delete();
+
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>" Invoice <b> $billings->no_invoice </b> Berhasil Dihapus!"
+            ]);
+        return redirect()->route('billing.index');
     }
+
+    public function changeStatus($id)
+    {
+        $billings = Billing::find($id);
+        $billings->status = "Sudah Bayar";
+
+        $billings->save();
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Invoice <b> $billings->no_invoice </b> Sudah Dibayar"
+            ]);
+
+        return redirect()->route('billing.index');
+    }
+
+    public function exportPdf($id) {
+        $billings = Billing::with('customer','itembilling')->find($id);
+        // dd($billings);
+        $pdf = PDF::loadView('billing.pdf', compact('billings'));
+        $filename = 'Invoice-'.' '.$billings->no_invoice.'.pdf';
+        return $pdf->stream($filename);
+    }
+
+    public function kirimEmail($id) {
+        $billings = Billing::with('itembilling', 'customer')->find($id);
+        Mail::send('billing.email', compact('billings'), function ($m) use ($billings) {
+            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive');
+        });
+    } 
 }

@@ -76,14 +76,29 @@
 						            <td><a href="{{ route('tabung.show', $t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
 						            <td>{{ $t->keluhan or '' }}</td>
 						            <td>Foto</td>
+
 						            @if( $form->jenis_uji == "Hydrostatic")
+						            @if(isset($t->hydrostaticresult))
 						            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil Hydrostatic</a></td>
+						            @else
+						            <td>Hasil Belum di Input</td>
+						            @endif						            
 						            @endif
+
 						            @if( $form->jenis_uji == "Visualstatic")
+						            @if(isset($t->visualresult))
 						            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil Visualstatic</a></td>
+						            @else
+						            <td>Hasil Belum di Input</td>
+						            @endif						            
 						            @endif
+
 						            @if( $form->jenis_uji == "Service")
+						            @if(isset($t->serviceresult))
 						            <td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil Service</a></td>
+						            @else
+						            <td>Hasil Belum di Input</td>
+						            @endif						            
 						            @endif
 						        </tr>
 						    @endforeach

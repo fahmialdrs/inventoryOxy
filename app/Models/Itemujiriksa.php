@@ -10,11 +10,11 @@ class Itemujiriksa extends Model
 	public $timestamps = false;
 
 	public function formujiriksa() {
-    	return $this->belongsTo('App\Models\Fototabung');
+    	return $this->belongsTo('App\Models\Formujiriksa');
     }
 
     public function fototabung() {
-    	return $this->belongsToMany('App\Models\Fototabung');
+    	return $this->hasMany('App\Models\Fototabung');
     }
 
     public function tube() {

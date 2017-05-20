@@ -99,16 +99,34 @@
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->kode_tabung }}</td>
 								            <td>{{ $t->isi_tabung }}</td>
-								            <td>{{ $t->formujiriksa->done_at or '' }}</td>
-								            <td>{{ $t->updated_at }}</td>
+								            <td>{{ $t->terakhir_hydrostatic or '' }}</td>
+								            <td>{{ $t->terakhir_visualstatic }}</td>
 								            <td><a href="{{ route('customer.show',['id'=>$t->id]) }}">{{ $t->customer->nama }}</a></td>
 								            <td>
-								            	<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
-						                            <input name="_method" type="hidden" value="DELETE">
-						                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
-						                            <a href="{{ route('tabung.edit',$t->id) }}" class="btn btn-xs btn-primary">Edit</a>
-				                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
-				                        		</form>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  	<li>
+															<a type="button" href="{{ route('tabung.edit', $t->id) }}">Edit</a>
+													  	</li>
+													  	<!-- <li>
+													  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
+													  	</li> -->
+													  	<li>
+															<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
+								                            <input name="_method" type="hidden" value="delete">
+								                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+						                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
+						                        		</form>													
+													  	</li>
+													  	<li role="separator" class="divider"></li>
+													    <li><a href="#">Unduh Label</a></li>
+													  </ul>
+													</div>
+												</div>
 								            </td>
 								        </tr>
 								    @endforeach
@@ -136,7 +154,7 @@
 
 		$('#tabung').dataTable( {
 	  	"columnDefs": [ {
-		    "targets": [ 5 ],
+		    "targets": [ 6 ],
 		    "searchable": false,
 		    "orderable": false
 	    	} ]

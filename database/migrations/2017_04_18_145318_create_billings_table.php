@@ -24,6 +24,7 @@ class CreateBillingsTable extends Migration
             $table->integer('discount');
             $table->integer('total');
             $table->string('terbilang');
+            $table->string('catatan')->nullable();
             $table->string('status');
             $table->timestamps();
             

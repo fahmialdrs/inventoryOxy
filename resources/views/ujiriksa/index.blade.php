@@ -39,7 +39,7 @@
 						            <td>{{ $fu->jenis_uji }}</td>
 						        	<td>{{ $fu->progress }}</td>
 						            <td>{{ $fu->created_at }}</td>
-						            <td>{{ $fu->done_at	}}</td>
+						            <td>{{ $fu->done_at or 'Belum Selesai' }}</td>
 						            <td><a href="#">{{ $fu->customer->nama }}</a></td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -48,6 +48,7 @@
 											    Action <span class="caret"></span>
 											  </button>
 											  <ul class="dropdown-menu ">
+											  <li class="dropdown-header">Aksi</li>
 											  @if($fu->jenis_uji == 'Hydrostatic')
 											  	<li>
 													<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
@@ -67,10 +68,33 @@
 													<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
 											  	</li>
 											  	<li>
-													<a type="button" href="#">Delete</a>
-											  	</li>
+													<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+											  	</li>											  	
+											  	@if($fu->progress == 'Waiting List')
 											  	<li role="separator" class="divider"></li>
-											    <li><a href="#">Unduh Label</a></li>
+											  	<li class="dropdown-header">Ubah Status Progress</li>
+											    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Dikerjakan</a></li>
+											    @elseif($fu->progress == 'Sedang Dikerjakan')
+											    <li role="separator" class="divider"></li>
+											  	<li class="dropdown-header">Ubah Status Progress</li>
+											    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Selesai</a></li>
+											    @elseif($fu->progress == 'Selesai')
+											    @if(!isset($fu->nama_pengambil))
+											    <li role="separator" class="divider"></li>
+											  	<li class="dropdown-header">Input Nama Pengambil</li>
+											    <li><a href="#" onclick="myFunction()">Diambil</a></li>
+											    <form id="form" role="form" action="{{ route('ujiriksa.storePengambil', $fu->id)}}" method="post">
+												{!! csrf_field() !!}
+											    	<input type="hidden" id="pengambil" name="nama_pengambil" />
+												</form>
+												@endif
+											    @else
+											    @endif
+											    <li role="separator" class="divider"></li>
+											    <li class="dropdown-header">Aksi Tambahan</li>
+											    <li><a href="#">Export PDF</a></li>
+											    <li><a href="#">Kirim Email</a></li>
+											    
 											  </ul>
 											</div>
 										</div>
@@ -83,7 +107,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
 @endsection
 
 @section('scripts')
@@ -97,5 +121,18 @@
 	    } ]
 });
 	} );
+</script>
+<script>
+	function myFunction() {
+    var txt;
+    var person = prompt("Masukan Nama Pengambil:");
+    if (person == null || person == "") {
+        txt = "Nama Pengambil Tidak Boleh Kosong.";
+        alert(txt);
+    } else {
+        document.getElementById('pengambil').value = person.toString();
+    	document.getElementById('form').submit();
+    }
+	}
 </script>
 @endsection

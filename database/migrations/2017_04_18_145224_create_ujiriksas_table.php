@@ -127,19 +127,11 @@ class CreateUjiriksasTable extends Migration
             $table->increments('id');
             $table->string('foto_tabung_masuk');
             $table->string('keterangan_foto')->nullable();
-        });
-
-        Schema::create('fototabung_itemujiriksa', function (Blueprint $table) {
             $table->integer('itemujiriksa_id')->unsigned();
-            $table->integer('fototabung_id')->unsigned();
 
             $table->foreign('itemujiriksa_id')->references('id')->on('itemujiriksas')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('fototabung_id')->references('id')->on('fototabungs')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->primary(['itemujiriksa_id', 'fototabung_id']);
-        });        
+        });      
     }
 
     /**
@@ -149,7 +141,6 @@ class CreateUjiriksasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fototabung_itemujiriksa');
         Schema::dropIfExists('fototabungs');
         Schema::dropIfExists('fotoservices');
         Schema::dropIfExists('serviceresults');

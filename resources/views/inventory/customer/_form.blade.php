@@ -46,8 +46,11 @@
         <button type="submit" class="btn btn-success">
             Simpan & Buat Baru
         </button>
-        <button type="submit" class="btn btn-warning">
+        <a href="{{ route('customer.index') }}" class="btn btn-warning">
+        	Batal
+        </a>
+        <!-- <button type="submit" class="btn btn-warning">
             Batal
-        </button>
+        </button> -->
     </div>
 </div>

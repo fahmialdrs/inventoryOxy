@@ -137,29 +137,53 @@
         </tr>
     </thead>
     <tbody id='input_fields_wrap'>
+        @if(isset($ujiriksas->itemujiriksa))
+        @foreach($ujiriksas->itemujiriksas as $i)
         <tr>
             <td>
-                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="jumlah_barang[]">
+                <input type="number" class="form-control" value="{{ $i->jumlah_barang or old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
             </td>                
             <td>
-                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="nama_barang[]">
+                <input type="text" class="form-control" value="{{ $i->nama_barang or old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
             </td>
             <td>
-                {!! Form::select('tube_id', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
+                {!! Form::select('itemujiriksa[0][tube_id]', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
             </td>
             <td>
-                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="keluhan">
+                <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="foto_tabung_masuk[]" multiple>
+                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('itemujiriksa[0][][foto_tabung_masuk]') }}" name="fototabung[0][][foto_tabung_masuk]" multiple>
             </td>
         </tr>
+        @endforeach
+        @else
+        <tr>
+            <td>
+                <input type="number" class="form-control" value="{{ $i->jumlah_barang or old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
+            </td>                
+            <td>
+                <input type="text" class="form-control" value="{{ $i->nama_barang or old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
+            </td>
+            <td>
+                <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
+                    <option disabled selected value></option>
+                    @foreach($tabungs as $t)
+                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
+            </td>
+            <td>
+                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('itemujiriksa[0][foto_tabung_masuk]') }}" name="fototabung[0][][foto_tabung_masuk]" multiple>
+            </td>
+        </tr>
+        @endif
     </tbody>
 </table>
 
-<!-- <select name="tube_id" class="js-selectize form-control" placeholder="Pilih No Tabung">
-    
-</select> -->
 
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
@@ -183,26 +207,31 @@
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
     
-    var x = 1; //initlal text box count
+    var x = 0; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
             $(wrapper).append('<tr>\
             <td>\
-                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="jumlah_barang[' + x +']">\
+                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="itemujiriksa[' + x +'][jumlah_barang]">\
             </td>\
             <td>\
-                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="nama_barang[' + x +']">\
+                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]">\
             </td>\
             <td>\
-                {!! Form::select("tube_id", [""=>""]+App\Models\Tube::pluck("no_tabung","id")->all(), null, ["class" => "js-selectize form-control", "placeholder" => "Pilih No Tabung"]) !!}\
+                <select name="itemujiriksa[' + x +'][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">\
+                    <option disabled selected value></option>\
+                    @foreach($tabungs as $t)\
+                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>\
+                    @endforeach\
+                </select>\
             </td>\
             <td>\
-                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="keluhan[' + x +']">\
+                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]">\
             </td>\
             <td>\
-                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="foto_tabung_masuk[' + x +']" multiple>\
+                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="fototabung[' + x +'][][foto_tabung_masuk]" multiple>\
             </td>\
             <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
         </tr>'); //add input box

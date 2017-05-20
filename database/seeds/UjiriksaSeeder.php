@@ -33,7 +33,7 @@ class UjiriksaSeeder extends Seeder
             'perkiraan_biaya'=>'1000000',
             'progress_at'=>'2017-01-01',
             'done_at'=>'2017-01-01',
-        	'user_id'=>3,
+        	'user_id'=>2,
             'customer_id'=>1
         	]);
 
@@ -47,16 +47,15 @@ class UjiriksaSeeder extends Seeder
 
         $fototabung1 = Fototabung::create([
             'foto_tabung_masuk'=>'IMG0010.jpg',
-            'keterangan_foto'=>'Visual 1'
+            'keterangan_foto'=>'Visual 1',
+            'itemujiriksa_id'=> $item1->id
             ]);
 
         $fototabung2 = Fototabung::create([
             'foto_tabung_masuk'=>'IMG0011.jpg',
-            'keterangan_foto'=>'Visual 2'
+            'keterangan_foto'=>'Visual 2',
+            'itemujiriksa_id'=> $item1->id
             ]);
-
-        $item1->fototabung()->sync([$fototabung1->id, $fototabung2->id]);
-
 
         $resultvisual1 = Visualresult::create([
         	'itemujiriksa_id'=> $form1->id,
@@ -85,7 +84,7 @@ class UjiriksaSeeder extends Seeder
             'perkiraan_biaya'=>'1000000',
             'progress_at'=>'2017-01-01',
             'done_at'=>'2017-01-01',
-            'user_id'=>3,
+            'user_id'=>2,
             'customer_id'=>1
             ]);
 
@@ -99,15 +98,15 @@ class UjiriksaSeeder extends Seeder
 
         $fototabung3 = Fototabung::create([
             'foto_tabung_masuk'=>'IMG0012.jpg',
-            'keterangan_foto'=>'Hydro 1'
+            'keterangan_foto'=>'Hydro 1',
+            'itemujiriksa_id'=> $item2->id
             ]);
 
         $fototabung4 = Fototabung::create([
             'foto_tabung_masuk'=>'IMG0013.jpg',
-            'keterangan_foto'=>'Hydro 2'
+            'keterangan_foto'=>'Hydro 2',
+            'itemujiriksa_id'=> $item2->id
             ]);
-
-        $item2->fototabung()->sync([$fototabung3->id, $fototabung4->id]);
 
         $resulthydro1 = Hydrostaticresult::create([
             'itemujiriksa_id'=> $form2->id,
@@ -143,7 +142,7 @@ class UjiriksaSeeder extends Seeder
             'perkiraan_biaya'=>'1000000',
             'progress_at'=>'2017-01-01',
             'done_at'=>'2017-01-01',
-            'user_id'=>3,
+            'user_id'=>2,
             'customer_id'=>2
             ]);
 
@@ -157,15 +156,15 @@ class UjiriksaSeeder extends Seeder
 
         $fototabung5 = Fototabung::create([
         	'foto_tabung_masuk'=>'IMG0014.jpg',
-        	'keterangan_foto'=>'Service1'
+        	'keterangan_foto'=>'Service1',
+            'itemujiriksa_id'=> $item3->id
         	]);
 
         $fototabung6 = Fototabung::create([
         	'foto_tabung_masuk'=>'IMG0015.jpg',
-        	'keterangan_foto'=>'Service2'
+        	'keterangan_foto'=>'Service2',
+            'itemujiriksa_id'=> $item3->id
         	]);
-
-        $item3->fototabung()->sync([$fototabung5->id, $fototabung6->id]);
 
         $resultservice1 = Serviceresult::create([
             'itemujiriksa_id'=> $form3->id,
