@@ -7,16 +7,15 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul class="breadcrumb">
-					<li><a href="{{ url('/home') }}"> Dashboard</a></li>
-					<li><a href="{{ url('/admin/ujiriksa') }}"> Ujiriksa</a></li>
-					<li class="active">Detail Hasil Hydrostatic  </li>
+					<li><a href="{{ url('/') }}"> Beranda</a></li>
+                	<li><a href="#"> Ujiriksa</a></li>
+                	<li class="active">Hasil Form Ujiriksa {{ $form->formujiriksa->no_registrasi }} </li>
 				</ul>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h2 class="panel-title">Detail Hasil Hydrostatic</h2>
 					</div>
-					<div class="panel-body">					
-						<a href="{{ route('hydrostatic.edit', $hydro->id) }}" class="btn btn-primary">Edit</a>
+					<div class="panel-body">
 						<br><br><br>
 						<div class="col-md-8">
 						<table class="table table-responsive">

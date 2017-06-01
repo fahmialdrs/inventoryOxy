@@ -12,69 +12,114 @@
     </div>
 </div>
 
-<table class="table">
+<div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
+    {!! Form::label('customer_id', 'Nama Pemilik', ['class'=>'col-sm-2 control-label']) !!}
+    <div class="col-sm-4">
+        <input id="customer_id" type="text" class="form-control" name="customer_id" value="{{ $form->customer->nama or old('customer_id') }}" disabled>
+        {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('tanggal_uji') ? ' has-error' : '' }}">
+    <label for="tanggal_uji" class="col-md-2 control-label">Tanggal Service</label>
+
+    <div class="col-md-4">
+        <input id="tanggal_uji" type="date" class="form-control" name="tanggal_uji" value="{{ $form->progress_at or old('tanggal_uji') }}" >
+
+        @if ($errors->has('tanggal_uji'))
+            <span class="help-block">
+                <strong>{{ $errors->first('tanggal_uji') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Foto Tabung Hasil Service</th>
-            <th>Keterangan</th>
-            <th><a class="btn btn-default" id='add_field_button'>Tambah Kolom</a></th>
+            <th class="text-center">No</th>
+            <th class="text-center">No Tabung</th>
+            <th class="text-center">Jumlah Barang</th>
+            <th class="text-center">Nama Barang</th>
+            <th class="text-center">Keluhan</th>
+            <th class="text-center">Keterangan Tabung</th>
+            <th class="text-center">Foto Hasil Service</th>
         </tr>
     </thead>
-    <tbody id='input_fields_wrap'>
+    <tbody>
+        <?php $a = 0; ?>
+        @foreach($form->itemujiriksa as $t)
         <tr>
+            <td><b> {{ $a+1 }}</b></td>            
             <td>
-                <input id="foto_tabung_service" type="file" class="form-control" name="foto_tabung_service[]" value="{{ old('foto_tabung_service[]') }}">
-            </td>                
+                <div class="{{ $errors->has('tube_id') ? ' has-error' : '' }}">
+                    <input id="tube_id" type="text" class="" name="tserviceresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>
+                    {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
+                </div>
+            </td>
             <td>
-                <textarea id="keterangan_service" type="text" class="form-control" name="keterangan_service[]" value="{{ old('keterangan_service[]') }}"></textarea>
+                <div class="{{ $errors->has('jumlah_barang') ? ' has-error' : '' }}">
+                    <input id="jumlah_barang" type="text" class="" name="tserviceresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>
+
+                    @if ($errors->has('jumlah_barang'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('jumlah_barang') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
+                    <input id="nama_barang" type="text" class="" name="tserviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
+
+                    @if ($errors->has('nama_barang'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('nama_barang') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
+            <td>
+                <div class="{{ $errors->has('keluhan') ? ' has-error' : '' }}">
+                    <input id="keluhan" type="text" class="" name="tserviceresult[{{ $a }}][keluhan]" value="{{ $t->keluhan or old('keluhan') }}" disabled>
+
+                    @if ($errors->has('keluhan'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('keluhan') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
+            <td>
+                <div class="{{ $errors->has('keterangan_service') ? ' has-error' : '' }}">
+                    <textarea name="serviceresult[{{ $a }}][keterangan_service]">{{ old('keterangan_service') }}</textarea>
+
+                    @if ($errors->has('keterangan_service'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('keterangan_service') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <input type="file" name="fotoservice[{{ $a }}][foto_tabung_service]" multiple>
+                <input type="hidden"  name="serviceresult[{{ $a }}][itemujiriksa_id]" value="{{ $t->id  }}">
             </td>
         </tr>
+        <?php $a++ ?>
+        @endforeach
     </tbody>
 </table>
 
 
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-lg btn-primary">
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
-        <button type="submit" class="btn btn-success">
-            Simpan & Buat Baru
-        </button>
-        <button type="submit" class="btn btn-warning">
+        <button type="submit" class="btn btn-warning btn-lg">
             Batal
         </button>
     </div>
 </div>
-
-@section('scripts')
-<script>
-    $(document).ready(function() {
-    var max_fields      = 10; //maximum input boxes allowed
-    var wrapper         = $("#input_fields_wrap"); //Fields wrapper
-    var add_button      = $("#add_field_button"); //Add button ID
-    
-    var x = 1; //initlal text box count
-    $(add_button).click(function(e){ //on add input button click
-        e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            x++; //text box increment
-            $(wrapper).append('<tr>\
-            <td>\
-                <input id="foto_tabung_service" type="file" class="form-control" name="foto_tabung_service[' + x +']" value="{{ old('foto_tabung_service[]') }}">\
-            </td>\
-            <td>\
-                <textarea id="keterangan_service" type="text" class="form-control" name="keterangan_service[' + x +']" value="{{ old('keterangan_service[]') }}"></textarea>\
-            </td>\
-            <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
-        </tr>'); //add input box
-        }
-    });
-    
-    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parents("tr").remove(); x--;
-    })
-});
-</script>
-@endsection

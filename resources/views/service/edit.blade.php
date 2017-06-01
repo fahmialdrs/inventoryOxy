@@ -7,7 +7,8 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/service') }}">Service</a></li>
+				<li><a href="{{ url('/admin/ujiriksa') }}">Ujiriksa</a></li>
+				<li><a href="{{ url('/admin/ujiriksa/show', $service->itemujiriksa->formujiriksa->id) }}"> Detail Ujiriksa</a></li>
 				<li class="active">Edit Form Registrasi Service</li>
 			</ul>
 			<div class="panel panel-default">
@@ -15,23 +16,9 @@
 					<h2 class="panel-title">Edit Form Registrasi Service</h2>
 				</div>
 				<div class="panel-body">
-					{!! Form::model($services, ['url'=>route('service.update', $services->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
+					{!! Form::model($service, ['url'=>route('service.update', $service->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
 
-					<div class="form-group{{ $errors->has('no_registrasi') ? ' has-error' : '' }}">
-					    <label for="no_registrasi" class="col-md-4 control-label">No Registrasi</label>
-
-					    <div class="col-md-4">
-					        <input id="no_registrasi" type="text" class="form-control" name="no_registrasi" value="{{ $services->no_registrasi }}" disabled>
-
-					        @if ($errors->has('no_registrasi'))
-					            <span class="help-block">
-					                <strong>{{ $errors->first('no_registrasi') }}</strong>
-					            </span>
-					        @endif
-					    </div>
-					</div>
-					
-					@include('service._formHasil')
+					@include('service._formSingle')
 					{!! Form::close()!!}
 				</div>
 			</div>

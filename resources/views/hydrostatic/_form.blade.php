@@ -1,5 +1,5 @@
 <div class="form-group{{ $errors->has('no_registrasi') ? ' has-error' : '' }}">
-    <label for="no_registrasi" class="col-md-4 control-label">No Registrasi Uji</label>
+    <label for="no_registrasi" class="col-md-2 control-label">No Registrasi Uji</label>
 
     <div class="col-md-4">
         <input id="no_registrasi" type="text" class="form-control" name="no_registrasi" value="{{ $form->no_registrasi }}" disabled>
@@ -13,40 +13,18 @@
 </div>
 
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
-    {!! Form::label('customer_id', 'Nama Pemilik', ['class'=>'col-sm-4 control-label']) !!}
+    {!! Form::label('customer_id', 'Nama Pemilik', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih Nama Customer']) !!}
+        <input id="customer_id" type="text" class="form-control" name="customer_id" value="{{ $form->customer->nama or old('customer_id') }}" disabled>
         {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('tube_id') ? ' has-error' : '' }}">
-    {!! Form::label('tube_id', 'No Tabung', ['class'=>'col-sm-4 control-label']) !!}
-    <div class="col-sm-4">
-        {!! Form::select('tube_id', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
-        {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}     
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('gas_diisikan') ? ' has-error' : '' }}">
-    <label for="gas_diisikan" class="col-md-4 control-label">Gas Yang Di Isikan</label>
-
-    <div class="col-md-4">
-        <input id="gas_diisikan" type="text" class="form-control" name="gas_diisikan" value="{{ old('gas_diisikan') }}" required>
-
-        @if ($errors->has('gas_diisikan'))
-            <span class="help-block">
-                <strong>{{ $errors->first('gas_diisikan') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
 <div class="form-group{{ $errors->has('tanggal_uji') ? ' has-error' : '' }}">
-    <label for="tanggal_uji" class="col-md-4 control-label">Tanggal Pemadatan</label>
+    <label for="tanggal_uji" class="col-md-2 control-label">Tanggal Pemadatan</label>
 
     <div class="col-md-4">
-        <input id="tanggal_uji" type="date" class="form-control" name="tanggal_uji" value="{{ old('tanggal_uji') }}" required>
+        <input id="tanggal_uji" type="date" class="form-control" name="tanggal_uji" value="{{ $form->progress_at or old('tanggal_uji') }}" >
 
         @if ($errors->has('tanggal_uji'))
             <span class="help-block">
@@ -56,287 +34,250 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('kode_tabung') ? ' has-error' : '' }}">
-    <label for="kode_tabung" class="col-md-4 control-label">Kode Tabung</label>
+<table class="table table-bordered" style ="width:100%;">
+    <thead>
+        <tr>
+            <th class="text-center" rowspan="2">No</th>
+            <th class="text-center" rowspan="2">Gas yang diisikan</th>
+            <th class="text-center" colspan="3">Keterangan Tabung</th>
+            <th class="text-center" rowspan="2">Tekanan Kerja (Kg/Cm<sup>2</sup>)</th>
+            <th class="text-center" rowspan="2">Tekanan Pemadatan (Kg/Cm<sup>2</sup>)</th>
+            <th class="text-center" rowspan="2">Nama Pabrik Pembuat Tabung</th>
+            <th class="text-center" rowspan="2">Nama Pabrik Pemakai Tabung</th>
+            <th class="text-center" rowspan="2">Berat Tabung Yang Tercatat (Kg)</th>
+            <th class="text-center" rowspan="2">Berat Tabung Sekarang (kg)</th>
+            <th class="text-center" colspan="3">Selisih</th>
+            <th class="text-center" rowspan="2">Isi Tabung (Ltr)</th>            
+            <th class="text-center" rowspan="2">Air yang dipadatkan (cm<sup>3</sup>)</th>
+            <th class="text-center" colspan="2">Pemuaian Tetap</th>
+            <th class="text-center" rowspan="2">Suara Pukulan</th>
+            <th class="text-center" rowspan="2">Keadaan Karat</th>
+            <th class="text-center" rowspan="2">Keadaan Luar</th>
+            <th class="text-center" rowspan="2">Masa Berpori</th>
+            <th class="text-center" rowspan="2">Keterangan</th>
+        </tr>
+        <tr>
+            <th class="text-center">No Tabung</th>            
+            <th class="text-center">Kode Tabung</th>
+            <th class="text-center">Warna Tabung</th>
+            <th class="text-center">-</th>
+            <th class="text-center">+</th>
+            <th class="text-center">%</th>
+            <th class="text-center">cm<sup>3</sup></th>
+            <th class="text-center">%</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $a = 0; ?>
+        @foreach($form->itemujiriksa as $t)
+        <tr>
+            <td width="70%"><b> {{ $a+1 }}</b></td>            
+            <td>
+                <div class="{{ $errors->has('gas_diisikan') ? ' has-error' : '' }}">
+                    <input id="gas_diisikan" type="text" class="" name="hydrostaticresult[{{ $a }}][gas_diisikan]" value="{{ $t->tube->gas_diisikan or old('gas_diisikan') }}" disabled>
 
-    <div class="col-md-4">
-        <input id="kode_tabung" type="text" class="form-control" name="kode_tabung" value="{{ old('kode_tabung') }}" required>
+                    @if ($errors->has('gas_diisikan'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('gas_diisikan') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('tube_id') ? ' has-error' : '' }}">
+                    <input id="tube_id" type="text" class="" name="hydrostaticresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>
+                    {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('kode_tabung') ? ' has-error' : '' }}">
+                    <input id="kode_tabung" type="text" class="" name="hydrostaticresult[{{ $a }}][kode_tabung]" value="{{ $t->tube->kode_tabung or old('kode_tabung') }}" disabled>
 
-        @if ($errors->has('kode_tabung'))
-            <span class="help-block">
-                <strong>{{ $errors->first('kode_tabung') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+                    @if ($errors->has('kode_tabung'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('kode_tabung') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('warna_tabung') ? ' has-error' : '' }}">
+                    <input id="warna_tabung" type="text" class="" name="hydrostaticresult[{{ $a }}][warna_tabung]" value="{{ $t->tube->warna_tabung or old('warna_tabung') }}" disabled>
 
-<div class="form-group{{ $errors->has('warna_tabung') ? ' has-error' : '' }}">
-    <label for="warna_tabung" class="col-md-4 control-label">Warna Tabung</label>
+                    @if ($errors->has('warna_tabung'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('warna_tabung') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
+            <td>
+                <div class="{{ $errors->has('tekanan_kerja') ? ' has-error' : '' }}">
+                    <input id="tekanan_kerja" type="number" class="" name="hydrostaticresult[{{ $a }}][tekanan_kerja]" value="{{ old('tekanan_kerja') }}" style="width: 5em" required>
 
-    <div class="col-md-4">
-        <input id="warna_tabung" type="text" class="form-control" name="warna_tabung" value="{{ old('warna_tabung') }}" required>
+                    @if ($errors->has('tekanan_kerja'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('tekanan_kerja') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('tekanan_pemadatan') ? ' has-error' : '' }}">
+                    <input id="tekanan_pemadatan" type="number" class="" name="hydrostaticresult[{{ $a }}][tekanan_pemadatan]" value="{{ old('tekanan_pemadatan') }}" style="width: 5em" required>
 
-        @if ($errors->has('warna_tabung'))
-            <span class="help-block">
-                <strong>{{ $errors->first('warna_tabung') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+                    @if ($errors->has('tekanan_pemadatan'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('tekanan_pemadatan') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('pabrik_pembuat_tabung') ? ' has-error' : '' }}">
+                    <input id="pabrik_pembuat_tabung" type="text" class="" name="hydrostaticresult[{{ $a }}][pabrik_pembuat_tabung]" value="{{ old('pabrik_pembuat_tabung') }}" required>
 
-<div class="form-group{{ $errors->has('tekanan_kerja') ? ' has-error' : '' }}">
-    <label for="tekanan_kerja" class="col-md-4 control-label">Tekanan Kerja</label>
+                    @if ($errors->has('pabrik_pembuat_tabung'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('pabrik_pembuat_tabung') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('pabrik_pemakai_tabung') ? ' has-error' : '' }}">
+                    <input id="pabrik_pemakai_tabung" type="text" class="" name="hydrostaticresult[{{ $a }}][pabrik_pemakai_tabung]" value="{{ old('pabrik_pemakai_tabung') }}" required>
 
-    <div class="col-md-4">
-        <input id="tekanan_kerja" type="number" class="form-control" name="tekanan_kerja" value="{{ old('tekanan_kerja') }}" required>
+                    @if ($errors->has('pabrik_pemakai_tabung'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('pabrik_pemakai_tabung') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('berat_tercatat') ? ' has-error' : '' }}">
+                    <input id="berat_tercatat" type="number" class="" name="hydrostaticresult[{{ $a }}][berat_tercatat]" value="{{ old('berat_tercatat') }}" style="width: 5em" required>
 
-        @if ($errors->has('tekanan_kerja'))
-            <span class="help-block">
-                <strong>{{ $errors->first('tekanan_kerja') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+                    @if ($errors->has('berat_tercatat'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('berat_tercatat') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('berat_sekarang') ? ' has-error' : '' }}">
+                    <input id="berat_sekarang" type="number" class="" name="hydrostaticresult[{{ $a }}][berat_sekarang]" value="{{ old('berat_sekarang') }}" style="width: 5em" required>
 
-<div class="form-group{{ $errors->has('tekanan_pemadatan') ? ' has-error' : '' }}">
-    <label for="tekanan_pemadatan" class="col-md-4 control-label">Tekanan Pemadatan</label>
+                    @if ($errors->has('berat_sekarang'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('berat_sekarang') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <input id="selisih-" type="number" class="" name="hydrostaticresult[{{ $a }}][selisih_min]" value="{{ old('selisih-') }}" style="width: 5em" required>       
+            </td>
+            <td>
+                
+                <input id="selisih+" type="number" class="" name="hydrostaticresult[{{ $a }}][selisih_plus]" value="{{ old('selisih+') }}" style="width: 5em" required>
+            </td>
+            <td>
+                <input id="selisih%" type="number" class="" name="hydrostaticresult[{{ $a }}][selisih_pers]" value="{{ old('selisih%') }}" style="width: 5em" required>
+            </td>
+            <td>
+                <div class="{{ $errors->has('isi_tabung') ? ' has-error' : '' }}">
+                    <input id="isi_tabung" type="number" class="" name="hydrostaticresult[{{ $a }}][isi_tabung]" value="{{ $t->tube->isi_tabung or old('isi_tabung') }}" style="width: 5em" disabled>
 
-    <div class="col-md-4">
-        <input id="tekanan_pemadatan" type="number" class="form-control" name="tekanan_pemadatan" value="{{ old('tekanan_pemadatan') }}" required>
+                    @if ($errors->has('isi_tabung'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('isi_tabung') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('air_dipadatkan') ? ' has-error' : '' }}">
+                    <input id="air_dipadatkan" type="number" class="" name="hydrostaticresult[{{ $a }}][air_dipadatkan]" value="{{ old('air_dipadatkan') }}" style="width: 5em" required>
 
-        @if ($errors->has('tekanan_pemadatan'))
-            <span class="help-block">
-                <strong>{{ $errors->first('tekanan_pemadatan') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+                    @if ($errors->has('air_dipadatkan'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('air_dipadatkan') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <input id="pemuaian_tetap_cm3" type="number" class="" name="hydrostaticresult[{{ $a }}][pemuaian_tetap_cm3]" value="{{ old('pemuaian_tetap_cm3') }}" style="width: 5em" required>
+            </td>
+            <td>
+                <input id="pemuaian_tetap_%" type="number" class="" name="hydrostaticresult[{{ $a }}][pemuaian_tetap_pers]" value="{{ old('pemuaian_tetap_%') }}" style="width: 5em" required>
+            </td>
+            <td>
+                <label class="radio-inline">
+                    <input id="suara_pukulanNyaring" type="radio" name="hydrostaticresult[{{ $a }}][suara_pukulan]" value="nyaring" checked> Nyaring
+                </label>
+                <label class="radio-inline">
+                    <input id="suara_pukulanPekak" type="radio" name="hydrostaticresult[{{ $a }}][suara_pukulan]" value="pekak"> Pekak
+                </label>
+            </td>
+            <td>
+                <div class="{{ $errors->has('keadaan_karat') ? ' has-error' : '' }}">
+                    <input id="keadaan_karat" type="text" class="" name="hydrostaticresult[{{ $a }}][keadaan_karat]" value="{{ old('keadaan_karat') }}" required>
 
-<div class="form-group{{ $errors->has('pabrik_pembuat_tabung') ? ' has-error' : '' }}">
-    <label for="pabrik_pembuat_tabung" class="col-md-4 control-label">Nama Pabrik Pembuat Tabung</label>
+                    @if ($errors->has('keadaan_karat'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('keadaan_karat') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <label class="radio-inline">
+                    <input id="keadaan_luarBerkeringat" type="radio" name="hydrostaticresult[{{ $a }}][keadaan_luar]" value="berkeringat" checked> Berkeringat
+                </label>
+                <label class="radio-inline">
+                    <input id="keadaan_luarTidakberkeringat" type="radio" name="hydrostaticresult[{{ $a }}][keadaan_luar]" value="tidak berkeringat"> Tidak Berkeringat
+                </label>
+            </td>
+            <td>
+                <label class="radio-inline">
+                    <input id="masa_berporiMerata" type="radio" name="hydrostaticresult[{{ $a }}][masa_berpori]" value="merata" checked> Merata
+                </label>
+                <label class="radio-inline">
+                    <input id="masa_berporiTidakmerata" type="radio" name="hydrostaticresult[{{ $a }}][masa_berpori]" value="pekak"> Tidak Merata
+                </label>
+            </td>
+            <td>
+                <div class="{{ $errors->has('keterangan') ? ' has-error' : '' }}">
+                    <input id="keterangan" type="text" class="" name="hydrostaticresult[{{ $a }}][keterangan]" value="{{ old('keterangan') }}" required>
 
-    <div class="col-md-4">
-        <input id="pabrik_pembuat_tabung" type="text" class="form-control" name="pabrik_pembuat_tabung" value="{{ old('pabrik_pembuat_tabung') }}" required>
+                    @if ($errors->has('keterangan'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('keterangan') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </td>
+            <td>
+                <input type="hidden"  name="hydrostaticresult[{{ $a }}][itemujiriksa_id]" value="{{ $t->id  }}">
+            </td>
+        </tr>
+        <?php $a++ ?>
+        @endforeach
+    </tbody>
+</table>
 
-        @if ($errors->has('pabrik_pembuat_tabung'))
-            <span class="help-block">
-                <strong>{{ $errors->first('pabrik_pembuat_tabung') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('pabrik_pemakai_tabung') ? ' has-error' : '' }}">
-    <label for="pabrik_pemakai_tabung" class="col-md-4 control-label">Nama Pabrik Pemakai Tabung</label>
-
-    <div class="col-md-4">
-        <input id="pabrik_pemakai_tabung" type="text" class="form-control" name="pabrik_pemakai_tabung" value="{{ old('pabrik_pemakai_tabung') }}" required>
-
-        @if ($errors->has('pabrik_pemakai_tabung'))
-            <span class="help-block">
-                <strong>{{ $errors->first('pabrik_pemakai_tabung') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('berat_tercatat') ? ' has-error' : '' }}">
-    <label for="berat_tercatat" class="col-md-4 control-label">Berat Tabung yang Tercatat</label>
-
-    <div class="col-md-4">
-        <input id="berat_tercatat" type="number" class="form-control" name="berat_tercatat" value="{{ old('berat_tercatat') }}" required>
-
-        @if ($errors->has('berat_tercatat'))
-            <span class="help-block">
-                <strong>{{ $errors->first('berat_tercatat') }}</strong>
-            </span>
-        @endif
-    </div> 
-</div>
-
-<div class="form-group{{ $errors->has('berat_sekarang') ? ' has-error' : '' }}">
-    <label for="berat_sekarang" class="col-md-4 control-label">Berat Tabung Sekarang</label>
-
-    <div class="col-md-4">
-        <input id="berat_sekarang" type="number" class="form-control" name="berat_sekarang" value="{{ old('berat_sekarang') }}" required>
-
-        @if ($errors->has('berat_sekarang'))
-            <span class="help-block">
-                <strong>{{ $errors->first('berat_sekarang') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('selisih') ? ' has-error' : '' }}">
-    <label for="selisih" class="col-md-4 control-label">Selisih</label>
-
-    <div class="col-md-4">
-        <div class="input-group">
-            <input id="selisih-" type="number" class="form-control" name="selisih-" value="{{ old('selisih-') }}" required>
-            <div class="input-group-addon">-</div>
-        </div>
-        <div class="input-group">
-            <input id="selisih+" type="number" class="form-control" name="selisih+" value="{{ old('selisih+') }}" required>
-            <div class="input-group-addon">+</div>
-        </div>
-        <div class="input-group">
-            <input id="selisih%" type="number" class="form-control" name="selisih%" value="{{ old('selisih%') }}" required>
-            <div class="input-group-addon">%</div>
-        </div>      
-
-        @if ($errors->has('selisih'))
-            <span class="help-block">
-                <strong>{{ $errors->first('selisih') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('isi_tabung') ? ' has-error' : '' }}">
-    <label for="isi_tabung" class="col-md-4 control-label">Isi Tabung</label>
-
-    <div class="col-md-4">
-        <input id="isi_tabung" type="text" class="form-control" name="isi_tabung" value="{{ old('isi_tabung') }}" required>
-
-        @if ($errors->has('isi_tabung'))
-            <span class="help-block">
-                <strong>{{ $errors->first('isi_tabung') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('air_dipadatkan') ? ' has-error' : '' }}">
-    <label for="air_dipadatkan" class="col-md-4 control-label">Air Yang Di Padatkan</label>
-
-    <div class="col-md-4">
-        <input id="air_dipadatkan" type="number" class="form-control" name="air_dipadatkan" value="{{ old('air_dipadatkan') }}" required>
-
-        @if ($errors->has('air_dipadatkan'))
-            <span class="help-block">
-                <strong>{{ $errors->first('air_dipadatkan') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('pemuaian_tetap') ? ' has-error' : '' }}">
-    <label for="pemuaian_tetap" class="col-md-4 control-label">Pemuaian Tetap</label>
-
-    <div class="col-md-4">
-        <div class="input-group">
-            <input id="pemuaian_tetap_cm3" type="number" class="form-control" name="pemuaian_tetap_cm3" value="{{ old('pemuaian_tetap_cm3') }}" required>
-            <div class="input-group-addon">Cm3</div>
-        </div>
-        <div class="input-group">
-            <input id="pemuaian_tetap_%" type="number" class="form-control" name="pemuaian_tetap_%" value="{{ old('pemuaian_tetap_%') }}" required>
-            <div class="input-group-addon">%</div>
-        </div>
-
-        @if ($errors->has('pemuaian_tetap'))
-            <span class="help-block">
-                <strong>{{ $errors->first('pemuaian_tetap') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('suara_pukulan') ? ' has-error' : '' }}">
-    <label for="pemuaian_tetap" class="col-md-4 control-label">Suara Pukulan</label>
-
-    <div class="col-md-4">
-        <label class="radio-inline">
-            <input id="suara_pukulanNyaring" type="radio" name="suara_pukulan" value="nyaring" checked> Nyaring
-        </label>
-        <label class="radio-inline">
-            <input id="suara_pukulanPekak" type="radio" name="suara_pukulan" value="pekak"> Pekak
-        </label>
-
-        @if ($errors->has('suara_pukulan'))
-            <span class="help-block">
-                <strong>{{ $errors->first('suara_pukulan') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('keadaan_karat') ? ' has-error' : '' }}">
-    <label for="keadaan_karat" class="col-md-4 control-label">Keadaan Karat</label>
-
-    <div class="col-md-4">
-        <input id="keadaan_karat" type="text" class="form-control" name="keadaan_karat" value="{{ old('keadaan_karat') }}" required>
-
-        @if ($errors->has('keadaan_karat'))
-            <span class="help-block">
-                <strong>{{ $errors->first('keadaan_karat') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('keadaan_luar') ? ' has-error' : '' }}">
-    <label for="keadaan_luar" class="col-md-4 control-label">Keadaan Luar</label>
-
-    <div class="col-md-4">
-        <label class="radio-inline">
-            <input id="keadaan_luarBerkeringat" type="radio" name="keadaan_luar" value="berkeringat" checked> Berkeringat
-        </label>
-        <label class="radio-inline">
-            <input id="keadaan_luarTidakberkeringat" type="radio" name="keadaan_luar" value="tidak berkeringat"> Tidak Berkeringat
-        </label>
-
-        @if ($errors->has('keadaan_luar'))
-            <span class="help-block">
-                <strong>{{ $errors->first('keadaan_luar') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('masa_berpori') ? ' has-error' : '' }}">
-    <label for="masa_berpori" class="col-md-4 control-label">Masa Berpori</label>
-
-    <div class="col-md-4">
-        <label class="radio-inline">
-            <input id="masa_berporiMerata" type="radio" name="masa_berpori" value="merata" checked> Merata
-        </label>
-        <label class="radio-inline">
-            <input id="masa_berporiTidakmerata" type="radio" name="masa_berpori" value="pekak"> Tidak Merata
-        </label>
-
-        @if ($errors->has('masa_berpori'))
-            <span class="help-block">
-                <strong>{{ $errors->first('masa_berpori') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('keterangan') ? ' has-error' : '' }}">
-    <label for="keterangan" class="col-md-4 control-label">keterangan</label>
-
-    <div class="col-md-4">
-        <input id="keterangan" type="text" class="form-control" name="keterangan" value="{{ old('keterangan') }}" required>
-
-        @if ($errors->has('keterangan'))
-            <span class="help-block">
-                <strong>{{ $errors->first('keterangan') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
 
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-lg btn-primary">
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
-        <button type="submit" class="btn btn-success">
-            Simpan & Buat Baru
-        </button>
-        <button type="submit" class="btn btn-warning">
+        <button type="submit" class="btn btn-warning btn-lg">
             Batal
         </button>
     </div>

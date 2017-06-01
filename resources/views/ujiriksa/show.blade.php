@@ -18,7 +18,7 @@
 					<div class="panel-body">					
 						<a href="{{ route('ujiriksa.edit', $form->id) }}" class="btn btn-primary">Edit</a>
 						<br><br><br>
-						<div class="col-md 2">
+						<div class="col-md-8">
 						<table class="table table-responsive">
 							<tr>
 								<td class="text-muted">No Registrasi</td>
@@ -51,6 +51,32 @@
 							<tr>
 								<td class="text-muted">Tanggal Selesai</td>
 								<td>{{ $form->done_at }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Hasil Uji</td>
+								 @if( $form->jenis_uji == "Hydrostatic")
+								 @if($form->progress == "Selesai")
+						            <td><a href="{{ route('hydrostatic.showAll', $form->id) }}">Hasil Keseluruhan Hydrostatic</a></td>
+						        @else
+						            <td>Hasil Belum di Input</td>
+						        @endif
+						        @endif
+
+					            @if( $form->jenis_uji == "Visualstatic")
+					            @if($form->progress == "Selesai")
+					            <td><a href="{{ route('visualstatic.showAll', $form->id) }}">Hasil Keseluruhan Visualstatic</a></td>
+					            @else
+					            <td>Hasil Belum di Input</td>						            
+					            @endif
+					            @endif
+
+					            @if( $form->jenis_uji == "Service")
+					            @if($form->progress == "Selesai")
+					            <td><a href="{{ route('service.showAll', $form->id) }}">Hasil Keseluruhan Service</a></td>
+					            @else
+					            <td>Hasil Belum di Input</td>				            
+					            @endif
+					            @endif
 							</tr>
 						</table>
 					</div>

@@ -44,7 +44,6 @@ class TabungsSeeder extends Seeder
             'terakhir_visualstatic'=>'2017-01-01',
             'terakhir_service'=>'2017-01-01',
         	'status'=>'Baik',
-            'barcode'=>'barcode1',
         	'customer_id'=>$customer1->id
         	]);
 
@@ -59,7 +58,6 @@ class TabungsSeeder extends Seeder
             'terakhir_visualstatic'=>'2017-01-01',
             'terakhir_service'=>'2017-01-01',
         	'status'=>'Baik',
-            'barcode'=>'barcode2',
         	'customer_id'=>$customer1->id
         	]);
 
@@ -74,7 +72,6 @@ class TabungsSeeder extends Seeder
             'terakhir_visualstatic'=>'2017-01-01',
             'terakhir_service'=>'2017-01-01',
         	'status'=>'Baik',
-            'barcode'=>'barcode3',
         	'customer_id'=>$customer2->id
         	]);
     }

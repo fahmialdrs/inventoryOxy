@@ -34,7 +34,8 @@ class HydrostaticController extends Controller
      */
     public function create($id)
     {
-        $form = Formujiriksa::where('id', $id)->get()->first();
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube')->get()->first();
+        // dd($form);
         return view('hydrostatic.create')->with(compact('form'));
     }
 
@@ -44,16 +45,44 @@ class HydrostaticController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreHydrostaticRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->except(['customer_id', 'tube_id','gas_diisikan', 'kode_tabung', 'warna_tabung', 'isi_tabung']);
-        $hydro = Hydrostaticresult::create($data);
-        $hydro->formujiriksa->done_at = Carbon::now();
-        $hydro->save();
+        // $data = $request->except(['customer_id', 'tanggal_uji', 'tube_id','gas_diisikan', 'kode_tabung', 'warna_tabung', 'isi_tabung']);
+        $noform = $request->no_registrasi;
+        // dd($request->all());
+        $data = $request->hydrostaticresult;
+        if(isset($data)){
+            foreach ($data as $h ) {
+                $hydro = new Hydrostaticresult([
+                    'tekanan_kerja' => $h['tekanan_kerja'],
+                    'tekanan_pemadatan' => $h['tekanan_pemadatan'],
+                    'pabrik_pembuat_tabung' => $h['pabrik_pembuat_tabung'],
+                    'pabrik_pemakai_tabung' => $h['pabrik_pemakai_tabung'],
+                    'berat_tercatat' => $h['berat_tercatat'],
+                    'berat_sekarang' => $h['berat_sekarang'],
+                    'selisih_min' => $h['selisih_min'],
+                    'selisih_plus' => $h['selisih_plus'],
+                    'selisih_pers' => $h['selisih_pers'],
+                    'air_dipadatkan' => $h['air_dipadatkan'],
+                    'pemuaian_tetap_cm3' =>$h['pemuaian_tetap_cm3'],
+                    'pemuaian_tetap_pers' => $h['pemuaian_tetap_pers'],
+                    'suara_pukulan' => $h['suara_pukulan'],
+                    'keadaan_karat' => $h['keadaan_karat'],
+                    'keadaan_luar' => $h['keadaan_luar'],
+                    'masa_berpori' => $h['masa_berpori'],
+                    'keterangan' => $h['keterangan'],
+                    'itemujiriksa_id' => $h['itemujiriksa_id']
+                    ]);
+                $hydro['tanggal_uji'] = $request->tanggal_uji;
+
+                // dd($hydro);
+                $hydro->save();
+            }
+        }
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Input Hasil Hydrostatic Berhasil"
+            "message"=>"Input Hasil Hydrostatic Pada Form Ujiriksa <b>$noform</b> Berhasil"
         ]);
 
         return redirect()->route('ujiriksa.index');
@@ -67,12 +96,28 @@ class HydrostaticController extends Controller
      */
     public function show($id)
     {
-        $hydro = Hydrostaticresult::with(['itemujiriksa'])->find($id);
+        $hydro = Hydrostaticresult::with(['itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
         $form = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('hydrostatic.show', array(
             'hydro' => $hydro,
             'form' => $form
             ));
+    }
+    public function showAll($id)
+    {
+        // $hydro = Formujiriksa::with(['itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
+        $form = Formujiriksa::with('customer')->find($id);
+        $hydro = Itemujiriksa::where('formujiriksa_id', $id)->with('formujiriksa.customer','tube.customer', 'hydrostaticresult')->get();
+        return view('hydrostatic.showAll', array(
+            'hydro' => $hydro,
+            'form' => $form
+            ));
+    }
+
+    public function edit($id)
+    {
+        $hydro = Hydrostaticresult::with('itemujiriksa.formujiriksa','itemujiriksa.tube.customer')->findOrFail($id);
+        return view('hydrostatic.edit')->with(compact('hydro'));
     }
 
     /**
@@ -81,11 +126,11 @@ class HydrostaticController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $hydro = Hydrostaticresult::with('Formujiriksa')->findOrFail($id);
-        return view('hydrostatic.edit')->with(compact('hydro'));
-    }
+    // public function editSingle($id)
+    // {
+    //     $hydro = Hydrostaticresult::with('itemujiriksa.formujiriksa','itemujiriksa.tube.customer')->findOrFail($id);
+    //     return view('hydrostatic.editSingle')->with(compact('hydro'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -94,10 +139,19 @@ class HydrostaticController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateHydrostaticRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $hydro = Hydrostaticresult::findOrFail($id);
+        // dd($request->all());
+        $hydro = Hydrostaticresult::with('itemujiriksa.formujiriksa')->findOrFail($id);
         if (!$hydro->update($request->all())) return redirect()->back();
+
+        
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Update Hasil Hydrostatic Pada Form Ujiriksa <b>" . $hydro->itemujiriksa->formujiriksa->no_registrasi . "</b> Berhasil"
+        ]);
+
+        return redirect()->route('hydrostatic.showAll',$hydro->itemujiriksa->formujiriksa->id);
     }
 
     /**

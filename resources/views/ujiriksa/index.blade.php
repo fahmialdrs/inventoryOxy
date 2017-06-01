@@ -49,6 +49,7 @@
 											  </button>
 											  <ul class="dropdown-menu ">
 											  <li class="dropdown-header">Aksi</li>
+											  @if($fu->progress == 'Selesai')
 											  @if($fu->jenis_uji == 'Hydrostatic')
 											  	<li>
 													<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
@@ -63,6 +64,7 @@
 											  	<li>
 													<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
 											  	</li>
+											  @endif
 											  @endif
 											  	<li>
 													<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
@@ -92,8 +94,8 @@
 											    @endif
 											    <li role="separator" class="divider"></li>
 											    <li class="dropdown-header">Aksi Tambahan</li>
-											    <li><a href="#">Export PDF</a></li>
-											    <li><a href="#">Kirim Email</a></li>
+											    <li><a href="{{ route('ujiriksa.exportPdf', $fu->id) }}" target="_blank">Export PDF</a></li>
+											    <!-- <li><a href="#">Kirim Email</a></li> -->
 											    
 											  </ul>
 											</div>
@@ -114,6 +116,7 @@
 <script>
 	$(document).ready( function () {
 	    $('#table_id').DataTable({
+	    "order": [[ 3, "desc" ]],
 	  	"columnDefs": [ {
 		    "targets": [ 6 ],
 		    "searchable": false,

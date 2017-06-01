@@ -63,11 +63,7 @@
 											  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
 											  	</li> -->
 											  	<li>
-													<form method="POST" action="{{ route('customer.destroy', $c->id) }}" accept-charset="UTF-8">
-						                            <input name="_method" type="hidden" value="delete">
-						                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
-				                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
-				                        		</form>													
+											  		<a type="button" href="{{ route('customer.destroy', $c->id) }}">Hapus</a>												
 											  	</li>
 											  	<li role="separator" class="divider"></li>
 											    <li><a href="#">Unduh Label</a></li>
@@ -116,14 +112,10 @@
 													  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
 													  	</li> -->
 													  	<li>
-															<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
-								                            <input name="_method" type="hidden" value="delete">
-								                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
-						                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
-						                        		</form>													
+													  		<a type="button" href="{{ route('tabung.destroy', $t->id) }}">Hapus</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
-													    <li><a href="#">Unduh Label</a></li>
+													    <li><a href="{{ route('tabung.barcode', $t->id) }}" target="_blank">Unduh Barcode</a></li>
 													  </ul>
 													</div>
 												</div>

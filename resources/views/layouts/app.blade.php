@@ -19,6 +19,7 @@
     <link href="{{ asset('css/selectize.bootstrap3.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+    @yield('css')
 
     <!-- Scripts -->
     <script>
@@ -52,12 +53,17 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
-                            <li><a href="{{ url('/home') }}">Dashboard</a></li>
+                            {!! Html::smartNav(url('/admin/home'), 'Dashboard') !!}
+                            <!-- <li><a href="{{ url('/admin/home') }}">Dashboard</a></li> -->
                             @role('admin')
-                            <li><a href="{{ route('customer.index') }}">Data Inventory</a></li>
+                            {!! Html::smartNav(route('customer.index'), 'Data Inventory') !!}
+                            {!! Html::smartNav(route('ujiriksa.index'), 'Ujiriksa') !!}
+                            {!! Html::smartNav(route('billing.index'), 'Billing') !!}
+                            {!! Html::smartNav(route('user.index'), 'Manajemen User') !!}
+                            <!-- <li><a href="{{ route('customer.index') }}">Data Inventory</a></li>
                             <li><a href="{{ route('ujiriksa.index') }}">Ujiriksa</a></li>
                             <li><a href="{{ route('billing.index') }}">Billing</a></li>
-                            <li><a href="{{ route('user.index') }}">Manajemen User</a></li>
+                            <li><a href="{{ route('user.index') }}">Manajemen User</a></li> -->
                             @endrole
                         @endif
                     </ul>
@@ -66,8 +72,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <!-- <li><a href="{{ url('/register') }}">Register</a></li> -->
+                            {!! Html::smartNav(url('/'), 'Beranda') !!}
+                            {!! Html::smartNav(url('/login'), 'Login') !!}                            
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

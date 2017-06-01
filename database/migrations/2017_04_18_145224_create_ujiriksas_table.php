@@ -83,12 +83,12 @@ class CreateUjiriksasTable extends Migration
             $table->string('pabrik_pemakai_tabung');
             $table->string('berat_tercatat');
             $table->string('berat_sekarang');
-            $table->string('selisih-');
-            $table->string('selisih+');
-            $table->string('selisih%');
+            $table->string('selisih_min');
+            $table->string('selisih_plus');
+            $table->string('selisih_pers');
             $table->string('air_dipadatkan');
             $table->string('pemuaian_tetap_cm3');
-            $table->string('pemuaian_tetap_%');
+            $table->string('pemuaian_tetap_pers');
             $table->string('suara_pukulan');
             $table->string('keadaan_karat');
             $table->string('keadaan_luar');

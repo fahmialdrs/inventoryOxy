@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\Visualresult;
 use App\Models\Formujiriksa;
+use App\Models\Itemujiriksa;
 use App\Models\Fotovisual;
 use Illuminate\Support\Facades\Session;
+use Auth;
+use Carbon\Carbon;
 
 class VisualstaticController extends Controller
 {
@@ -28,7 +31,7 @@ class VisualstaticController extends Controller
      */
     public function create($id)
     {
-        $form = Formujiriksa::where('id', $id)->get()->first();
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube')->get()->first();
         return view('visualstatic.create')->with(compact('form'));
     }
 
@@ -40,11 +43,28 @@ class VisualstaticController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'foto_tabung_visual' => 'image|max:8192',
-            'keterangan_foto' => 'required|max:255',
-            'formujiriksa_id'=>'required|exists:formujiriksas,id',
-        ]);
+        // $this->validate($request, [
+        //     'foto_tabung_visual' => 'image|max:8192',
+        //     'keterangan_foto' => 'required|max:255',
+        //     'formujiriksa_id'=>'required|exists:formujiriksas,id',
+        // ]);
+
+        $noform = $request->no_registrasi;
+        $data = $request->visualresult;
+        // dd($data);
+
+        if(isset($data)){
+            foreach ($data as $v ) {
+                $visual = new Visualresult([
+                    'keterangan_visual' => $v['keterangan_visual'],
+                    'itemujiriksa_id' => $v['itemujiriksa_id']
+                    ]);
+                // $service['tanggal_uji'] = $request->tanggal_uji;
+
+                // dd($visual);
+                $visual->save();
+            }
+        }
 
         // isi field cover jika ada cover yg di upload
 
@@ -78,7 +98,7 @@ class VisualstaticController extends Controller
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message" => "Input Hasil Uji Visualstatic Dengan No Registrasi <b>  </b> Berhasil"
+            "message" => "Input Hasil Uji Visualstatic Dengan No Registrasi <b> $noform </b> Berhasil"
             ]);
 
         return redirect()->route('ujiriksa.index');
@@ -93,10 +113,19 @@ class VisualstaticController extends Controller
      */
     public function show($id)
     {
-        $visuals = Visualresult::with(['itemujiriksa'])->find($id);
-        $form = Fotovisual::where('visualresult_id', $id)->get();
+        $visual = Visualresult::with(['fotovisual','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
+        // $form = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('visualstatic.show', array(
-            'visuals' => $visuals,
+            'visual' => $visual
+            ));
+    }
+
+    public function showAll($id)
+    {
+        $form = Formujiriksa::with('customer')->find($id);
+        $visual = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'visualresult.fotovisual'])->get();
+        return view('visualstatic.showAll', array(
+            'visual' => $visual,
             'form' => $form
             ));
     }
@@ -109,7 +138,7 @@ class VisualstaticController extends Controller
      */
     public function edit($id)
     {
-        $visual = Visualresult::with('formujiriksa')->findOrFail($id);
+        $visual = Visualresult::with('fotovisual','itemujiriksa.formujiriksa','itemujiriksa.tube.customer')->findOrFail($id);
         return view('visualstatic.edit')->with(compact('visual'));
     }
 
@@ -122,14 +151,15 @@ class VisualstaticController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'foto_tabung_visual' => 'image|max:8192',
-            'keterangan_foto' => 'required|max:255',
-            'formujiriksa_id'=>'required|exists:formujiriksas,id',
-        ]);
+        // $this->validate($request, [
+        //     'foto_tabung_visual' => 'image|max:8192',
+        //     'keterangan_foto' => 'required|max:255',
+        //     'formujiriksa_id'=>'required|exists:formujiriksas,id',
+        // ]);
 
         $visual = Visualresult::findOrFail($id);
-        if (!$visual->update($request->all())) return redirect()->back();
+        $data = $request->except('fotovisual');
+        if (!$visual->update($data)) return redirect()->back();
 
         // isi field cover jika ada cover yg di upload
 
@@ -169,10 +199,10 @@ class VisualstaticController extends Controller
         }
             Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
+            "message"=>"Update Hasil Service Pada Form Ujiriksa <b>" . $visual->itemujiriksa->formujiriksa->no_registrasi . "</b> Berhasil"
         ]);
 
-            return redirect()->route('ujiriksa.index');
+            return redirect()->route('visualstatic.showAll',$visual->itemujiriksa->formujiriksa->id);
     }
 
     /**

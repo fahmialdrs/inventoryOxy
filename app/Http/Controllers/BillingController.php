@@ -49,11 +49,11 @@ class BillingController extends Controller
         $noinv = $date->format('dm').'-'. '1' . '/INV/NDT/EB/';
         $data['no_invoice'] = $noinv;
         $data['status'] = 'Belum Bayar';
-        
+        // dd($data);
         array_forget($data,'itembiling');
         $table = new Billing;
         $table->fill($data);
-        // dd($table);
+        
         $table->save();
         
 
@@ -176,5 +176,12 @@ class BillingController extends Controller
         Mail::send('billing.email', compact('billings'), function ($m) use ($billings) {
             $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive');
         });
+
+        Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Invoice <b> $billings->no_invoice </b> Telah dikirim ke Email <b>". $billings->customer->email . "</b>" 
+            ]);
+
+        return redirect()->route('billing.index');
     } 
 }

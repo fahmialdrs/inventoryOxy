@@ -57,7 +57,7 @@
 											    @endif
 
 											    <li><a href="{{ route('billing.exportPdf', ['id' => $b->id]) }}" target="_blank">Export PDF</a></li>
-											    <li><a href="#">Kirim Email</a></li>
+											    <li><a href="{{ route('billing.kirimEmail', $b->id) }}">Kirim Email</a></li>
 											  </ul>
 											</div>
 										</div>

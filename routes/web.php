@@ -11,15 +11,59 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [
+		'as' => 'homepage',
+		'uses' => 'HomepageController@homepage'
+		]);
+
+Route::get('/homepage/result', [
+		'as' => 'homepage.result',
+		'uses' => 'HomepageController@result'
+		]);
+
+Route::get('/homepage/result/showHydrostatic/{id}', [
+		'as' => 'homepage.showHydrostatic',
+		'uses' => 'HomepageController@showHydrostatic'
+		]);
+
+Route::get('/homepage/result/showAllHydrostatic/{id}', [
+		'as' => 'homepage.showAllHydrostatic',
+		'uses' => 'HomepageController@showAllHydrostatic'
+		]);
+
+Route::get('/homepage/result/showVisual/{id}', [
+		'as' => 'homepage.showVisual',
+		'uses' => 'HomepageController@showVisual'
+		]);
+
+Route::get('/homepage/result/showAllVisual/{id}', [
+		'as' => 'homepage.showAllVisual',
+		'uses' => 'HomepageController@showAllVisual'
+		]);
+
+Route::get('/homepage/result/showService/{id}', [
+		'as' => 'homepage.showService',
+		'uses' => 'HomepageController@showService'
+		]);
+
+Route::get('/homepage/result/showAllService/{id}', [
+		'as' => 'homepage.showAllService',
+		'uses' => 'HomepageController@showAllService'
+		]);
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+// Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function () {
+
+	Route::get('/home', 'HomeController@index');
+	
 	// Route::resource('customer', 'CustomerController');
 	Route::get('customer', [
 		'as' => 'customer.index',
@@ -80,6 +124,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'tabung.destroy',
 		'uses' => 'TabungController@destroy'
 		]);
+	Route::get('barcode/tabung/{id}', [
+		'as' => 'tabung.barcode',
+		'uses' => 'TabungController@printBarcode'
+		]);
 	// Route::resource('ujiriksa', 'UjiriksaController');
 	Route::get('ujiriksa', [
 		'as' => 'ujiriksa.index',
@@ -118,6 +166,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'ujiriksa.changeStatus',
 		'uses' => 'UjiriksaController@changeStatus'
 		]);
+	Route::get('export/ujiriksa/{id}', [
+		'as' => 'ujiriksa.exportPdf',
+		'uses' => 'UjiriksaController@exportPdf'
+		]);
 
 	// Route::resource('service', 'ServiceController');
 	Route::get('service', [
@@ -131,6 +183,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('service/show/{service}', [
 		'as' => 'service.show',
 		'uses' => 'ServiceController@show'
+		]);
+	Route::get('service/showAll/{id}', [
+		'as' => 'service.showAll',
+		'uses' => 'ServiceController@showAll'
 		]);
 	Route::post('service/store', [
 		'as' => 'service.store',
@@ -190,6 +246,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'billing.exportPdf',
 		'uses' => 'BillingController@exportPdf'
 		]);
+	Route::get('kirimEmail/billing/{id}', [
+		'as' => 'billing.kirimEmail',
+		'uses' => 'BillingController@kirimEmail'
+		]);
 
 	// Route::resource('user', 'UserController');
 	Route::get('user', [
@@ -213,9 +273,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'user.edit',
 		'uses' => 'UserController@edit'
 		]);
-	Route::match(['put', 'patch'], 'billing/update/{billing}', [
-		'as' => 'billing.update',
-		'uses' => 'BillingController@update'
+	Route::match(['put', 'patch'], 'user/update/{user}', [
+		'as' => 'user.update',
+		'uses' => 'UserController@update'
 		]);
 	Route::get('user/destroy/{id}', [
 		'as' => 'user.destroy',
@@ -233,6 +293,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('visualstatic/show/{visualstatic}', [
 		'as' => 'visualstatic.show',
 		'uses' => 'VisualstaticController@show'
+		]);
+	Route::get('visualstatic/showAll/{id}', [
+		'as' => 'visualstatic.showAll',
+		'uses' => 'VisualstaticController@showAll'
 		]);
 	Route::post('visualstatic/store', [
 		'as' => 'visualstatic.store',
@@ -267,10 +331,18 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'hydrostatic.show',
 		'uses' => 'HydrostaticController@show'
 		]);
+	Route::get('hydrostatic/showAll/{id}', [
+		'as' => 'hydrostatic.showAll',
+		'uses' => 'HydrostaticController@showAll'
+		]);
 	Route::get('hydrostatic/{hydrostatic}/edit', [
 		'as' => 'hydrostatic.edit',
 		'uses' => 'HydrostaticController@edit'
 		]);
+	// Route::get('hydrostatic/{hydrostatic}/editSingle', [
+	// 	'as' => 'hydrostatic.editSingle',
+	// 	'uses' => 'HydrostaticController@editSingle'
+	// 	]);
 	Route::match(['put', 'patch'],'hydrostatic/{hydrostatic}', [
 		'as' => 'hydrostatic.update',
 		'uses' => 'HydrostaticController@update'

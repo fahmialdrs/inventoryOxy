@@ -93,7 +93,7 @@
 <div class="form-group">
 	<label for="no_telp" class="col-sm-2 control-label">Barcode String</label>
 	<div class="col-sm-4">
-		<input type="text" name="barcode" class="form-control" placeholder="Barcode String">
+		<input id="barcode" type="text" name="barcode" class="form-control" placeholder="Barcode String" disabled>
 	</div>
 </div>
 
@@ -112,3 +112,13 @@
         </button>
     </div>
 </div>
+
+@section('scripts')
+<script>
+$(document).ready(function() {
+	var a = Math.floor((Math.random() * 100) + 1);
+	document.getElementById("barcode").value = a;	
+});
+</script>
+
+@endsection

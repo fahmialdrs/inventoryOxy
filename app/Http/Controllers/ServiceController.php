@@ -7,8 +7,8 @@ use App\Models\Formujiriksa;
 use App\Models\Itemujiriksa;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
-use Auth;
 use Illuminate\Support\Facades\Session;
+use Auth;
 use Carbon\Carbon;
 use App\Models\Serviceresult;
 use App\Models\Fotoservice;
@@ -22,8 +22,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Formujiriksa::with('tube')->get();
-        return view('service.index')->with(compact('services'));
+        // $services = Formujiriksa::with('tube')->get();
+        // return view('service.index')->with(compact('services'));
     }
 
     /**
@@ -33,7 +33,8 @@ class ServiceController extends Controller
      */
     public function create($id)
     {
-        $form = Formujiriksa::where('id', $id)->get()->first();
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube')->get()->first();
+        // dd($form);
         return view('service.create')->with(compact('form'));
     }
 
@@ -43,21 +44,24 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreServiceRequest $request)
+    public function store(Request $request)
     {
-        // request semua data
-        $data = $request->except(['customer_id','foto_tabung_visual', 'keterangan_foto']);
+        $noform = $request->no_registrasi;
+        $data = $request->serviceresult;
+        // dd($data);
 
-                
-        // penentuan nomer registrasi berdasarkan jenis uji
-        $nouji = "SVC-". Carbon::now();
-        
-        $data['no_registrasi'] = $nouji;
-        $data['progress'] = 'Waiting List';
-        $data['user_id'] = Auth::user()->id;
+        if(isset($data)){
+            foreach ($data as $s ) {
+                $service = new Serviceresult([
+                    'keterangan_service' => $s['keterangan_service'],
+                    'itemujiriksa_id' => $s['itemujiriksa_id']
+                    ]);
+                // $service['tanggal_uji'] = $request->tanggal_uji;
 
-        $services = Formservice::create($data);
-
+                // dd($service);
+                $service->save();
+            }
+        }
         
         // isi field cover jika ada cover yg di upload
 
@@ -89,7 +93,7 @@ class ServiceController extends Controller
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message" => "Registrasi Service dengan no Registrasi <b> $nouji </b> Berhasil"
+            "message" => "Registrasi Service dengan no Registrasi <b> $noform </b> Berhasil"
             ]);
 
         return redirect()->route('service.index');
@@ -103,10 +107,20 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $services = Serviceresult::with(['itemujiriksa'])->find($id);
-        $form = Fotoservice::where('serviceresult_id', $id)->get();
+        $service = Serviceresult::with(['fotoservice','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
+        // $form = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('service.show', array(
-            'services' => $services,
+            'service' => $service
+            ));
+    }
+
+    public function showAll($id)
+    {
+        $form = Formujiriksa::with('customer')->find($id);
+        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'serviceresult.fotoservice'])->get();
+        // dd($service);
+        return view('service.showAll', array(
+            'service' => $service,
             'form' => $form
             ));
     }
@@ -119,8 +133,8 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $services = Formservice::with('tube', 'fototabung')->findOrFail($id);
-        return view('service.edit')->with(compact('services'));
+        $service = Serviceresult::with('fotoservice','itemujiriksa.formujiriksa','itemujiriksa.tube.customer')->findOrFail($id);
+        return view('service.edit')->with(compact('service'));
     }
 
     /**
@@ -130,17 +144,20 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateServiceRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $services = Formujiriksa::findOrFail($id);
-        if (!$services->update($request->except(['customer_id','foto_tabung_visual', 'keterangan_foto']))) return redirect()->back();
+        // dd($request->all());
+        $service = Serviceresult::with('itemujiriksa.formujiriksa')->findOrFail($id);
+        $data = $request->except('fotoservice');
+        // dd($data);
+        if (!$service->update($data)) return redirect()->back();
 
         // isi field cover jika ada cover yg di upload
 
-        if ($request->hasFile('foto_tabung_masuk')) {
+        if ($request->hasFile('foto_tabung_service')) {
             
             //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_masuk');
+            $uploaded = $request->file('foto_tabung_service');
 
             // ambil extension file
             $extension = $uploaded->getClientOriginalExtension();
@@ -173,10 +190,10 @@ class ServiceController extends Controller
         }
             Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi <b> $services->no_registrasi </b> Berhasil"
+            "message"=>"Update Hasil Service Pada Form Ujiriksa <b>" . $service->itemujiriksa->formujiriksa->no_registrasi . "</b> Berhasil"
         ]);
 
-            return redirect()->route('service.index');
+            return redirect()->route('service.showAll',$service->itemujiriksa->formujiriksa->id);
     }
 
     /**

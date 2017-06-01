@@ -7,9 +7,16 @@ use App\Models\Formujiriksa;
 use App\Models\Itemujiriksa;
 use App\Models\Fototabung;
 use App\Models\Tube;
+use App\Models\Hydrostaticresult;
+use App\Models\Visualresult;
+use App\Models\Serviceresult;
+use App\User;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use PDF;
+use Illuminate\Support\Facades\Mail;
+
 
 class UjiriksaController extends Controller
 {
@@ -20,7 +27,7 @@ class UjiriksaController extends Controller
      */
     public function index()
     {
-        $formujiriksas = Formujiriksa::with('itemujiriksa')->get();
+        $formujiriksas = Formujiriksa::with('itemujiriksa')->orderBy('created_at', 'desc')->get();
         return view('ujiriksa.index')->with(compact('formujiriksas'));
     }
 
@@ -144,7 +151,7 @@ class UjiriksaController extends Controller
      */
     public function show($id)
     {
-        $form = Formujiriksa::find($id);
+        $form = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult')->find($id);
         $itemujiriksa = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('ujiriksa.show', array(
             'form' => $form,
@@ -240,23 +247,30 @@ class UjiriksaController extends Controller
 
     public function changeStatus($id)
     {
-        $ujiriksas = Formujiriksa::find($id);
+        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube')->find($id);
         $status = $ujiriksas->progress;
         if($status == "Waiting List") {
             $ujiriksas->progress = "Sedang Dikerjakan";
-            $ujiriksas->progress_at = Carbon::now();    
-        }
-        else{
-            $ujiriksas->progress = "Selesai";
-            $ujiriksas->done_at = Carbon::now();
-        }
-
-        $ujiriksas->save();
-
-        Session::flash("flash_notification", [
+            $ujiriksas->progress_at = Carbon::today();
+            $ujiriksas->save();
+            Session::flash("flash_notification", [
             "level" => "success", 
             "message" => "Status Formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diperbaharui"
-            ]);
+            ]);    
+        }
+        elseif($status == "Sedang Dikerjakan"){
+            $ujiriksas->progress = "Selesai";
+            $ujiriksas->done_at = Carbon::today();
+
+            Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+                $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+            });
+            $ujiriksas->save();
+            Session::flash("flash_notification", [
+            "level" => "success", 
+            "message" => "Status Formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diperbaharui dan Email Telah Terkirim ke <b>". $ujiriksas->customer->email . "</b>"
+            ]); 
+        }
 
         return redirect()->route('ujiriksa.index');
     }
@@ -275,5 +289,13 @@ class UjiriksaController extends Controller
             ]);
 
         return redirect()->route('ujiriksa.index');
+    }
+
+    public function exportPdf($id) {
+        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'user')->find($id);
+        // dd($billings);
+        $pdf = PDF::loadView('ujiriksa.pdf', compact('ujiriksas'));
+        $filename = 'Form Ujiriksa-'.' '.$ujiriksas->no_registrasi.'.pdf';
+        return $pdf->stream($filename);
     }
 }

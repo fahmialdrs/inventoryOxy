@@ -9,6 +9,7 @@ use App\Models\Itemujiriksa;
 use Session;
 use App\Http\Requests\StoreTabungRequest;
 use App\Http\Requests\UpdateTabungRequest;
+use PDF;
 
 class TabungController extends Controller
 {
@@ -116,5 +117,13 @@ class TabungController extends Controller
             ]);
 
         return redirect()->route('tabung.index');
+    }
+
+    public function printBarcode($id) {
+        $data = Tube::where('id', $id)->firstOrFail();
+        // dd($data);
+        $pdf = PDF::loadView('inventory.tabung.barcode', compact('data'));
+        $filename = 'Barcode-'.' '.$data->no_tabung.'.pdf';
+        return $pdf->inline();
     }
 }
