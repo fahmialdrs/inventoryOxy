@@ -9,6 +9,8 @@ use App\User;
 use Session;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use Excel;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -129,4 +131,34 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
+    public function exportExcel() 
+    {
+        $customers = Customer::all();
+        Excel::create('Data Customer NDT Dive', function($excel) use ($customers) {
+            // Set property
+            $excel->setTitle('Data Customer NDT Dive')
+            ->setCreator(Auth::user()->name);
+            $excel->sheet('Data Customer', function($sheet) use ($customers) {
+                $row = 1;
+                $sheet->row($row, [
+                'Nama',
+                'No Telpon',
+                'Alamat',
+                'Email',
+                'Tanggal Member'
+                ]);
+                foreach ($customers as $c) {
+                    $sheet->row(++$row, [
+                    $c->nama,
+                    $c->no_telp,
+                    $c->alamat,
+                    $c->email,
+                    $c->tanggal_member
+                    ]);
+                }
+            });
+        })->export('xls');
+
+        return redirect()->route('customer.index');
+    }
 }

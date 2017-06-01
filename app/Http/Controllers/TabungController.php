@@ -10,6 +10,8 @@ use Session;
 use App\Http\Requests\StoreTabungRequest;
 use App\Http\Requests\UpdateTabungRequest;
 use PDF;
+use Excel;
+use Illuminate\Support\Facades\Auth;
 
 class TabungController extends Controller
 {
@@ -125,5 +127,46 @@ class TabungController extends Controller
         $pdf = PDF::loadView('inventory.tabung.barcode', compact('data'));
         $filename = 'Barcode-'.' '.$data->no_tabung.'.pdf';
         return $pdf->inline();
+    }
+
+    public function exportExcel() 
+    {
+        $tabungs = Tube::all();
+        Excel::create('Data Tabung NDT Dive', function($excel) use ($tabungs) {
+            // Set property
+            $excel->setTitle('Data Tabung NDT Dive')
+            ->setCreator(Auth::user()->name);
+            $excel->sheet('Data Tabung', function($sheet) use ($tabungs) {
+                $row = 1;
+                $sheet->row($row, [
+                'No Tabung',
+                'Nama Pemilik',
+                'Gas yang Diisikan',
+                'Kode Tabung',
+                'Isi Tabung',
+                'Tanggal Pembuatan Tabung',
+                'Status Tabung',
+                'Tanggal Terakhir Hydrostatic',
+                'Tanggal Terakhir Visualstatic',
+                'Tanggal Terakhir Service'
+                ]);
+                foreach ($tabungs as $t) {
+                    $sheet->row(++$row, [
+                    $t->no_tabung,
+                    $t->customer->nama,
+                    $t->gas_diisikan,
+                    $t->kode_tabung,
+                    $t->isi_tabung . " liter",
+                    $t->tanggal_pembuatan,
+                    $t->status,
+                    $t->terakhir_hydrostatic,
+                    $t->terakhir_visualstatic,
+                    $t->terakhir_service
+                    ]);
+                }
+            });
+        })->export('xls');
+
+        return redirect()->route('customer.index');
     }
 }

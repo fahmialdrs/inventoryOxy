@@ -18,6 +18,10 @@
 						<a class="btn btn-primary" href="{{ route('customer.create') }}">Tambah Customer</a> 
 						<a class="btn btn-primary" href="{{ route('tabung.create') }}">Tambah Tabung</a>
 					</p>
+					<p class="pull-right"> 
+						<a class="btn btn-warning" href="{{ route('customer.exportExcel') }}">Export Data Customer</a> 
+						<a class="btn btn-warning" href="{{ route('tabung.exportExcel') }}">Export Data Tabung</a>
+					</p>
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
 								<a href="#table_customer" aria-controls="customer" role="tab" data-toggle="tab">

@@ -65,7 +65,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('/home', 'HomeController@index');
 	
 	// Route::resource('customer', 'CustomerController');
-	Route::get('customer', [
+	Route::get('inventory', [
 		'as' => 'customer.index',
 		'uses' => 'CustomerController@index'
 		]);
@@ -94,6 +94,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'customer.destroy',
 		'uses' => 'CustomerController@destroy'
 		]);
+	Route::get('exportExcel/customer', [
+		'as' => 'customer.exportExcel',
+		'uses' => 'CustomerController@exportExcel'
+		]);
+
+
 	// Route::resource('tabung', 'TabungController');
 	Route::get('tabung', [
 		'as' => 'tabung.index',
@@ -128,6 +134,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'tabung.barcode',
 		'uses' => 'TabungController@printBarcode'
 		]);
+	Route::get('exportExcel/tabung', [
+		'as' => 'tabung.exportExcel',
+		'uses' => 'TabungController@exportExcel'
+		]);
+
+
 	// Route::resource('ujiriksa', 'UjiriksaController');
 	Route::get('ujiriksa', [
 		'as' => 'ujiriksa.index',

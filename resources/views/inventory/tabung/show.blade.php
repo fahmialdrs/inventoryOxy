@@ -44,7 +44,7 @@
 								<td>{{ $tabungs->isi_tabung }} Liter</td>
 							</tr>
 							<tr>
-								<td class="text-muted">Tanggal PembuatanTabung</td>
+								<td class="text-muted">Tanggal Pembuatan Tabung</td>
 								<td>{{ $tabungs->tanggal_pembuatan }}</td>
 							</tr>
 							<tr>
