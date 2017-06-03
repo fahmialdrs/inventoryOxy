@@ -1,7 +1,7 @@
 <div class="form-group{{ $errors->has('template') ? ' has-error' : '' }}">
     {!! Form::label('template', 'Template Import', ['class'=>'col-md-2 control-label']) !!}
     <div class="col-md-4">
-        <a class="btn btn-success btn-xs" href="{{ route('hydrostatic.template') }}"><i class="fa fa-cloud-download"></i> Download</a>
+        <a class="btn btn-success btn-xs" href="{{ route('hydrostatic.template', $form->id) }}"><i class="fa fa-cloud-download"></i> Download</a>
     </div>
 </div>
 

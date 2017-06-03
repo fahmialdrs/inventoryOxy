@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use PDF;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 
 
 class UjiriksaController extends Controller
@@ -81,7 +82,7 @@ class UjiriksaController extends Controller
         $data['progress'] = 'Waiting List';
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
-        array_forget($data,'fototabung');
+        array_forget($data,'foto_tabung_masuk');
         // dd($data);
         $table = new Formujiriksa;
         $table->fill($data);
@@ -97,40 +98,35 @@ class UjiriksaController extends Controller
                     ]);
                     $table->itemujiriksa()->save($item);
                     
+                    // isi field cover jika ada cover yg di upload
+                if ($request->hasFile('foto_tabung_masuk')) {
+                    
+                    //ambil file yang di upload
+                    $uploaded = $request->file('foto_tabung_masuk');
 
-                if (isset($request->itemujriksa->foto_tabung_masuk)) {
-                    foreach ($request->foto_tabung_masuk as $foto) {
-                        foreach ($foto as $f){
-                            // isi field cover jika ada cover yg di upload
-                            if ($request->hasFile('foto_tabung_masuk')) {
-                                
-                                //ambil file yang di upload
-                                $uploaded = $request->file('foto_tabung_masuk');
+                    // ambil extension file
+                    $extension = $uploaded->getClientOriginalExtension();
 
-                                // ambil extension file
-                                $extension = $uploaded->getClientOriginalExtension();
+                    // membuat nama file random
+                    $filename = md5(time()) . '.' . $extension;
 
-                                // membuat nama file random
-                                $filename = md5(time()) . '.' . $extension;
+                    // simpan file ke folder storage/foto
 
-                                // simpan file ke folder public/img
+                    $destinationPath = storage_path() . DIRECTORY_SEPARATOR . 'foto';
+                    $uploaded->move($destinationPath, $filename);
 
-                                $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-                                $uploaded->move($destinationPath, $filename);
+                    // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                    
+                    $foto = new Fototabung([
+                        'foto_tabung_masuk' => $filename,
+                        'itemujiriksa_id' => $item->id
+                        ]);
+                    // dd($foto);
 
-                                // mengisi field cover di book dengan filename yg baru dibuat
-                                
-                                $fototabungs = new Fototabung([
-                                    'foto_tabung_masuk' => $key['foto_tabung_masuk']
-                                    ]);
-                                $fototabungs->foto_tabung_masuk = $filename;
+                    $foto->save();
 
-                                // save ke table fototabungs
-                                // $item->fototabung()->save($fototabungs); 
-
-                            }
-                        }
-                    }
+                    // save ke table fototabungs
+                    // $item->fototabung()->save($fototabungs); 
                 }
             }
         }

@@ -17,9 +17,10 @@
 				</div>
 
 				<div class="panel-body" style="overflow:auto; ">
-					{!! Form::open(['url'=> route('visualstatic.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
-					@include('visualstatic._form')
-					{!! Form::close() !!}
+					<form class="form-horizontal" role="form" method="POST" action="{{ route('visualstatic.store') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+						@include('visualstatic._form')
+					</form>
 				</div>
 			</div>
 		</div>

@@ -17,7 +17,7 @@
 				</div>
 
 				<div class="panel-body">
-					<form class="form-horizontal" role="form" method="POST" action="{{ route('ujiriksa.store') }}">
+					<form class="form-horizontal" role="form" method="POST" action="{{ route('ujiriksa.store') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 					@include('ujiriksa._form')
 					</form>

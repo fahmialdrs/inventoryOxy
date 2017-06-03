@@ -17,9 +17,6 @@
 					<p class="btn-group"> 
 						<a class="btn btn-info" href="{{ route('ujiriksa.create') }}">Registrasi Uji</a> 
 					</p>
-					<p class="btn-group pull-right"> 
-						<a class="btn btn-primary" href="{{ route('hydrostatic.createImport') }}">Import Hasil Hydrostatic</a>
-					</p>
 						<table id="table_id" class="display">
 						    <thead>
 						        <tr>

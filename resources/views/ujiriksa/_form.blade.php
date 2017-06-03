@@ -153,17 +153,17 @@
                 <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('itemujiriksa[0][][foto_tabung_masuk]') }}" name="fototabung[0][][foto_tabung_masuk]" multiple>
+                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('fototabung[0][foto_tabung_masuk]') }}" name="fototabung[0][foto_tabung_masuk]">
             </td>
         </tr>
         @endforeach
         @else
         <tr>
             <td>
-                <input type="number" class="form-control" value="{{ $i->jumlah_barang or old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
+                <input type="number" class="form-control" value="{{ old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
             </td>                
             <td>
-                <input type="text" class="form-control" value="{{ $i->nama_barang or old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
+                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
             </td>
             <td>
                 <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
@@ -174,10 +174,10 @@
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
+                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('itemujiriksa[0][foto_tabung_masuk]') }}" name="fototabung[0][][foto_tabung_masuk]" multiple>
+                <input type="file" class="form-control" value="{{ old('itemujiriksa[0][foto_tabung_masuk]') }}" name="foto_tabung_masuk">
             </td>
         </tr>
         @endif

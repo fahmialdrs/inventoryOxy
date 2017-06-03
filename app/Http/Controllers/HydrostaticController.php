@@ -162,7 +162,14 @@ class HydrostaticController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $hydro = Hydrostaticresult::with('itemujiriksa.tube')->find($id);
+        $hydro->delete();
+
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>" Hasil Hydrostatic Dengan Nomer Tabung <b> " . $hydro->itemujiriksa->tube->no_tabung . "</b> Berhasil Dihapus!"
+            ]);
+        return redirect()->back();
     }
 
     public function import()
@@ -170,43 +177,74 @@ class HydrostaticController extends Controller
         return view('hydrostatic.import');
     }
 
-    public function generateExcelTemplate() { 
-        Excel::create('Template Import Hasil Hydrostatic', function($excel) {
+    public function generateExcelTemplate($id) {
+
+        $hydros = Itemujiriksa::where('formujiriksa_id', $id)->with('formujiriksa.customer','tube.customer', 'hydrostaticresult')->get();
+        Excel::create('Template Import Hasil Hydrostatic', function($excel) use ($hydros) {
             // set properties
             $excel->setTitle('Template Import Hasil Hydrostatic')
             ->setCreator('NDT Dive')
             ->setCompany('NDT Dive')
             ->setDescription('Import Template Hydrostatic');
 
-            $excel->sheet('Data Hasil Hydrostatic', function($sheet){
+            $excel->sheet('Data Hasil Hydrostatic', function($sheet) use ($hydros) {
                 $row = 1;
                 $sheet->row($row, [
-                    'Gas-Yang-Diisikan',
-                    'Tanggal-Pemadatan-Terakhir',
-                    'No-Seri-Tabung',
-                    'Kode',
-                    'Warna-Cat',
-                    'Tekanan-Kerja',
-                    'Tekanan-Pemadatan',
-                    'Nama-Pabrik-Pembuat-Tabung',
-                    'Nama-Pabrik-Pemakai-Tabung',
-                    'Berat-Yang-Tercatat',
-                    'Berat-Timbangan-Sekarang',
-                    'Selisih-',
-                    'Selisih+',
-                    'Selisih%',
-                    'Isi-Tabung',
-                    'Air-yang-dipadatkan',
-                    'Pemuaian-Tetap-cm3',
-                    'Pemuaian-Tetap-%',
-                    'Suara-Pukulan',
-                    'Keadaan-Karat',
-                    'Keadaan-Luar',
-                    'Masa-Berpori',
-                    'Keterangan',
-                    'No-Registrasi-Uji'
+                    'gas_diisikan',
+                    'tanggal_uji',
+                    'no_tabung',
+                    'kode_tabung',
+                    'warna_tabung',
+                    'tekanan_kerja',
+                    'tekanan_pemadatan',
+                    'pabrik_pembuat_tabung',
+                    'pabrik_pemakai_tabung',
+                    'berat_tercatat',
+                    'berat_sekarang',
+                    'selisih_min',
+                    'selisih_plus',
+                    'selisih_pers',
+                    'isi_tabung',
+                    'air_dipadatkan',
+                    'pemuaian_tetap_cm3',
+                    'pemuaian_tetap_pers',
+                    'suara_pukulan',
+                    'keadaan_karat',
+                    'keadaan_luar',
+                    'masa_berpori',
+                    'keterangan',
+                    'itemujiriksa_id'
                     ]);
-            });
+
+                foreach ($hydros as $h) {
+                    $sheet->row(++$row, [
+                    $h->tube->gas_diisikan,
+                    '',
+                    $h->tube->no_tabung,
+                    $h->tube->kode_tabung,
+                    $h->tube->warna_tabung,
+                    $h->tube->isi_tabung,
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $h->id
+                ]);                    
+            }
+        });
         })->export('xlsx');
     }  
 
@@ -228,30 +266,30 @@ class HydrostaticController extends Controller
         // rule untuk validasi setiap row pada file excel
 
         $rowRules = [
-        'Gas-Yang-Diisikan',
-        'Tanggal-Pemadatan-Terakhir' => 'required',
-        'No-Seri-Tabung' => 'required',
-        'Kode' => 'required',
-        'Warna-Cat' => 'required',
-        'Tekanan-Kerja' => 'required',
-        'Tekanan-Pemadatan' => 'required',
-        'Nama-Pabrik-Pembuat-Tabung' => 'required',
-        'Nama-Pabrik-Pemakai-Tabung' => 'required',
-        'Berat-Yang-Tercatat' => 'required',
-        'Berat-Timbangan-Sekarang' => 'required',
-        'Selisih-' => 'required',
-        'Selisih+' => 'required',
-        'Selisih%' => 'required',
-        'Isi-Tabung' => 'required',
-        'Air-yang-dipadatkan' => 'required',
-        'Pemuaian-Tetap-cm3' => 'required',
-        'Pemuaian-Tetap-%' => 'required',
-        'Suara-Pukulan' => 'required',
-        'Keadaan-Karat' => 'required',
-        'Keadaan-Luar' => 'required',
-        'Masa-Berpori' => 'required',
-        'Keterangan' => 'required',
-        'No-Registrasi-Uji' => 'required'
+        'gas_diisikan',
+        'tanggal_uji' => 'required',
+        'no_tabung' => 'required',
+        'kode_tabung' => 'required',
+        'warna_tabung' => 'required',
+        'tekanan_kerja' => 'required',
+        'tekanan_pemadatan' => 'required',
+        'pabrik_pembuat_tabung' => 'required',
+        'pabrik_pemakai_tabung' => 'required',
+        'berat_tercatat' => 'required',
+        'berat_sekarang' => 'required',
+        'selisih_min' => 'required',
+        'selisih_plus' => 'required',
+        'selisih_pers' => 'required',
+        'isi_tabung' => 'required',
+        'air_dipadatkan' => 'required',
+        'Pemuaian_Tetap_Cm3' => 'required',
+        'pemuaian_tetap_pers' => 'required',
+        'suara_pukulan' => 'required',
+        'keadaan_karat' => 'required',
+        'keadaan_luar' => 'required',
+        'masa_berpori' => 'required',
+        'keterangan' => 'required',
+        'itemujiriksa_id' => 'required'
         ];
 
         // catat semua id form
@@ -260,58 +298,57 @@ class HydrostaticController extends Controller
         $formhydrostatic_id =[];
 
         // looping setiap baris dari baris ke 2. karena baris ke 1 adalah header
-
+        
         foreach ($excels as $row) {
             // membuat validasi untuk row di excel
             // kita buah baris yang sedang diproses menjadi array
-
+            // dd($row);
             $validator =  Validator::make($row->toArray(), $rowRules);
 
             // skip baris ini jika tidak valid, langsung ke baris selanjutnya
 
-            if($validator->fails()) continue;
+            // if($validator->fails()) continue;
 
             // syntax dibawah di eksekusi ketika baris valid
+
             // cek apakah Tabung sudah terdaftar
-            $form = Formujiriksa::where('no_registrasi', $row['No-Registrasi-Uji'])->first();
+            $form = Itemujiriksa::where('id', $row['itemujiriksa_id'])->first();
+
 
             // buat penulis jika belum ada
-            if(!$form) {
-                Session::flash("flash_notification", [
-                "level" => "warning",
-                "message" => "Ada Tabung Yang Belum Terdaftar!"
-                ]);
-            }
-            continue;
+            // if(!$form) {
+            //     continue;
+            // }
 
             // buat Hasil Hydrostatic
             $hasil = Hydrostaticresult::create([
-                'tekanan_kerja' => $row['Tekanan-Kerja'],
-                'tekanan_pemadatan' => $row['Tekanan-Pemadatan'],
-                'pabrik_pembuat_tabung' => $row['Nama-Pabrik-Pembuat-Tabung'],
-                'pabrik_pemakai_tabung' => $row['Nama-Pabrik-Pemakai-Tabung'],
-                'berat_tercatat' => $row['Berat-Yang-Tercatat'],
-                'berat_sekarang' => $row['Berat-Timbangan-Sekarang'],
-                'selisih-' => $row['Selisih-'],
-                'selisih+' => $row['Selisih+'],
-                'selisih%' => $row['Selisih%'],
-                'air_dipadatkan' => $row['Air-yang-dipadatkan'],
-                'pemuaian_tetap_cm3' => $row['Pemuaian-Tetap-cm3'],
-                'pemuaian_tetap_%' => $row['Pemuaian-Tetap-%'],
-                'suara_pukulan' => $row['Suara-Pukulan'],
-                'keadaan_karat' => $row['Keadaan-Karat'],
-                'keadaan_luar' => $row['Keadaan-Luar'],
-                'masa_berpori' => $row['Masa-Berpori'],
-                'tanggal_uji' => Carbon::now(),
-                'formujiriksa_id' => $form->id,
-                'keterangan' => $row['Keterangan'],
+                'tekanan_kerja' => $row['tekanan_kerja'],
+                'tekanan_pemadatan' => $row['tekanan_pemadatan'],
+                'pabrik_pembuat_tabung' => $row['pabrik_pembuat_tabung'],
+                'pabrik_pemakai_tabung' => $row['pabrik_pemakai_tabung'],
+                'berat_tercatat' => $row['berat_tercatat'],
+                'berat_sekarang' => $row['berat_sekarang'],
+                'selisih_min' => $row['selisih_min'],
+                'selisih_plus' => $row['selisih_plus'],
+                'selisih_pers' => $row['selisih_pers'],
+                'air_dipadatkan' => $row['air_dipadatkan'],
+                'pemuaian_tetap_cm3' => $row['pemuaian_tetap_cm3'],
+                'pemuaian_tetap_pers' => $row['pemuaian_tetap_pers'],
+                'suara_pukulan' => $row['suara_pukulan'],
+                'keadaan_karat' => $row['keadaan_karat'],
+                'keadaan_luar' => $row['keadaan_luar'],
+                'masa_berpori' => $row['masa_berpori'],
+                'tanggal_uji' => $row['tanggal_uji']->format('Y-m-d'),
+                'keterangan' => $row['keterangan'],
+                'itemujiriksa_id' => $row['itemujiriksa_id']
                 ]);
+
             // catat id buku yang baru dibuat
             array_push($formhydrostatic_id, $form->id);
         }
         // ambil semua buku yang baru dibuat
-        $hasils = Formujiriksa::whereIn('id', $formhydrostatic_id)->get();
-
+        $hasils = Itemujiriksa::whereIn('id', $formhydrostatic_id)->with(['formujiriksa','tube', 'hydrostaticresult'])->get();
+        // dd($hasils);
         // redirect ke form jika tidak ada buku yang berhasil diimport
         if($hasils->count() == 0) {
             Session::flash("flash_notification", [

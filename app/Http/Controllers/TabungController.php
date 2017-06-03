@@ -98,7 +98,7 @@ class TabungController extends Controller
             "message" => "Data tabung <b> $tabungs->no_tabung </b> berhasil diperbaharui"
             ]);
 
-        return redirect()->route('tabung.index');
+        return redirect()->route('customer.index');
     }
 
     /**
@@ -118,7 +118,7 @@ class TabungController extends Controller
             "message" => "Data tabung <b> $tabungs->no_tabung </b> berhasil dihapus"
             ]);
 
-        return redirect()->route('tabung.index');
+        return redirect()->route('customer.index');
     }
 
     public function printBarcode($id) {

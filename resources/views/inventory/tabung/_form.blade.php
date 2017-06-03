@@ -61,8 +61,18 @@
 <div class="form-group {!! $errors->has('status') ? 'has-error' : '' !!}">
 	{!! Form::label('status', 'Status', ['class'=>'col-sm-2 control-label']) !!}
 		<div class="col-sm-4 checkbox">
-			{{ Form::radio('status', 'baik', true) }} Baik
-			{{ Form::radio('status', 'afkir') }} Afkir
+		@if(isset($tabungs->status))
+			@if($tabungs->status == "Baik")
+				{{ Form::radio('status', 'Baik', true) }} Baik
+				{{ Form::radio('status', 'Afkir') }} Afkir
+			@else
+			{{ Form::radio('status', 'baik') }} Baik
+				{{ Form::radio('status', 'afkir', true) }} Afkir
+			@endif
+		@else
+			{{ Form::radio('status', 'Baik') }} Baik
+			{{ Form::radio('status', 'Afkir') }} Afkir
+		@endif
 		{!! $errors->first('status', '<p class="help-block">:message</p>') !!}
 		</div>
 </div>
@@ -90,12 +100,6 @@
 		{!! $errors->first('terakhir_service', '<p class="help-block">:message</p>') !!}
 	</div>
 </div>
-<div class="form-group">
-	<label for="no_telp" class="col-sm-2 control-label">Barcode String</label>
-	<div class="col-sm-4">
-		<input id="barcode" type="text" name="barcode" class="form-control" placeholder="Barcode String" disabled>
-	</div>
-</div>
 
 
 <div class="form-group">
@@ -112,13 +116,3 @@
         </button>
     </div>
 </div>
-
-@section('scripts')
-<script>
-$(document).ready(function() {
-	var a = Math.floor((Math.random() * 100) + 1);
-	document.getElementById("barcode").value = a;	
-});
-</script>
-
-@endsection

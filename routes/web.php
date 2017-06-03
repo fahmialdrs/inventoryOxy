@@ -373,7 +373,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'uses' => 'HydrostaticController@importExcel'
 		]);	
 
-	Route::get('template/hydrostatic', [
+	Route::get('template/hydrostatic/{id}', [
 		'as' => 'hydrostatic.template',
 		'uses' => 'HydrostaticController@generateExcelTemplate'
 		]);

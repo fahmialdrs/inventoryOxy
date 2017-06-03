@@ -17,73 +17,70 @@
           <h2 class="panel-title">Review Hasil Hydrostatic</h2>
         </div>
 
-        <div class="panel-body">
-          <p> <a class="btn btn-success" href="{{ url('/admin/ujiriksa')}}">Done</a> </p>
-          <table class="table table-hover table-striped">
+        <div class="panel-body" style="overflow:auto; ">
+          <p> <a class="btn btn-success" href="{{ url('/admin/ujiriksa')}}">Selesai</a> </p>
+          <table class="table table-bordered">
             <thead>
               <tr>
-                <th>No Registrasi Uji</th>
-                <th>Gas Yang Diisikan</th>
-                <th>Tanggal Pemadatan Terakhir</th>
-                <th>No Seri Tabung</th>
-                <th>Kode</th>
-                <th>Warna Cat</th>
-                <th>Tekanan Kerja</th>
-                <th>Tekanan Pemadatan</th>
-                <th>Nama Pabrik Pembuat Tabung</th>
-                <th>Nama Pabrik Pemakai Tabung</th>
-                <th>Berat Yang Tercatat</th>
-                <th>Berat Timbangan Sekarang</th>
-                <th>Selisih (-)</th>
-                <th>Selisih (+)</th>
-                <th>Selisih (%)</th>
-                <th>Isi Tabung</th>
-                <th>Air Yang Dipadatkan</th>
-                <th>Pemuaian Tetap (cm3)</th>
-                <th>Pemuaian Tetap (%)</th>
-                <th>Suara Pukulan</th>
-                <th>Keadaan Karat</th>
-                <th>Keadaan Luar</th>
-                <th>Masa Berpori</th>
-                <th>Keterangan</th>
-                <th></th>
-              </tr>
+                <th class="text-center" rowspan="2">No Registrasi</th>
+                <th class="text-center" rowspan="2">Gas yang diisikan</th>
+                <th class="text-center" rowspan="2">Terakhir Hydrostatic</th>
+                <th class="text-center" colspan="3">Keterangan Tabung</th>
+                <th class="text-center" rowspan="2">Tekanan Kerja (Kg/Cm<sup>2</sup>)</th>
+                <th class="text-center" rowspan="2">Tekanan Pemadatan (Kg/Cm<sup>2</sup>)</th>
+                <th class="text-center" rowspan="2">Nama Pabrik Pembuat Tabung</th>
+                <th class="text-center" rowspan="2">Nama Pabrik Pemakai Tabung</th>
+                <th class="text-center" rowspan="2">Berat Tabung Yang Tercatat (Kg)</th>
+                <th class="text-center" rowspan="2">Berat Tabung Sekarang (kg)</th>
+                <th class="text-center" colspan="3">Selisih</th>
+                <th class="text-center" rowspan="2">Isi Tabung (Ltr)</th>            
+                <th class="text-center" rowspan="2">Air yang dipadatkan (cm<sup>3</sup>)</th>
+                <th class="text-center" colspan="2">Pemuaian Tetap</th>
+                <th class="text-center" rowspan="2">Suara Pukulan</th>
+                <th class="text-center" rowspan="2">Keadaan Karat</th>
+                <th class="text-center" rowspan="2">Keadaan Luar</th>
+                <th class="text-center" rowspan="2">Masa Berpori</th>
+                <th class="text-center" rowspan="2">Keterangan</th>
+            </tr>
+            <tr>
+                <th class="text-center">No Tabung</th>            
+                <th class="text-center">Kode Tabung</th>
+                <th class="text-center">Warna Tabung</th>
+                <th class="text-center">-</th>
+                <th class="text-center">+</th>
+                <th class="text-center">%</th>
+                <th class="text-center">cm<sup>3</sup></th>
+                <th class="text-center">%</th>
+            </tr>
             </thead>
             <tbody>
-              @foreach ($hasils as $hasil)
+              @foreach ($hasils as $hasil) 
                 <tr>
-                  <td>{{ $hasil->no_registrasi }}</td>
+                  <td>{{ $hasil->formujiriksa->no_registrasi }}</td>
                   <td>{{ $hasil->tube->gas_diisikan }}</td>
                   <td>{{ $hasil->tube->terakhir_hydrostatic }}</td>
                   <td>{{ $hasil->tube->no_tabung }}</td>
                   <td>{{ $hasil->tube->kode_tabung }}</td>
                   <td>{{ $hasil->tube->warna_tabung }}</td>
-                  <td>{{ $hasil->tekanan_kerja }}</td>
-                  <td>{{ $hasil->tekanan_pemadatan }}</td>
-                  <td>{{ $hasil->pabrik_pembuat_tabung }}</td>
-                  <td>{{ $hasil->pabrik_pemakai_tabung }}</td>
-                  <td>{{ $hasil->berat_tercatat }}</td>
-                  <td>{{ $hasil->berat_sekarang }}</td>
-                  <td>{{ $hasil->selisih- }}</td>
-                  <td>{{ $hasil->selisih+ }}</td>
-                  <td>{{ $hasil->selisih% }}</td>
-                  <td>{{ $hasil->tube->isi_tabung }}</td>
-                  <td>{{ $hasil->air_dipadatkan }}</td>
-                  <td>{{ $hasil->pemuaian_tetap_cm3 }}</td>
-                  <td>{{ $hasil->pemuaian_tetap_% }}</td>
-                  <td>{{ $hasil->suara_pukulan }}</td>
-                  <td>{{ $hasil->keadaan_karat }}</td>
-                  <td>{{ $hasil->keadaan_luar }}</td>
-                  <td>{{ $hasil->masa_berpori }}</td>
-                  <td>{{ $hasil->keterangan }}</td>
-                  <td>
-                    {!! Form::open(['url' => route('Hydrostatic.destroy', $hasil->id),
-                    'id'           => 'form-'.$hasil->id, 'method'=>'delete',
-                    'data-confirm' => 'Apa anda yakin ingin menghapus hasil dengan no registrasi ' . $hasil->no_registrasi . '?',
-                    'class'        => 'form-inline js-review-delete']) !!}
-                    {!! Form::submit('Delete', ['class'=>'btn btn-xs btn-danger']) !!}
-                    {!! Form::close() !!}
-                  </td>
+                  <td>{{ $hasil->hydrostaticresult->tekanan_kerja }}</td>
+                  <td>{{ $hasil->hydrostaticresult->tekanan_pemadatan }}</td>
+                  <td>{{ $hasil->hydrostaticresult->pabrik_pembuat_tabung }}</td>
+                  <td>{{ $hasil->hydrostaticresult->pabrik_pemakai_tabung }}</td>
+                  <td>{{ $hasil->hydrostaticresult->berat_tercatat }}</td>
+                  <td>{{ $hasil->hydrostaticresult->berat_sekarang }}</td>
+                  <td>{{ $hasil->hydrostaticresult->selisih_min }}</td>
+                  <td>{{ $hasil->hydrostaticresult->selisih_plus }}</td>
+                  <td>{{ $hasil->hydrostaticresult->selisih_pers }}</td>
+                  <td>{{ $hasil->hydrostaticresult->itemujiriksa->tube->isi_tabung }}</td>
+                  <td>{{ $hasil->hydrostaticresult->air_dipadatkan }}</td>
+                  <td>{{ $hasil->hydrostaticresult->pemuaian_tetap_cm3 }}</td>
+                  <td>{{ $hasil->hydrostaticresult->pemuaian_tetap_pers }}</td>
+                  <td>{{ $hasil->hydrostaticresult->suara_pukulan }}</td>
+                  <td>{{ $hasil->hydrostaticresult->keadaan_karat }}</td>
+                  <td>{{ $hasil->hydrostaticresult->keadaan_luar }}</td>
+                  <td>{{ $hasil->hydrostaticresult->masa_berpori }}</td>
+                  <td>{{ $hasil->hydrostaticresult->keterangan }}</td>
+                  <!-- <td><a href="{{ route('hydrostatic.destroy', $hasil->id) }}" class="btn btn-xs btn-danger">Hapus</a></td> -->
                 </tr>
               @endforeach
             </tbody>

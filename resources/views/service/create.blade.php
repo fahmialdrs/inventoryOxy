@@ -17,9 +17,10 @@
 				</div>
 
 				<div class="panel-body" style="overflow:auto; ">
-					{!! Form::open(['url'=> route('service.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
-					@include('service._form')
-					{!! Form::close() !!}
+					<form class="form-horizontal" role="form" method="POST" action="{{ route('service.store') }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+						@include('service._form')
+					</form>
 				</div>
 			</div>
 		</div>
