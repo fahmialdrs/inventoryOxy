@@ -97,23 +97,26 @@ class UjiriksaController extends Controller
                         'keluhan' => $key['keluhan']
                     ]);
                     $table->itemujiriksa()->save($item);
+
                     
                     // isi field cover jika ada cover yg di upload
                 if ($request->hasFile('foto_tabung_masuk')) {
-                    
+
                     //ambil file yang di upload
                     $uploaded = $request->file('foto_tabung_masuk');
 
+                    foreach ($uploaded as $ft) {          
+
                     // ambil extension file
-                    $extension = $uploaded->getClientOriginalExtension();
+                    $extension = $ft->getClientOriginalExtension();
 
                     // membuat nama file random
-                    $filename = md5(time()) . '.' . $extension;
+                    $filename = md5(str_random(8)) . '.' . $extension;
 
                     // simpan file ke folder storage/foto
 
                     $destinationPath = storage_path() . DIRECTORY_SEPARATOR . 'foto';
-                    $uploaded->move($destinationPath, $filename);
+                    $ft->move($destinationPath, $filename);
 
                     // mengisi field foto tabung masuk dengan filename yg baru dibuat
                     
@@ -121,12 +124,12 @@ class UjiriksaController extends Controller
                         'foto_tabung_masuk' => $filename,
                         'itemujiriksa_id' => $item->id
                         ]);
-                    // dd($foto);
 
                     $foto->save();
 
                     // save ke table fototabungs
                     // $item->fototabung()->save($fototabungs); 
+                    }
                 }
             }
         }

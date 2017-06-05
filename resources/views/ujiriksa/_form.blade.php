@@ -177,7 +177,7 @@
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ old('itemujiriksa[0][foto_tabung_masuk]') }}" name="foto_tabung_masuk">
+                <input type="file" class="form-control" value="{{ old('itemujiriksa[0][foto_tabung_masuk]') }}" name="foto_tabung_masuk[]" multiple />
             </td>
         </tr>
         @endif
