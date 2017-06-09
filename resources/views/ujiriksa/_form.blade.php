@@ -138,7 +138,7 @@
     </thead>
     <tbody id='input_fields_wrap'>
         @if(isset($ujiriksas->itemujiriksa))
-        @foreach($ujiriksas->itemujiriksas as $i)
+        @foreach($ujiriksas->itemujiriksa as $i)
         <tr>
             <td>
                 <input type="number" class="form-control" value="{{ $i->jumlah_barang or old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
@@ -168,8 +168,8 @@
             <td>
                 <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
                     <option disabled selected value></option>
-                    @foreach($tabungs as $t)
-                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>
+                    @foreach($ujiriksas->itemujiriksa as $t)
+                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>
                     @endforeach
                 </select>
             </td>
@@ -177,7 +177,7 @@
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ old('itemujiriksa[0][foto_tabung_masuk]') }}" name="foto_tabung_masuk[]" multiple />
+                <input type="file" class="form-control" value="{{ old('itemujiriksa[0][fototabung][]') }}" name="itemujiriksa[0][fototabung][]" multiple />
             </td>
         </tr>
         @endif
@@ -222,8 +222,8 @@
             <td>\
                 <select name="itemujiriksa[' + x +'][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">\
                     <option disabled selected value></option>\
-                    @foreach($tabungs as $t)\
-                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>\
+                    @foreach($ujiriksas->itemujiriksa as $t)\
+                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>\
                     @endforeach\
                 </select>\
             </td>\
@@ -231,7 +231,7 @@
                 <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]">\
             </td>\
             <td>\
-                <input type="file" class="form-control" value="{{ old('foto_tabung_masuk[]') }}" name="fototabung[' + x +'][][foto_tabung_masuk]" multiple>\
+                <input type="file" class="form-control" value="{{ old("itemujiriksa['+ x +'][fototabung][]") }}" name="itemujiriksa['+ x +'][fototabung][]" multiple>\
             </td>\
             <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
         </tr>'); //add input box

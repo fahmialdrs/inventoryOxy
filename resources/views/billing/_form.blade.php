@@ -88,7 +88,7 @@
     <tbody id='input_fields_wrap'>
         @if(isset($billings->itembilling))
         @foreach($billings->itembilling as $i)
-        <tr>
+        <tr class="bill">
             <td>
                 <input id="qty[0]" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
             </td>                
@@ -110,9 +110,9 @@
         </tr>
         @endforeach
         @else
-        <tr>
+        <tr class="bill">
             <td>
-                <input id="qty[0]" class="qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
+                <input id="qty-0" class="qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
             </td>                
             <td>
                 <textarea id="des" type="text" name="itembiling[0][deskripsi]" required>{{ $i->deskripsi or old('itembiling[0][deskripsi]') }}</textarea>
@@ -120,13 +120,13 @@
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="upr[0]" class="upr" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
+                    <input id="upr-0" class="upr" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
                 </div>                
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt[0]" class="amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" disabled>
+                    <input id="amnt-0" class="amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" disabled>
                 </div>
             </td>
         </tr>
@@ -292,9 +292,9 @@
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<tr>\
+            $(wrapper).append('<tr class="bill">\
             <td>\
-                <input id="qty[' + x +']" class="qty" type="number" value="{{ old('itembiling[][quantity]') }}" name="itembiling[' + x +'][quantity]">\
+                <input id="qty-' + x +'" class="qty" type="number" value="{{ old('itembiling[][quantity]') }}" name="itembiling[' + x +'][quantity]">\
             </td>\
             <td>\
                 <textarea type="text" value="{{ old('itembiling[][deskripsi]') }}" name="itembiling[' + x +'][deskripsi]" required></textarea>\
@@ -302,22 +302,25 @@
             <td>\
                 <div class="input-group">\
                     <div class="input-group-addon">Rp.</div>\
-                    <input id="upr[' + x +']" class="upr" type="number" value="{{ old('itembiling[][unitprice]') }}" name="itembiling[' + x +'][unitprice]" required>\
+                    <input id="upr-' + x +'" class="upr" type="number" value="{{ old('itembiling[][unitprice]') }}" name="itembiling[' + x +'][unitprice]" onblur="calculate()" required>\
                 </div>\
             </td>\
             <td>\
                 <div class="input-group">\
                     <div class="input-group-addon">Rp.</div>\
-                    <input id="amnt[' + x +']" class="amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]" disabled>\
+                    <input id="amnt-' + x +'" class="amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]" disabled>\
                 </div>\
             </td>\
-            <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
+            <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>\
         </tr>'); //add input box
         }
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parents("tr").remove(); x--;
+        e.preventDefault(); $(this).parents("tr").remove();
+        $('#amnt-'+x).val(0);
+        x--;
+
     })
 });
 </script>
@@ -326,32 +329,36 @@
     // hitung amount
     calculate = function()
     {   
-        var qty = document.getElementsByName('itembiling[][qty]').value;
-        var upr = document.getElementsByName('itembiling[][upr]').value;
-        var subtotal = document.getElementById('subtotal');
-        var amount = document.getElementsByClassName('amnt');
-        var i;
+        var count = $('.bill').length;
+        // console.log($(count));
+        var subs = 0;
+        
+        for (var index = 0; index < count; index++) {
+            
+            var qty = $('#qty-'+index).val();
+            var upr = $('#upr-'+index).val();
+            var jumlah = qty * upr;
+            $('#amnt-'+index).val(jumlah);
 
-        for (i = 0; i <= amount.length ; i++) {
-            document.getElementsByName(itembiling[i][amount]).value = parseInt(qty[i])*parseInt(upr[i]);
+            var amnt = $('#amnt-'+index).val();
+            subs = parseInt(subs) + parseInt(amnt);
+            $('#subtotal').val(subs);
+
         }
-
-        // subtotal.value = document.getElementById('amnt[]').value;
     }
 
     // hitung total keseluruhan
     grandtotal = function()
     {   
-        var subtotal = document.getElementById('subtotal').value;
-        var discount = document.getElementById('discount').value;
-        var ongkir = document.getElementById('ongkir').value;
+        var subtotal = $('#subtotal').val();
+        var discount = $('#discount').val();
+        var ongkir = $('#ongkir').val();
         var total;
         var disc;
 
         total = parseInt(subtotal) + parseInt(ongkir);
         disc = (parseInt(total) * (parseInt(discount) / 100));
-
-        document.getElementById('total').value = parseInt(total) - parseInt(disc);
+        $('#total').val(parseInt(total) - parseInt(disc));
     }
 
 </script>

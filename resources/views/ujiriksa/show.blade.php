@@ -46,11 +46,11 @@
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Pengerjaan</td>
-								<td>{{ $form->progress_at }}</td>
+								<td>{{ $form->progress_at->toDateString() }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Selesai</td>
-								<td>{{ $form->done_at }}</td>
+								<td>{{ $form->done_at->toDateString() }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Hasil Uji</td>

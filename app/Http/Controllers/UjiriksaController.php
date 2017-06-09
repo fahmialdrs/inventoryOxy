@@ -83,52 +83,45 @@ class UjiriksaController extends Controller
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
         array_forget($data,'foto_tabung_masuk');
-        // dd($data);
         $table = new Formujiriksa;
         $table->fill($data);
         $table->save();
 
-        if (isset($request->itemujiriksa)) {
-            foreach ($request->itemujiriksa as $key ) {
-                    $item = new Itemujiriksa([
-                        'jumlah_barang' => $key['jumlah_barang'],
-                        'nama_barang' => $key['nama_barang'],
-                        'tube_id' => $key['tube_id'],
-                        'keluhan' => $key['keluhan']
-                    ]);
-                    $table->itemujiriksa()->save($item);
-
+        if (isset($request->itemujiriksa)) { 
+            foreach ($request->itemujiriksa as $key ) { 
+                $item = new Itemujiriksa([
+                    'jumlah_barang' => $key['jumlah_barang'],
+                    'nama_barang' => $key['nama_barang'],
+                    'tube_id' => $key['tube_id'],
+                    'keluhan' => $key['keluhan']
+                ]);
+                $table->itemujiriksa()->save($item);
                     
                     // isi field cover jika ada cover yg di upload
-                if ($request->hasFile('foto_tabung_masuk')) {
-
-                    //ambil file yang di upload
-                    $uploaded = $request->file('foto_tabung_masuk');
-
-                    foreach ($uploaded as $ft) {          
-
-                    // ambil extension file
-                    $extension = $ft->getClientOriginalExtension();
-
-                    // membuat nama file random
-                    $filename = md5(str_random(8)) . '.' . $extension;
-
-                    // simpan file ke folder storage/foto
-
-                    $destinationPath = storage_path() . DIRECTORY_SEPARATOR . 'foto';
-                    $ft->move($destinationPath, $filename);
-
-                    // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                if (is_array($key['fototabung'])) {
                     
-                    $foto = new Fototabung([
-                        'foto_tabung_masuk' => $filename,
-                        'itemujiriksa_id' => $item->id
-                        ]);
+                    //ambil file yang di upload
+                    $uploaded =$key['fototabung'];
+                    
+                    foreach ($uploaded as $foto) {
 
-                    $foto->save();
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
 
-                    // save ke table fototabungs
-                    // $item->fototabung()->save($fototabungs); 
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fototabung::create([
+                            'foto_tabung_masuk' => $filename,
+                            'itemujiriksa_id' => $item->id
+                            ]);
                     }
                 }
             }
@@ -166,7 +159,7 @@ class UjiriksaController extends Controller
      */
     public function edit($id)
     {
-        $ujiriksas = Formujiriksa::with('tube', 'fototabung')->findOrFail($id);
+        $ujiriksas = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.fototabung')->findOrFail($id);
         return view('ujiriksa.edit')->with(compact('ujiriksas'));
     }
 
@@ -277,11 +270,12 @@ class UjiriksaController extends Controller
     public function storePengambil(Request $request, $id)
     {
         $ujiriksas = Formujiriksa::find($id);
-        $pengambil = $request->only('nama_pengambil');
+        $pengambil = $request->nama_pengambil;
         $ujiriksas->nama_pengambil = $pengambil;
+        // dd($pengambil);
         
         $ujiriksas->save();
-
+        // dd($ujiriksas);
         Session::flash("flash_notification", [
             "level" => "success", 
             "message" => "Item formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diambil oleh <b>$pengambil</b>"
