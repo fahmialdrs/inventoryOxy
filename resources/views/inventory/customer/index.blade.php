@@ -55,11 +55,12 @@
 <script>
 	$(document).ready( function () {
 	    $('#table_id').dataTable( {
-	  	"columnDefs": [ {
-		    "targets": [ 4 ],
-		    "searchable": false,
-		    "orderable": false
-	    } ]
+	    	"aaSorting": [],
+			  	"columnDefs": [ {
+				    "targets": [ 4 ],
+				    "searchable": false,
+				    "orderable": false
+			    } ]
 } );
 	} );
 </script>

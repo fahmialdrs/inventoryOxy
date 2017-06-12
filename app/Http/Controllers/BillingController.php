@@ -21,7 +21,7 @@ class BillingController extends Controller
      */
     public function index()
     {
-        $billings = Billing::with('customer')->get();
+        $billings = Billing::with('customer')->orderBy('created_at', 'desc')->get();
         return view('billing.index')->with(compact('billings'));
     }
 
@@ -44,12 +44,13 @@ class BillingController extends Controller
     public function store(StoreBillingRequest $request)
     {
         $data = $request->except(['alamat', 'email']);
-        $counter = Billing::whereDate('created_at','=',date('Y-m-d'))->count();
+        $counter = Billing::whereDate('created_at','=',date('Y-m-d'))->count()+1;        
         $date = Carbon::parse('now');
-        $noinv = $date->format('dm').'-'. '1' . '/INV/NDT/EB/';
+        $noinv = $date->format('dm').'-'. $counter . '/INV/NDT/EB/' .$date->format('m'). '/' .$date->format('y');
+        // dd($noinv);
         $data['no_invoice'] = $noinv;
         $data['status'] = 'Belum Bayar';
-        // dd($data);
+        // dd($request->subtotal);
         array_forget($data,'itembiling');
         $table = new Billing;
         $table->fill($data);

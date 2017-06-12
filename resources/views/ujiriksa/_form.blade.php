@@ -33,6 +33,8 @@
     <label for="jenis_uji" class="col-md-4 control-label">Jenis Uji</label>
 
     <div class="col-md-4">
+    @if(isset($ujiriksas->jenis_uji))
+        @if($ujiriksas->jenis_uji == "Hydrostatic")
     	<label class="radio-inline">
         	<input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
 		</label>
@@ -42,6 +44,39 @@
         <label class="radio-inline">
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
         </label>
+        @elseif($ujiriksas->jenis_uji == "Visualstatic")
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic"> Hydrostatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic" checked> Visualstatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+        </label>
+        @elseif($ujiriksas->jenis_uji == "Service")
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic"> Hydrostatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service" checked> Service
+        </label>
+        @endif
+    @else
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
+        </label>
+        <label class="radio-inline">
+            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+        </label>
+    @endif
+
         @if ($errors->has('jenis_uji'))
             <span class="help-block">
                 <strong>{{ $errors->first('jenis_uji') }}</strong>
@@ -68,7 +103,11 @@
     <label for="keterangan" class="col-md-4 control-label">Keterangan</label>
 
     <div class="col-md-4">
-        <textarea id="keterangan" type="text" class="form-control" name="keterangan" value="{{ old('keterangan') }}" required></textarea>
+        @if(isset($ujiriksas->keterangan))
+        <textarea id="keterangan" type="text" class="form-control" name="keterangan" required>{{ $ujiriksas->keterangan }}</textarea>
+        @else
+        <textarea id="keterangan" type="text" class="form-control" name="keterangan" required>{{ old('keterangan') }}</textarea>
+        @endif
 
         @if ($errors->has('keterangan'))
             <span class="help-block">
@@ -82,7 +121,11 @@
     <label for="perkiraan_selesai" class="col-md-4 control-label">Tanggal Perkiraan Selesai</label>
 
     <div class="col-md-4">
+        @if(isset($ujiriksas->perkiraan_selesai))
+        <input id="perkiraan_selesai" type="date" class="form-control" name="perkiraan_selesai" value="{{ $ujiriksas->perkiraan_selesai }}" required>
+        @else
         <input id="perkiraan_selesai" type="date" class="form-control" name="perkiraan_selesai" value="{{ old('perkiraan_selesai') }}" required>
+        @endif
 
         @if ($errors->has('perkiraan_selesai'))
             <span class="help-block">
@@ -98,7 +141,11 @@
     <div class="col-md-4">
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
+            @if(isset($ujiriksas->perkiraan_biaya))
+            <input id="perkiraan_biaya" type="number" class="form-control" name="perkiraan_biaya" value="{{ $ujiriksas->perkiraan_biaya }}" required>
+            @else
             <input id="perkiraan_biaya" type="number" class="form-control" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
+            @endif
         </div>
 
         @if ($errors->has('perkiraan_biaya'))
@@ -115,8 +162,11 @@
     <label for="nama_penyerah" class="col-md-4 control-label">Nama Yang Menyerahkan</label>
 
     <div class="col-md-4">
+        @if(isset($ujiriksas->nama_penyerah))
+        <input id="nama_penyerah" type="text" class="form-control" name="nama_penyerah" value="{{ $ujiriksas->nama_penyerah }}" required>
+        @else
         <input id="nama_penyerah" type="text" class="form-control" name="nama_penyerah" value="{{ old('nama_penyerah') }}" required>
-
+        @endif
         @if ($errors->has('nama_penyerah'))
             <span class="help-block">
                 <strong>{{ $errors->first('nama_penyerah') }}</strong>
@@ -147,13 +197,23 @@
                 <input type="text" class="form-control" value="{{ $i->nama_barang or old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
             </td>
             <td>
-                {!! Form::select('itemujiriksa[0][tube_id]', [''=>'']+App\Models\Tube::pluck('no_tabung','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih No Tabung']) !!}
+                <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
+                    <option disabled selected value></option>
+                    @foreach($ujiriksas->itemujiriksa as $t)
+                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>
+                    @endforeach
+                </select>
             </td>
             <td>
                 <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
             </td>
             <td>
                 <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('fototabung[0][foto_tabung_masuk]') }}" name="fototabung[0][foto_tabung_masuk]">
+                <span>
+                    @foreach($i->fototabung as $foto)                     
+                        <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded img-responsive" width="100" height="100">                    
+                   @endforeach
+                </span>
             </td>
         </tr>
         @endforeach
@@ -168,8 +228,8 @@
             <td>
                 <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
                     <option disabled selected value></option>
-                    @foreach($ujiriksas->itemujiriksa as $t)
-                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>
+                    @foreach($tabungs as $t)
+                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>
                     @endforeach
                 </select>
             </td>
@@ -191,9 +251,11 @@
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
+        @if(request()->route()->getName() != "ujiriksa.edit")
         <button type="submit" class="btn btn-success">
             Simpan & Buat Baru
         </button>
+        @endif
         <button type="reset" class="btn btn-warning">
             Batal
         </button>
@@ -222,8 +284,8 @@
             <td>\
                 <select name="itemujiriksa[' + x +'][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">\
                     <option disabled selected value></option>\
-                    @foreach($ujiriksas->itemujiriksa as $t)\
-                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>\
+                    @foreach($tabungs as $t)\
+                        <option value={{ $t->id }}> {{ $t->no_tabung }}</option>\
                     @endforeach\
                 </select>\
             </td>\

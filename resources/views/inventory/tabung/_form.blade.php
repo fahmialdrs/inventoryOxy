@@ -108,9 +108,11 @@
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
+        @if(request()->route()->getName() != "tabung.edit")
         <button type="submit" class="btn btn-success">
             Simpan & Buat Baru
         </button>
+        @endif
         <button type="submit" class="btn btn-warning">
             Batal
         </button>

@@ -22,7 +22,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        $tabungs = Tube::with(['customer'])->get();
+        $tabungs = Tube::with('customer')->orderBy('created_at', 'desc')->get();
         return view('inventory.index', array(
             'customers' => $customers,
             'tabungs' => $tabungs

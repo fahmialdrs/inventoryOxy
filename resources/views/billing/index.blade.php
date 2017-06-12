@@ -34,7 +34,7 @@
 						            <td>{{ $b->customer->nama }}</td>
 						            <td>{{ $b->customer->email }}</td>
 						            <td>{{ $b->perihal }}</td>
-						            <td>{{ $b->created_at }}</td>
+						            <td>{{ $b->created_at->format('d-m-Y') }}</td>
 						            <td>{{ $b->status }}</td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -77,11 +77,12 @@
 <script>
 	$(document).ready( function () {
 	    $('#billing').dataTable( {
-	  	"columnDefs": [ {
-		    "targets": [ 6 ],
-		    "searchable": false,
-		    "orderable": false
-	    } ]
+	    "aaSorting": [],
+	  		"columnDefs": [ {
+			    "targets": [ 6 ],
+			    "searchable": false,
+			    "orderable": false
+	    	} ]
 } );
 	} );
 </script>

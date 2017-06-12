@@ -1,9 +1,9 @@
 <p>
-	Dear {{ $billings->customer->nama }},
+	Dear {{ $table->customer->nama }},
 </p>
 
 <p>
-	Berikut kami lampirkan Invoice {{ $billings->perihal }}
+	Berikut kami lampirkan Invoice {{ $table->perihal }}
 	<br>	
 </p>
 

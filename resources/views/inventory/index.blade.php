@@ -141,6 +141,7 @@
 <script>
 	$(document).ready( function () {
 	    $('#customer').dataTable( {
+	    	"aaSorting": [],
 	  	"columnDefs": [ {
 		    "targets": [ 4 ],
 		    "searchable": false,
@@ -149,6 +150,7 @@
 		} );
 
 		$('#tabung').dataTable( {
+			"aaSorting": [],
 	  	"columnDefs": [ {
 		    "targets": [ 6 ],
 		    "searchable": false,

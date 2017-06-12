@@ -18,52 +18,55 @@
 					<div class="panel-body">
 						<a href="{{ route('tabung.edit', $tabungs->id) }}" class="btn btn-primary">Edit</a>
 						<br><br><br>
-						<table class="table">
-							<tr>
-								<td class="text-muted">No Tabung</td>
-								<td>{{ $tabungs->no_tabung }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Pemilik</td>
-								<td><a href="{{ route('customer.show', $tabungs->customer_id) }}">{{ $tabungs->customer->nama }}</a></td>
-							</tr>
-							<tr>
-								<td class="text-muted">Gas yang Diisikan</td>
-								<td>{{ $tabungs->gas_diisikan }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Kode Tabung</td>
-								<td>{{ $tabungs->kode_tabung }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Warna Tabung</td>
-								<td>{{ $tabungs->warna_tabung }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Isi Tabung</td>
-								<td>{{ $tabungs->isi_tabung }} Liter</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Tanggal Pembuatan Tabung</td>
-								<td>{{ $tabungs->tanggal_pembuatan }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Status Tabung</td>
-								<td>{{ $tabungs->status }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
-								<td>{{ $tabungs->terakhir_hydrostatic or '' }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Tanggal Terakhir Visualstatic</td>
-								<td>{{ $tabungs->terakhir_visualstatic or '' }}</td>
-							</tr>
-							<tr>
-								<td class="text-muted">Tanggal Terakhir Service</td>
-								<td>{{ $tabungs->terakhir_service or '' }}</td>
-							</tr>
-						</table>
+						<div class="col-md-6">
+							<table class="table">
+								<tr>
+									<td class="text-muted">No Tabung</td>
+									<td>{{ $tabungs->no_tabung }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Pemilik</td>
+									<td><a href="{{ route('customer.show', $tabungs->customer_id) }}">{{ $tabungs->customer->nama }}</a></td>
+								</tr>
+								<tr>
+									<td class="text-muted">Gas yang Diisikan</td>
+									<td>{{ $tabungs->gas_diisikan }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Kode Tabung</td>
+									<td>{{ $tabungs->kode_tabung }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Warna Tabung</td>
+									<td>{{ $tabungs->warna_tabung }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Isi Tabung</td>
+									<td>{{ $tabungs->isi_tabung }} Liter</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Tanggal Pembuatan Tabung</td>
+									<td>{{ date("d-m-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Status Tabung</td>
+									<td>{{ $tabungs->status }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
+									<td>{{ $tabungs->terakhir_hydrostatic->format('d-m-Y') }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Tanggal Terakhir Visualstatic</td>
+									<td>{{ $tabungs->terakhir_visualstatic->format('d-m-Y') }}</td>
+								</tr>
+								<tr>
+									<td class="text-muted">Tanggal Terakhir Service</td>
+									<td>{{ $tabungs->terakhir_service->format('d-m-Y') }}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-md-12">
 						<ul class="nav nav-tabs" role="tablist">
 							<!-- <li role="presentation" class="active">
 								<a href="#laporan_tabung" aria-controls="laporan_tabung" role="tab" data-toggle="tab">
@@ -115,21 +118,31 @@
 								            <th>No Registrasi Kegiatan</th>
 								            <th>Jenis Kegiatan</th>
 								            <th>Keluhan</th>
-								            <th>Tanggal Kegiatan</th>
-								            <th>Attachment</th>
 								            <th>Progress</th>
-								            <th>Action</th>
+								            <th>Tanggal Kegiatan</th>
+								            <th>Hasil</th>								            
+								            <th>Aksi</th>
 								        </tr>
 								    </thead>
 								    <tbody>
 								    @foreach ($tabungs->itemujiriksa as $t)								    
 								        <tr>
 								            <td>{{ $t->formujiriksa->no_registrasi or '' }}</td>
-								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
-								            <td>{{ $t->formujiriksa->done_at or '' }}</td>
-								            <td>file</td>
+								            <td>{{ $t->keluhan or '' }}</td>								            
 								            <td>{{ $t->formujiriksa->progress or '' }}</td>
+								            @if(isset($t->formujiriksa->done_at))
+								            <td>{{ $t->formujiriksa->done_at->format('d-m-Y')  }}</td>
+								            @else
+								            <td>{{ "Belum Selesai" }}</td>
+								            @endif
+								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
+								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
+								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
+								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
+								            @elseif($t->formujiriksa->jenis_uji == "Service")
+											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
+											@endif
 								            <td>
 												<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
@@ -138,13 +151,7 @@
 													  </button>
 													  <ul class="dropdown-menu ">
 													  	<li>
-															<a type="button" href="#">Input Hasil Hydrostatic</a>
-													  	</li>
-													  	<li>
-															<a type="button" href="#">Edit</a>
-													  	</li>
-													  	<li>
-															<a type="button" href="#">Delete</a>
+															<a type="button" href="#">Export PDF</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
 													    <li><a href="#">Unduh Label</a></li>
@@ -158,6 +165,7 @@
 								</table>
 							</div>
 						</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -169,6 +177,7 @@
 	<script>
 		$(document).ready( function () {
 		    $('.display').dataTable( {
+		    	"order": [[ 4, "desc" ]],
 			  	"columnDefs": [ {
 				    "targets": [ 6 ],
 				    "searchable": false,

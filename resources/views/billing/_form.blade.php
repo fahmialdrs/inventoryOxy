@@ -126,7 +126,7 @@
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-0" class="amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" disabled>
+                    <input id="amnt-0" class="amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]">
                 </div>
             </td>
         </tr>
@@ -140,12 +140,12 @@
     @if(isset($billings->subtotal))
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ $billings->subtotal }}" disabled>
+            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ $billings->subtotal }}">
         </div>
     @else
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="subtotal" type="number" class="form-control" name="subtotal" value="0" disabled>
+            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ old('subtotal') ?? '0' }}">
         </div>
     @endif
         @if ($errors->has('subtotal'))
@@ -163,22 +163,21 @@
     @if(isset($billings->ongkir))
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="ongkir" type="number" class="form-control" name="ongkir" value="{{ $billings->ongkir or 0 }}" onblur="grandtotal()">
-        </div>
-        </div>
+            <input id="ongkir" type="number" class="form-control" name="ongkir" value="{{ $billings->ongkir ?? '0' }}" onblur="grandtotal()">
+        </div>        
     @else
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="ongkir" type="number" class="form-control" name="ongkir" value="0" onblur="grandtotal()">
+            <input id="ongkir" type="number" class="form-control" name="ongkir" value="{{ old('ongkir') ?? '0' }}" onblur="grandtotal()">
         </div>
     @endif
+    </div>
         @if ($errors->has('ongkir'))
             <span class="help-block">
                 <strong>{{ $errors->first('ongkir') }}</strong>
             </span>
         @endif
     </div>
-</div>
 
 <div class="form-group{{ $errors->has('discount') ? ' has-error' : '' }}">
     <label for="discount" class="col-md-2 control-label">Discount</label>
@@ -186,12 +185,12 @@
     <div class="col-md-4">
     @if(isset($billings->discount))
         <div class="input-group">
-            <input id="discount" type="number" class="form-control" name="discount" value="{{ $billings->discount or 0 }}" onblur="grandtotal()">
+            <input id="discount" type="number" class="form-control" name="discount" value="{{ $billings->discount ?? '0' }}" onblur="grandtotal()">
             <div class="input-group-addon">%</div>
         </div>
     @else
         <div class="input-group">
-            <input id="discount" type="number" class="form-control" name="discount" value="0" onblur="grandtotal()">
+            <input id="discount" type="number" class="form-control" name="discount" value="{{ old('discount') ?? '0' }}" onblur="grandtotal()">
             <div class="input-group-addon">%</div>
         </div>
     @endif
@@ -210,11 +209,12 @@
     @if(isset($billings->total))
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="total" type="text" class="form-control" name="total" value="{{ $billings->total or 0 }}" disabled>
+            <input id="total" type="text" class="form-control" name="total" value="{{ $billings->total ?? '0' }}">
+        </div>
     @else
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="total" type="text" class="form-control" name="total" value="0" disabled>
+            <input id="total" type="text" class="form-control" name="total" value="{{ old('total') ?? '0' }}">
         </div>
     @endif
         @if ($errors->has('total'))
@@ -264,14 +264,16 @@
 </div>
 
 <div class="form-group">
-    <div class="col-md-6 col-md-offset-4">
+    <div class="col-md-4 col-md-offset-4">
         <button type="submit" class="btn btn-primary">
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
+        @if(request()->route()->getName() != "billing.edit")
         <button type="submit" class="btn btn-success">
             Simpan & Buat Baru
         </button>
+        @endif
         <a href="{{ route('billing.index') }}" class="btn btn-warning">
             Batal
         </a>
@@ -308,7 +310,7 @@
             <td>\
                 <div class="input-group">\
                     <div class="input-group-addon">Rp.</div>\
-                    <input id="amnt-' + x +'" class="amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]" disabled>\
+                    <input id="amnt-' + x +'" class="amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]">\
                 </div>\
             </td>\
             <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>\

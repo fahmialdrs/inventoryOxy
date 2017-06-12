@@ -64,6 +64,7 @@
 <script>
 	$(document).ready( function () {
 	    $('#table_id').dataTable( {
+	    "aaSorting": [],
 	  	"columnDefs": [ {
 		    "targets": [ 4 ],
 		    "searchable": false,

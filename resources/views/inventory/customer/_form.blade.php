@@ -43,9 +43,11 @@
         <!-- <i class="fa fa-btn fa-user"></i> -->
             Simpan
         </button>
+        @if(request()->route()->getName() != "customer.edit")
         <button type="submit" class="btn btn-success">
             Simpan & Buat Baru
         </button>
+        @endif
         <a href="{{ route('customer.index') }}" class="btn btn-warning">
         	Batal
         </a>

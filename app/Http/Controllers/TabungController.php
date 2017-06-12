@@ -22,7 +22,7 @@ class TabungController extends Controller
      */
     public function index()
     {
-        $tabungs = Tube::with('customer')->get();
+        $tabungs = Tube::with('customer')->orderBy('created_at', 'desc')->get();
         return view('inventory.tabung.index')->with(compact('tabungs'));
     }
 

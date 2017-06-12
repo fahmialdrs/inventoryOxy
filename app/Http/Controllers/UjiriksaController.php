@@ -65,7 +65,9 @@ class UjiriksaController extends Controller
         $jenisuji = $request->input('jenis_uji');
 
         $date = Carbon::parse('now');
-        $kode = $date->format('dm').'-'. '1' . '/UJI/NDT/' . $date->format('Y');
+        $counter = Formujiriksa::whereDate('created_at','=',date('Y-m-d'))->count()+1;
+        // dd($counter);
+        $kode = $date->format('dm').'-'. $counter . '/UJI/NDT/' . $date->format('Y');
         
         // penentuan nomer registrasi berdasarkan jenis uji
         if ($jenisuji == 'Hydrostatic') {
@@ -96,8 +98,11 @@ class UjiriksaController extends Controller
                     'keluhan' => $key['keluhan']
                 ]);
                 $table->itemujiriksa()->save($item);
-                    
+
+                // dd($request->hasFile($key['fototabung']));
+                // if ($key->hasFile()) {
                     // isi field cover jika ada cover yg di upload
+                
                 if (is_array($key['fototabung'])) {
                     
                     //ambil file yang di upload
@@ -113,7 +118,7 @@ class UjiriksaController extends Controller
 
                         // simpan file ke folder storage/foto
 
-                        $destinationPath = storage_path('foto');
+                        $destinationPath = storage_path('app/public/foto');
                         $foto->move($destinationPath, $filename);
 
                         // mengisi field foto tabung masuk dengan filename yg baru dibuat
@@ -122,6 +127,7 @@ class UjiriksaController extends Controller
                             'foto_tabung_masuk' => $filename,
                             'itemujiriksa_id' => $item->id
                             ]);
+                    // }
                     }
                 }
             }
@@ -159,8 +165,9 @@ class UjiriksaController extends Controller
      */
     public function edit($id)
     {
+        $tabungs = Tube::all();
         $ujiriksas = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.fototabung')->findOrFail($id);
-        return view('ujiriksa.edit')->with(compact('ujiriksas'));
+        return view('ujiriksa.edit')->with(compact('ujiriksas', 'tabungs'));
     }
 
     /**
@@ -234,7 +241,14 @@ class UjiriksaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ujiriksas = Formujiriksa::find($id);
+        $ujiriksas->delete();
+
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>" Form Ujiriksa <b> $ujiriksas->no_registrasi </b> Berhasil Dihapus!"
+            ]);
+        return redirect()->route('ujiriksa.index');
     }
 
     public function changeStatus($id)

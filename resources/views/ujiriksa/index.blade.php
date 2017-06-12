@@ -35,8 +35,12 @@
 						        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
 						            <td>{{ $fu->jenis_uji }}</td>
 						        	<td>{{ $fu->progress }}</td>
-						            <td>{{ $fu->created_at }}</td>
-						            <td>{{ $fu->done_at or 'Belum Selesai' }}</td>
+						            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+						            @if(isset($fu->done_at))
+						            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+						            @else
+						            <td>{{ "Belum Selesai" }}</td>
+						            @endif
 						            <td><a href="#">{{ $fu->customer->nama }}</a></td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -113,7 +117,7 @@
 <script>
 	$(document).ready( function () {
 	    $('#table_id').DataTable({
-	    "order": [[ 3, "desc" ]],
+	    "aaSorting": [],
 	  	"columnDefs": [ {
 		    "targets": [ 6 ],
 		    "searchable": false,

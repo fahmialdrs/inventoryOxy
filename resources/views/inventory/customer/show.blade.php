@@ -37,7 +37,7 @@
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Member</td>
-								<td>{{ $customers->tanggal_member }}</td>
+								<td>{{ date("d-m-Y", strtotime($customers->tanggal_member)) }}</td>
 							</tr>
 						</table>
 						<ul class="nav nav-tabs" role="tablist">
@@ -62,7 +62,7 @@
 								            <th>Terakhir Hydrostatic</th>
 								            <th>Terakhir Visualstatic</th>
 								            <th>Status</th>
-								            <th class="action">Action</th>
+								            <th class="action">Aksi</th>
 								        </tr>
 								    </thead>
 								    <tbody>
@@ -70,16 +70,26 @@
 								        <tr>
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->gas_diisikan }}</td>
-								            <td>{{ $t->terakhir_hydrostatic }}</td>
-								            <td>{{ $t->terakhir_visualstatic }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
 								            <td>{{ $t->status }}</td>
 								            <td>
-								            	<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
-						                            <input name="_method" type="hidden" value="DELETE">
-						                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
-						                            <a href="{{ route('tabung.edit',$t->id) }}" class="btn btn-xs btn-primary">Edit</a>
-				                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
-				                        		</form>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  	<li>
+															<a type="button" href="{{ route('tabung.edit', $t->id) }}">Edit</a>
+													  	</li>
+													  	<li>
+															<a type="button" href="{{ route('tabung.destroy', ['id' => $t->id]) }}">Delete</a>
+													  	</li>
+													  	<li role="separator" class="divider"></li>
+													  </ul>
+													</div>
+												</div>
 								            </td>
 								        </tr>
 								    @endforeach
@@ -87,14 +97,14 @@
 								</table>
 							</div>
 							<div class="tab-pane" role="tabpanel" id="history">
-								<table id="history" class="display">
+								<table id="histori" class="display">
 								    <thead>
 								        <tr>
 								            <th>No Tabung</th>
 								            <th>Jenis Kegiatan</th>
 								            <th>Keluhan</th>
 								            <th>Tanggal Kegiatan</th>
-								            <th>Attachment</th>
+								            <th>Hasil</th>
 								            <th>Action</th>
 								        </tr>
 								    </thead>
@@ -105,15 +115,36 @@
 								            <td><a href="{{ route('tabung.show',$t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
 								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
-								            <td>{{ $t->formujiriksa->done_at or 'Belum Selesai' }}</td>
-								            <td><a href="#">File</a></td>
+								            @if(isset($t->formujiriksa->done_at))
+								            <td>{{ $t->formujiriksa->done_at->format('d-m-Y') }}</td>
+								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
+								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
+								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
+								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
+								            @elseif($t->formujiriksa->jenis_uji == "Service")
+											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
+											@endif
+								            @else
+								            <td>{{ "Belum Selesai" }}</td>
+								            <td>Hasil Belum Ada</td>
+								            @endif
 								            <td>
-								            	<form method="POST" action="{{ route('tabung.destroy', $t->id) }}" accept-charset="UTF-8">
-						                            <input name="_method" type="hidden" value="DELETE">
-						                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
-						                            <a href="{{ route('tabung.edit',$t->id) }}" class="btn btn-xs btn-primary">Edit</a>
-				                        			<input type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete">
-				                        		</form>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  	<li>
+															<a type="button" href="#">Edit</a>
+													  	</li>
+													  	<li>
+															<a type="button" href="#">Delete</a>
+													  	</li>
+													  	<li role="separator" class="divider"></li>
+													  </ul>
+													</div>
+												</div>
 								            </td>
 								        </tr>
 								        @endforeach
@@ -132,7 +163,8 @@
 @section('scripts')
 	<script>
 		$(document).ready( function () {
-		    $('.display').dataTable( {
+		    $('#tabung').dataTable( {
+		    	"aaSorting": [],
 			  	"columnDefs": [ {
 				    "targets": [ 5 ],
 				    "searchable": false,
@@ -140,6 +172,14 @@
 			    } ]
 		} );
 
+		    $('#histori').dataTable( {
+		    	"order": [[ 3, "desc" ]],
+			  	"columnDefs": [ {
+				    "targets": [ 5 ],
+				    "searchable": false,
+				    "orderable": false
+			    } ]
+		} );
 		
 			} );
 	</script>
