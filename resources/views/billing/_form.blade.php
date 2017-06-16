@@ -87,29 +87,33 @@
     </thead>
     <tbody id='input_fields_wrap'>
         @if(isset($billings->itembilling))
-        @foreach($billings->itembilling as $i)
+        <?php $a=0; ?>
+        @foreach($billings->itembilling as $i)        
         <tr class="bill">
             <td>
-                <input id="qty[0]" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
+                <input id="qty-{{$a}}" type="number" value="{{ $i->quantity }}" name="itembiling[{{$a}}][quantity]" required>
             </td>                
             <td>
-                <textarea id="des" type="text" name="itembiling[0][deskripsi]" required>{{ $i->deskripsi or old('itembiling[0][deskripsi]') }}</textarea>
+                <textarea id="des" type="text" name="itembiling[{{$a}}][deskripsi]" required>{{ $i->deskripsi }}</textarea>
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="upr[0]" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
+                    <input id="upr-{{$a}}" type="number" value="{{ $i->unitprice }}" name="itembiling[{{$a}}][unitprice]" onblur="calculate()" required>
                 </div>                
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt[0]" type="number" value="{{ $i->amount or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" required>
+                    <input id="amnt-{{$a}}" type="number" value="{{ $i->amount }}" name="itembiling[{{$a}}][amount]" required>
                 </div>
             </td>
+            <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>
         </tr>
+        <?php $a++; ?>
         @endforeach
         @else
+        <?php $a=0; ?>
         <tr class="bill">
             <td>
                 <input id="qty-0" class="qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
@@ -130,6 +134,7 @@
                 </div>
             </td>
         </tr>
+        <?php $a++; ?>
         @endif
     </tbody>
 </table>
@@ -289,11 +294,11 @@
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
     
-    var x = 0; //initlal text box count
+    var x = {{$a}}; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
-            x++; //text box increment
+            
             $(wrapper).append('<tr class="bill">\
             <td>\
                 <input id="qty-' + x +'" class="qty" type="number" value="{{ old('itembiling[][quantity]') }}" name="itembiling[' + x +'][quantity]">\
@@ -315,6 +320,7 @@
             </td>\
             <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>\
         </tr>'); //add input box
+            x++; //text box increment
         }
     });
     
@@ -326,7 +332,6 @@
     })
 });
 </script>
-
 <script type="text/javascript">
     // hitung amount
     calculate = function()

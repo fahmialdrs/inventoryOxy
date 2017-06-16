@@ -50,50 +50,43 @@ class VisualstaticController extends Controller
         // ]);
 
         $noform = $request->no_registrasi;
-        $data = $request->visualresult;
-        // dd($data);
-
+        $data = $request->all();
+        // dd($request->all());
+        
         if(isset($data)){
-            foreach ($data as $v ) {
+            $dataVisual = $request->visualresult;
+            foreach ($dataVisual as $v ) {
                 $visual = new Visualresult([
                     'keterangan_visual' => $v['keterangan_visual'],
                     'itemujiriksa_id' => $v['itemujiriksa_id']
                     ]);
-                // $service['tanggal_uji'] = $request->tanggal_uji;
-
-                // dd($visual);
+                                
                 $visual->save();
+
+                if (is_array($v['foto_tabung_visual'])) {
+                    $uploaded = $v['foto_tabung_visual'];
+
+                    foreach ($uploaded as $foto) {
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
+
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fotovisual::create([
+                            'foto_tabung_visual' => $filename,
+                            'visualresult_id' => $visual->id
+                            ]);
+                    }
+                }
             }
-        }
-
-        // isi field cover jika ada cover yg di upload
-
-        if ($request->hasFile('foto_tabung_visual')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_visual');
-
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
-
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
-
-            // simpan file ke folder public/img
-
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
-
-            // mengisi field cover di book dengan filename yg baru dibuat
-
-            $visual = new Visualresult();
-            $visual->foto_tabung_visual = $filename;
-            $visual->keterangan_foto = $request->input('keterangan_foto');
-            $visual->save();
-            // $visual = Visualresult::create([
-            //     'foto_tabung_visual'=>$filename,
-            //     'keterangan_foto'=> $request->input('keterangan_foto')
-            // ]);
         }
 
         Session::flash("flash_notification", [

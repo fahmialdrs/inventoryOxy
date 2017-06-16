@@ -70,7 +70,7 @@
                                 <td>{{ $t->serviceresult->keterangan_service}}</td>
                                 <td>
                                 @foreach($t->serviceresult->fotoservice as $ft)
-                                    {{ $ft->foto_tabung_service }}<br>
+                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
                                 @endforeach
                                 </td>
                                 <td><a href="{{ route('service.edit', $t->serviceresult->id) }}" class="btn btn-xs btn-primary">Edit</a></td

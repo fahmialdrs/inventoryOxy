@@ -21,7 +21,7 @@
 					    <label for="no_invoice" class="col-md-2 control-label">No Invoice</label>
 
 					    <div class="col-md-4">
-					        <input id="no_invoice" type="text" class="form-control" name="no_invoice" value="{{ $billings->no_invoice }}" disabled>
+					        <input id="no_invoice" type="text" class="form-control" name="no_invoice" value="{{ $billings->no_invoice }}">
 
 					        @if ($errors->has('no_invoice'))
 					            <span class="help-block">
@@ -30,6 +30,8 @@
 					        @endif
 					    </div>
 					</div>
+					
+					<input type="hidden" name="status" value="{{ $billings->status }}">
 					
 					@include('billing._form')
 					{!! Form::close()!!}

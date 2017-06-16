@@ -66,12 +66,11 @@
 								<td>:</td>
 								<td>
 									@foreach ($visual->fotovisual as $foto)
-										{{ $foto->foto_tabung_visual }} <br>
+										<img src="{{ asset('storage/foto/'.$foto->foto_tabung_visual) }}" class="img-rounded" width="100" height="75">
 									@endforeach
 								</td>
 							</tr>
 						</table>
-					</div>
 					</div>
 				</div>
 			</div>

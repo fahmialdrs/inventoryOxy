@@ -68,9 +68,9 @@
                                 <td>{{ $t->nama_barang }}</td>
                                 <td>{{ $t->keluhan }}</td>
                                 <td>{{ $t->visualresult->keterangan_visual}}</td>
-                                <td>
+                                <td> 
                                 @foreach($t->visualresult->fotovisual as $ft)
-                                    {{ $ft->foto_tabung_visual }}<br>
+                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_visual) }}" class="img-rounded" width="100" height="75">
                                 @endforeach
                                 </td>
                                 <td><a href="{{ route('visualstatic.edit', $t->visualresult->id) }}" class="btn btn-xs btn-primary">Edit</a></td

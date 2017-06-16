@@ -107,7 +107,7 @@ class BillingController extends Controller
      */
     public function edit($id)
     {
-        $billings = Billing::with(['customer','itembilling'])->findOrFail($id);
+        $billings = Billing::with('customer','itembilling')->findOrFail($id);
         return view('billing.edit')->with(compact('billings'));
     }
 
@@ -120,15 +120,51 @@ class BillingController extends Controller
      */
     public function update(UpdateBillingRequest $request, $id)
     {
-        $billings = Billing::findOrFail($id);
-        if (!$billings->update($request->except(['alamat', 'email', 'quantity', 'deskripsi', 'unitprice', 'amount']))) return redirect()->back();
+        $billings = Billing::with('itembilling')->findOrFail($id);
+        
+        
+        $data = $request->except(['alamat', 'email']);
+        // dd($data);
+        // $counter = Billing::whereDate('created_at','=',date('Y-m-d'))->count()+1;        
+        // $date = Carbon::parse('now');
+        // $noinv = $date->format('dm').'-'. $counter . '/INV/NDT/EB/' .$date->format('m'). '/' .$date->format('y');
+        // // dd($noinv);
+        // $data['no_invoice'] = $noinv;
+        // $data['status'] = $billings->status;
+        // dd($request->subtotal);
+        array_forget($data,'itembiling');
+        
+        $billings->fill($data)->save();
+        
+
+        if (isset($request->itembiling)) {
+            foreach ($billings->itembilling as $i) {
+                // dd($i);
+                $i->delete();    
+            }
+            foreach ($request->itembiling as $key ) {
+                    $item = new Itembilling([
+                        'quantity' => $key['quantity'],
+                        'deskripsi' => $key['deskripsi'],
+                        'unitprice' => $key['unitprice'],
+                        'amount' => $key['amount']
+                    ]);
+                    $billings->itembilling()->save($item);
+                    // dd($data);
+            }
+        }
+
+        Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings) {
+            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive');
+        });
 
         Session::flash("flash_notification", [
-            "level" => "success", 
+            "level" => "success",
             "message" => "Invoice <b> $billings->no_invoice </b> berhasil diperbaharui"
             ]);
 
         return redirect()->route('billing.index');
+
     }
 
     /**

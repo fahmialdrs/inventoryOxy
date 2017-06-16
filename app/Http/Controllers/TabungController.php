@@ -64,7 +64,6 @@ class TabungController extends Controller
     public function show($id)
     {
         $tabungs = Tube::with(['itemujiriksa.formujiriksa','customer.billing'])->findOrFail($id);
-        // dd($tabungs);        
         return view('inventory.tabung.show')->with(compact('tabungs'));
     }
 

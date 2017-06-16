@@ -2,7 +2,7 @@
     <label for="no_registrasi" class="col-md-2 control-label">No Registrasi Uji</label>
 
     <div class="col-md-4">
-        <input id="no_registrasi" type="text" class="form-control" name="no_registrasi" value="{{ $form->no_registrasi }}" disabled>
+        <input id="no_registrasi" type="text" class="form-control" name="no_registrasi" value="{{ $form->no_registrasi }}">
 
         @if ($errors->has('no_registrasi'))
             <span class="help-block">
@@ -24,7 +24,7 @@
     <label for="tanggal_uji" class="col-md-2 control-label">Tanggal Service</label>
 
     <div class="col-md-4">
-        <input id="tanggal_uji" type="date" class="form-control" name="tanggal_uji" value="{{ $form->progress_at or old('tanggal_uji') }}" >
+        <input id="tanggal_uji" type="date" class="form-control" name="tanggal_uji" value="{{ $form->progress_at->format('Y-m-d') }}" >
 
         @if ($errors->has('tanggal_uji'))
             <span class="help-block">
@@ -53,13 +53,13 @@
             <td><b> {{ $a+1 }}</b></td>            
             <td>
                 <div class="{{ $errors->has('tube_id') ? ' has-error' : '' }}">
-                    <input id="tube_id" type="text" class="" name="tserviceresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>
+                    <input id="tube_id" type="text" class="" name="serviceresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>
                     {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
                 </div>
             </td>
             <td>
                 <div class="{{ $errors->has('jumlah_barang') ? ' has-error' : '' }}">
-                    <input id="jumlah_barang" type="text" class="" name="tserviceresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>
+                    <input id="jumlah_barang" type="text" class="" name="serviceresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>
 
                     @if ($errors->has('jumlah_barang'))
                         <span class="help-block">
@@ -70,7 +70,7 @@
             </td>
             <td>
                 <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
-                    <input id="nama_barang" type="text" class="" name="tserviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
+                    <input id="nama_barang" type="text" class="" name="serviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
 
                     @if ($errors->has('nama_barang'))
                         <span class="help-block">
@@ -81,7 +81,7 @@
             </td>
             <td>
                 <div class="{{ $errors->has('keluhan') ? ' has-error' : '' }}">
-                    <input id="keluhan" type="text" class="" name="tserviceresult[{{ $a }}][keluhan]" value="{{ $t->keluhan or old('keluhan') }}" disabled>
+                    <input id="keluhan" type="text" class="" name="serviceresult[{{ $a }}][keluhan]" value="{{ $t->keluhan or old('keluhan') }}" disabled>
 
                     @if ($errors->has('keluhan'))
                         <span class="help-block">
@@ -102,7 +102,7 @@
                 </div>
             </td>
             <td>
-                <input type="file" name="fotoservice[{{ $a }}][foto_tabung_service]" multiple>
+                <input type="file" name="serviceresult[{{ $a }}][foto_tabung_service][]" multiple>
                 <input type="hidden"  name="serviceresult[{{ $a }}][itemujiriksa_id]" value="{{ $t->id  }}">
             </td>
         </tr>

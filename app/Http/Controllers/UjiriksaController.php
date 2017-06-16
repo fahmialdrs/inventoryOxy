@@ -84,7 +84,6 @@ class UjiriksaController extends Controller
         $data['progress'] = 'Waiting List';
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
-        array_forget($data,'foto_tabung_masuk');
         $table = new Formujiriksa;
         $table->fill($data);
         $table->save();
@@ -166,8 +165,10 @@ class UjiriksaController extends Controller
     public function edit($id)
     {
         $tabungs = Tube::all();
+        $selectedTubes = Itemujiriksa::where('formujiriksa_id',$id)->with('tube')->get();
+        // dd($selectedTubes->tube->id);
         $ujiriksas = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.fototabung')->findOrFail($id);
-        return view('ujiriksa.edit')->with(compact('ujiriksas', 'tabungs'));
+        return view('ujiriksa.edit')->with(compact('ujiriksas', 'tabungs', 'selectedTubes'));
     }
 
     /**
@@ -179,6 +180,8 @@ class UjiriksaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $ujiriksas = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.fototabung')->findOrFail($id);
+
         // $this->validate($request, [
         //     'tube_id' => 'required|exists:tubes,id',
         //     'keluhan' => 'required|max:255',
@@ -186,51 +189,107 @@ class UjiriksaController extends Controller
         //     'foto_tabung_masuk'=> 'image|max:8192',
         // ]);
 
-        $ujiriksas = Formujiriksa::findOrFail($id);
-        if (!$ujiriksas->update($request->all())) return redirect()->back();
+        // request semua data
+        $data = $request->except('keterangan_foto');
+        // dd($request->all());
+        array_forget($data,'itemujiriksa');
+        $ujiriksas->fill($data)->save();
 
-        // isi field cover jika ada cover yg di upload
+        if (isset($request->itemujiriksa)) { 
+            foreach ($request->itemujiriksa as $key ) { 
+                $item = new Itemujiriksa([
+                    'jumlah_barang' => $key['jumlah_barang'],
+                    'nama_barang' => $key['nama_barang'],
+                    'tube_id' => $key['tube_id'],
+                    'keluhan' => $key['keluhan']
+                ]);
+                $ujiriksas->itemujiriksa()->fill($item)->save();
 
-        if ($request->hasFile('foto_tabung_masuk')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_masuk');
+                // dd($request->hasFile($key['fototabung']));
+                    // isi field cover jika ada cover yg di upload
+                
+                if (is_array($key['fototabung'])) {
+                    
+                    //ambil file yang di upload
+                    $uploaded =$key['fototabung'];
+                    
+                    foreach ($uploaded as $foto) {
+                        if ($foto != "") {
+                            // dd($foto);
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
 
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
 
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
+                        // simpan file ke folder storage/foto
 
-            // simpan file ke folder public/img
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
 
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
-
-            //hapus cover lama jika ada
-
-            if($ujiriksas->foto_tabung_masuk) {
-                $old_foto = $ujiriksas->foto_tabung_masuk;
-                $filepath = public_path() . DIRECTORY_SEPARATOR . 'img'
-                . DIRECTORY_SEPARATOR . $ujiriksas->foto_tabung_masuk;
-
-                try {
-                    File::delete($filepath);
-                } catch (FileNotFoundException $e) {
-                    // file sudah tidak ada
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fototabung::create([
+                            'foto_tabung_masuk' => $filename,
+                            'itemujiriksa_id' => $item->id
+                            ]);
+                        }
+                    }
                 }
             }
-
-            // mengisi field cover di book dengan filename yg baru dibuat
-            $ujiriksas->foto_tabung_masuk = $filename;
-            $ujiriksas->save();
         }
-            Session::flash("flash_notification", [
+        
+        Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
-        ]);
+            "message" => "Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
+            ]);
 
-            return redirect()->route('ujiriksa.index');
+        return redirect()->route('ujiriksa.index');
+
+        // if (!$ujiriksas->update($request->all())) return redirect()->back();
+
+        // // isi field cover jika ada cover yg di upload
+
+        // if ($request->hasFile('foto_tabung_masuk')) {
+            
+        //     //ambil file yang di upload
+        //     $uploaded = $request->file('foto_tabung_masuk');
+
+        //     // ambil extension file
+        //     $extension = $uploaded->getClientOriginalExtension();
+
+        //     // membuat nama file random
+        //     $filename = md5(time()) . '.' . $extension;
+
+        //     // simpan file ke folder public/img
+
+        //     $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
+        //     $uploaded->move($destinationPath, $filename);
+
+        //     //hapus cover lama jika ada
+
+        //     if($ujiriksas->foto_tabung_masuk) {
+        //         $old_foto = $ujiriksas->foto_tabung_masuk;
+        //         $filepath = public_path() . DIRECTORY_SEPARATOR . 'img'
+        //         . DIRECTORY_SEPARATOR . $ujiriksas->foto_tabung_masuk;
+
+        //         try {
+        //             File::delete($filepath);
+        //         } catch (FileNotFoundException $e) {
+        //             // file sudah tidak ada
+        //         }
+        //     }
+
+        //     // mengisi field cover di book dengan filename yg baru dibuat
+        //     $ujiriksas->foto_tabung_masuk = $filename;
+        //     $ujiriksas->save();
+        // }
+        //     Session::flash("flash_notification", [
+        //     "level"=>"success",
+        //     "message"=>"Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
+        // ]);
+
+        //     return redirect()->route('ujiriksa.index');
     }
 
     /**

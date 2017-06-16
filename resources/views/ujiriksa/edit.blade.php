@@ -14,8 +14,8 @@
 				<div class="panel-heading">
 					<h2 class="panel-title">Edit Form Registrasi Ujiriksa</h2>
 				</div>
-				<div class="panel-body">
-					{!! Form::model($ujiriksas, ['url'=>route('ujiriksa.update', $ujiriksas->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
+				<div class="panel-body" style="overflow:auto; ">
+					<form class="form-horizontal" role="form" method="put" action="{{ route('ujiriksa.update', $ujiriksas->id) }}" enctype="multipart/form-data">
 
 					<div class="form-group{{ $errors->has('no_registrasi') ? ' has-error' : '' }}">
 					    <label for="no_registrasi" class="col-md-4 control-label">No Registrasi</label>
@@ -32,7 +32,7 @@
 					</div>
 					
 					@include('ujiriksa._form')
-					{!! Form::close()!!}
+					</form>
 				</div>
 			</div>
 		</div>

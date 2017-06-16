@@ -88,7 +88,9 @@
 								            <th>Kode</th>
 								            <th>Kapasitas Isi Tabung</th>
 								            <th>Tanggal Pemadatan Terakhir</th>
+								            <th>Tanggal Pemadatan Selanjutnya</th>
 								            <th>Tanggal Visual Terakhir</th>
+								            <th>Tanggal Visual Selanjutnya</th>
 								            <th>Nama Pemilik</th>
 								            <th searchable=false, orderable=false>Action</th>
 								        </tr>
@@ -99,8 +101,10 @@
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->kode_tabung }}</td>
 								            <td>{{ $t->isi_tabung }}</td>
-								            <td>{{ $t->terakhir_hydrostatic or '' }}</td>
-								            <td>{{ $t->terakhir_visualstatic }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->addYears(1)->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</td>
 								            <td><a href="{{ route('customer.show',['id'=>$t->id]) }}">{{ $t->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -152,7 +156,7 @@
 		$('#tabung').dataTable( {
 			"aaSorting": [],
 	  	"columnDefs": [ {
-		    "targets": [ 6 ],
+		    "targets": [ 8 ],
 		    "searchable": false,
 		    "orderable": false
 	    	} ]

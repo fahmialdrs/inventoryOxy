@@ -96,7 +96,7 @@
 						            <th>Nama Barang</th>
 						            <th>No Tabung</th>
 						            <th>Keluhan</th>
-						            <th>Foto</th>
+						            <th>Foto Barang Masuk</th>
 						            <th>Hasil</th>
 						        </tr>
 						    </thead>
@@ -109,7 +109,11 @@
 						            <td>{{ $t->nama_barang or '' }}</td>
 						            <td><a href="{{ route('tabung.show', $t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
 						            <td>{{ $t->keluhan or '' }}</td>
-						            <td>Foto</td>
+						            <td>
+						            	@foreach($t->fototabung as $foto)                     
+					                        <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded" width="100" height="75">                    
+					                   @endforeach
+						            </td>
 
 						            @if( $form->jenis_uji == "Hydrostatic")
 						            @if(isset($t->hydrostaticresult))

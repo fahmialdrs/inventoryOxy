@@ -47,48 +47,43 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $noform = $request->no_registrasi;
-        $data = $request->serviceresult;
-        // dd($data);
+        $data = $request->all();
+        // dd($request->all());
 
         if(isset($data)){
-            foreach ($data as $s ) {
+            $dataService = $request->serviceresult;
+            foreach ($dataService as $v ) {
                 $service = new Serviceresult([
-                    'keterangan_service' => $s['keterangan_service'],
-                    'itemujiriksa_id' => $s['itemujiriksa_id']
+                    'keterangan_service' => $v['keterangan_service'],
+                    'itemujiriksa_id' => $v['itemujiriksa_id']
                     ]);
-                // $service['tanggal_uji'] = $request->tanggal_uji;
-
-                // dd($service);
+                                
                 $service->save();
+
+                if (is_array($v['foto_tabung_service'])) {
+                    $uploaded = $v['foto_tabung_service'];
+
+                    foreach ($uploaded as $foto) {
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
+
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fotoservice::create([
+                            'foto_tabung_service' => $filename,
+                            'serviceresult_id' => $service->id
+                            ]);
+                    }
+                }
             }
-        }
-        
-        // isi field cover jika ada cover yg di upload
-
-        if ($request->hasFile('foto_tabung_masuk')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_masuk');
-
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
-
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
-
-            // simpan file ke folder public/img
-
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
-
-            // mengisi field cover di book dengan filename yg baru dibuat
-            $fototabung = Fototabung::create([
-                'foto_tabung_masuk'=>$filename,
-                'keterangan_foto'=> $request->input('keterangan_foto')
-            ]);
-
-            // save ke pivot table
-            $services->fototabung()->sync([$fototabung->id]);
         }
 
         Session::flash("flash_notification", [
@@ -96,7 +91,7 @@ class ServiceController extends Controller
             "message" => "Registrasi Service dengan no Registrasi <b> $noform </b> Berhasil"
             ]);
 
-        return redirect()->route('service.index');
+        return redirect()->route('ujiriksa.index');
     }
 
     /**

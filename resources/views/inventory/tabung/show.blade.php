@@ -22,46 +22,67 @@
 							<table class="table">
 								<tr>
 									<td class="text-muted">No Tabung</td>
+									<td>:</td>
 									<td>{{ $tabungs->no_tabung }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Pemilik</td>
+									<td>:</td>
 									<td><a href="{{ route('customer.show', $tabungs->customer_id) }}">{{ $tabungs->customer->nama }}</a></td>
 								</tr>
 								<tr>
 									<td class="text-muted">Gas yang Diisikan</td>
+									<td>:</td>
 									<td>{{ $tabungs->gas_diisikan }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Kode Tabung</td>
+									<td>:</td>
 									<td>{{ $tabungs->kode_tabung }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Warna Tabung</td>
+									<td>:</td>
 									<td>{{ $tabungs->warna_tabung }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Isi Tabung</td>
+									<td>:</td>
 									<td>{{ $tabungs->isi_tabung }} Liter</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Pembuatan Tabung</td>
+									<td>:</td>
 									<td>{{ date("d-m-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Status Tabung</td>
+									<td>:</td>
 									<td>{{ $tabungs->status }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
+									<td>:</td>
 									<td>{{ $tabungs->terakhir_hydrostatic->format('d-m-Y') }}</td>
 								</tr>
 								<tr>
+									<td class="text-muted"><b>Tanggal Selanjutnya Hydrostatic</b></td>
+									<td>:</td>
+									<td><b>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('d-m-Y') }}</b></td>
+								</tr>
+								<tr>
 									<td class="text-muted">Tanggal Terakhir Visualstatic</td>
+									<td>:</td>
 									<td>{{ $tabungs->terakhir_visualstatic->format('d-m-Y') }}</td>
 								</tr>
 								<tr>
+									<td class="text-muted"><b>Tanggal Selanjutnya Visualstatic</b></td>
+									<td>:</td>
+									<td><b>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</b></td>
+								</tr>
+								<tr>
 									<td class="text-muted">Tanggal Terakhir Service</td>
+									<td>:</td>
 									<td>{{ $tabungs->terakhir_service->format('d-m-Y') }}</td>
 								</tr>
 							</table>

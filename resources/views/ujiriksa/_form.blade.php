@@ -188,36 +188,40 @@
     </thead>
     <tbody id='input_fields_wrap'>
         @if(isset($ujiriksas->itemujiriksa))
+        <?php $a=0; ?>
         @foreach($ujiriksas->itemujiriksa as $i)
         <tr>
             <td>
-                <input type="number" class="form-control" value="{{ $i->jumlah_barang or old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
+                <input type="number" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]">
             </td>                
             <td>
-                <input type="text" class="form-control" value="{{ $i->nama_barang or old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
+                <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]">
             </td>
             <td>
-                <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
+                <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
-                        <option value={{ $t->tube->id }}> {{ $t->tube->no_tabung }}</option>
+                        <option value="{{ $t->tube->id }}">{{ $t->tube->no_tabung }}</option>
                     @endforeach
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control" value="{{ $i->keluhan or old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
+                <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk or old('fototabung[0][foto_tabung_masuk]') }}" name="fototabung[0][foto_tabung_masuk]">
+                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk }}" name="itemujiriksa[{{$a}}][fototabung][]">
                 <span>
                     @foreach($i->fototabung as $foto)                     
-                        <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded img-responsive" width="100" height="100">                    
+                        <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded" width="100" height="75">                    
                    @endforeach
                 </span>
             </td>
+            <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>
         </tr>
+        <?php $a++; ?>
         @endforeach
         @else
+        <?php $a=0; ?>
         <tr>
             <td>
                 <input type="number" class="form-control" value="{{ old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
@@ -240,6 +244,7 @@
                 <input type="file" class="form-control" value="{{ old('itemujiriksa[0][fototabung][]') }}" name="itemujiriksa[0][fototabung][]" multiple />
             </td>
         </tr>
+        <?php $a++; ?>
         @endif
     </tbody>
 </table>
@@ -269,11 +274,10 @@
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
     
-    var x = 0; //initlal text box count
+    var x = {{$a}}; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
-            x++; //text box increment
             $(wrapper).append('<tr>\
             <td>\
                 <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="itemujiriksa[' + x +'][jumlah_barang]">\
@@ -293,10 +297,11 @@
                 <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]">\
             </td>\
             <td>\
-                <input type="file" class="form-control" value="{{ old("itemujiriksa['+ x +'][fototabung][]") }}" name="itemujiriksa['+ x +'][fototabung][]" multiple>\
+                <input type="file" class="form-control" value="{{ old("itemujiriksa['+ x +'][fototabung][]") }}" name="itemujiriksa[' + x +'][fototabung][]" multiple>\
             </td>\
             <td><a class="btn btn-danger remove_field">Hapus Kolom</a></td>\
         </tr>'); //add input box
+            x++; //text box increment
         }
     });
     

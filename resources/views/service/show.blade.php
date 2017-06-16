@@ -66,7 +66,7 @@
 								<td>:</td>
 								<td>
 									@foreach ($service->fotoservice as $foto)
-										{{ $foto->foto_tabung_service }} <br>
+										<img src="{{ asset('storage/foto/'.$foto->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
 									@endforeach
 								</td>
 							</tr>
