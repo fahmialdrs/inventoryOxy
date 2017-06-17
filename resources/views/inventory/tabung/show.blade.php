@@ -133,6 +133,9 @@
 								</table>
 							</div> -->
 							<div class="tab-pane active" role="tabpanel" id="history_tabung">
+							<p class="pull-right"> 
+								<a class="btn btn-warning" href="{{ route('tabung.exportExcelDetail', $tabungs->id) }}">Export Data Detail Tabung</a>
+							</p>
 								<table id="history_tabung" class="display">
 								    <thead>
 								        <tr>

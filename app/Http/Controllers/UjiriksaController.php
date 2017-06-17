@@ -131,6 +131,14 @@ class UjiriksaController extends Controller
                 }
             }
         }
+
+        $status = "";
+        $this->savePdf($table->id, $status);
+
+        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table) {
+            $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . '.pdf'));
+        });
         
         Session::flash("flash_notification", [
             "level"=>"success",
@@ -238,6 +246,14 @@ class UjiriksaController extends Controller
                 }
             }
         }
+
+        $status = "-update-" . Carbon::today()->format('d-m-Y');
+        $this->savePdf($ujiriksas->id, $status);
+
+        Mail::send('ujiriksa.emailFormUpdate', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+            $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('Form Ujiriksa NDT Dive Update');
+            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $ujiriksas->id . $status .'.pdf'));
+        });
         
         Session::flash("flash_notification", [
             "level"=>"success",
@@ -363,5 +379,19 @@ class UjiriksaController extends Controller
         $pdf = PDF::loadView('ujiriksa.pdf', compact('ujiriksas'));
         $filename = 'Form Ujiriksa-'.' '.$ujiriksas->no_registrasi.'.pdf';
         return $pdf->stream($filename);
+    }
+
+    public function savePdf($id, $status) {
+        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'user')->find($id);
+        // dd($billings);
+        $pdf = PDF::loadView('ujiriksa.pdf', compact('ujiriksas'));
+        $filename = 'Form Ujiriksa-'. $ujiriksas->id . $status .'.pdf';
+
+        if ($pdf->save(storage_path('app/public/formuji/'. $filename))) {
+            return true;
+            
+        } else {
+            return false;
+        }
     }
 }

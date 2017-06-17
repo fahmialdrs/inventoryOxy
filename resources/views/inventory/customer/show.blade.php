@@ -54,6 +54,9 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" role="tabpanel" id="data_tabung">
+							<p class="pull-right"> 
+								<a class="btn btn-warning" href="{{ route('customer.exportExcelDetail', $customers->id) }}">Export Data Tabung Customer</a>
+							</p>
 								<table id="tabung" class="display">
 								    <thead>
 								        <tr>

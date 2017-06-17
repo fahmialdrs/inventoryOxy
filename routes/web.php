@@ -98,6 +98,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'customer.exportExcel',
 		'uses' => 'CustomerController@exportExcel'
 		]);
+	Route::get('exportExcelDetail/customer/{id}', [
+		'as' => 'customer.exportExcelDetail',
+		'uses' => 'CustomerController@exportExcelDetail'
+		]);
 
 
 	// Route::resource('tabung', 'TabungController');
@@ -137,6 +141,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('exportExcel/tabung', [
 		'as' => 'tabung.exportExcel',
 		'uses' => 'TabungController@exportExcel'
+		]);
+	Route::get('exportExcelDetail/tabung/{id}', [
+		'as' => 'tabung.exportExcelDetail',
+		'uses' => 'TabungController@exportExcelDetail'
 		]);
 
 

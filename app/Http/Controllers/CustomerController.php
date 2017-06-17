@@ -161,4 +161,18 @@ class CustomerController extends Controller
 
         return redirect()->route('customer.index');
     }
+
+    public function  exportExcelDetail($id){
+
+    $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->findOrFail($id);
+
+    $export = Excel::create('Detail Customer '.$customers->nama, function($excel) use ($customers){
+        $excel->setTitle('Data Detail Customer NDT Dive')->setCreator(Auth::user()->name);
+        $excel->sheet($customers->nama, function($sheet) use ($customers){
+            $sheet->loadView('inventory.customer.exportExcel',['customers'=>$customers]);
+      });
+    })->download('xls');
+
+    return redirect()->route('customer.index');
+   }
 }

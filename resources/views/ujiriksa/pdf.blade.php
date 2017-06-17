@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Invoice</title>
+  <title>Ujiriksa</title>
     <link href="{{ public_path('/css/font-awesome.min.css') }}" rel="stylesheet" media="screen" title="no title" charset="utf-8">
     <link href="{{ public_path('/css/bootstrap.min.css') }}" rel="stylesheet" media="screen" title="no title" charset="utf-8">
     <link href="{{ public_path('/css/app.css') }}" rel="stylesheet" media="screen" title="no title" charset="utf-8">

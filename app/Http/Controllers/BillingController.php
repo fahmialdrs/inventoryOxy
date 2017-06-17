@@ -71,8 +71,12 @@ class BillingController extends Controller
             }
         }
 
+        $status = "";
+        $this->savePdf($table->id, $status);
+
         Mail::send('billing.email', compact('table'), function ($m) use ($table) {
             $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
+            $m->attach(storage_path('app/public/invoice/Invoice-'. $table->id . '.pdf'));
         });
 
         Session::flash("flash_notification", [
@@ -153,9 +157,12 @@ class BillingController extends Controller
                     // dd($data);
             }
         }
+        $status = "-update-" . Carbon::today()->format('d-m-Y');
+        $this->savePdf($billings->id, $status);
 
         Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings) {
-            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive');
+            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive Update');
+            $m->attach(storage_path('app/public/invoice/Invoice-'. $billings->id . $status .'.pdf'));
         });
 
         Session::flash("flash_notification", [
@@ -209,16 +216,31 @@ class BillingController extends Controller
     }
 
     public function kirimEmail($id) {
-        $billings = Billing::with('itembilling', 'customer')->find($id);
-        Mail::send('billing.email', compact('billings'), function ($m) use ($billings) {
-            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive');
+        $table = Billing::with('itembilling', 'customer')->find($id);
+        Mail::send('billing.email', compact('table'), function ($m) use ($table) {
+            $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
+            $m->attach($this->exportPdf($table->id));
         });
 
         Session::flash("flash_notification", [
             "level" => "success", 
-            "message" => "Invoice <b> $billings->no_invoice </b> Telah dikirim ke Email <b>". $billings->customer->email . "</b>" 
+            "message" => "Invoice <b> $table->no_invoice </b> Telah dikirim ke Email <b>". $table->customer->email . "</b>" 
             ]);
 
         return redirect()->route('billing.index');
     } 
+
+    public function savePdf($id, $status) {
+        $billings = Billing::with('customer','itembilling')->find($id);
+        // dd($billings);
+        $pdf = PDF::loadView('billing.pdf', compact('billings'));
+        $filename = 'Invoice-'. $billings->id . $status .'.pdf';
+
+        if ($pdf->save(storage_path('app/public/invoice/'. $filename))) {
+            return true;
+            
+        } else {
+            return false;
+        }
+    }
 }

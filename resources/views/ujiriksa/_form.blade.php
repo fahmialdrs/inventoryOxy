@@ -209,7 +209,7 @@
                 <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]">
             </td>
             <td>
-                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk }}" name="itemujiriksa[{{$a}}][fototabung][]">
+                <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk }}" name="itemujiriksa[{{$a}}][fototabung][]" required>
                 <span>
                     @foreach($i->fototabung as $foto)                     
                         <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded" width="100" height="75">                    

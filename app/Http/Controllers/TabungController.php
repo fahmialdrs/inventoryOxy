@@ -168,4 +168,18 @@ class TabungController extends Controller
 
         return redirect()->route('customer.index');
     }
+
+    public function  exportExcelDetail($id){
+
+    $tabungs = Tube::with('itemujiriksa.formujiriksa','customer.billing')->findOrFail($id);
+
+    $export = Excel::create('Detail Tabung '.$tabungs->no_tabung, function($excel) use ($tabungs){
+        $excel->setTitle('Data Detail Tabung NDT Dive')->setCreator(Auth::user()->name);
+        $excel->sheet($tabungs->no_tabung, function($sheet) use ($tabungs){
+            $sheet->loadView('inventory.tabung.exportExcel',['tabungs'=>$tabungs]);
+      });
+    })->download('xls');
+
+    return redirect()->route('customer.index');
+   }
 }
