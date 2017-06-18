@@ -12,6 +12,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Models\Serviceresult;
 use App\Models\Fotoservice;
+use Illuminate\Support\Facades\File;
 
 class ServiceController extends Controller
 {
@@ -141,47 +142,50 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $service = Serviceresult::with('itemujiriksa.formujiriksa')->findOrFail($id);
-        $data = $request->except('fotoservice');
-        // dd($data);
+        $data = $request->all();
+        array_forget($data,'foto_tabung_service');
+        
         if (!$service->update($data)) return redirect()->back();
 
         // isi field cover jika ada cover yg di upload
 
         if ($request->hasFile('foto_tabung_service')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_service');
+            foreach ($service->fotoservice as $ft) {
+             
+                $filepath = storage_path('app/public/foto/') . $ft->foto_tabung_service;
 
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
+                    try {
+                        File::delete($filepath);
+                    } catch (FileNotFoundException $e) {
+                        // file sudah tidak ada
+                    }
 
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
-
-            // simpan file ke folder public/img
-
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
-
-            //hapus cover lama jika ada
-
-            if($services->foto_tabung_masuk) {
-                $old_foto = $services->foto_tabung_masuk;
-                $filepath = public_path() . DIRECTORY_SEPARATOR . 'img'
-                . DIRECTORY_SEPARATOR . $services->foto_tabung_masuk;
-
-                try {
-                    File::delete($filepath);
-                } catch (FileNotFoundException $e) {
-                    // file sudah tidak ada
-                }
+                    $ft->delete();
             }
 
-            // mengisi field cover di book dengan filename yg baru dibuat
-            $services->foto_tabung_masuk = $filename;
-            $services->save();
+            foreach ($request->foto_tabung_service as $foto) {
+
+                //ambil file yang di upload
+                // $uploaded = $request->file('foto_tabung_service');
+
+                // ambil extension file
+                $extension = $foto->getClientOriginalExtension();
+
+                // membuat nama file random
+                $filename = md5(str_random(8)) . '.' . $extension;
+
+                // simpan file ke folder public/img
+
+                $destinationPath = storage_path('app/public/foto');
+                $foto->move($destinationPath, $filename);
+
+                // mengisi field foto visuak didatabase dengan filename yg baru dibuat
+                Fotoservice::create([
+                    'foto_tabung_service' => $filename,
+                    'serviceresult_id' => $service->id
+                    ]);
+            }
         }
             Session::flash("flash_notification", [
             "level"=>"success",

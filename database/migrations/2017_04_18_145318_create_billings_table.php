@@ -39,6 +39,7 @@ class CreateBillingsTable extends Migration
             $table->string('deskripsi');
             $table->integer('unitprice');
             $table->integer('amount');
+            $table->timestamps();
             $table->integer('billing_id')->unsigned();
 
             $table->foreign('billing_id')->references('id')->on('billings')

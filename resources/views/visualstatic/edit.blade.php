@@ -16,7 +16,7 @@
 					<h2 class="panel-title">Edit Visualstatic</h2>
 				</div>
 				<div class="panel-body">
-					{!! Form::model($visual, ['url'=>route('visualstatic.update', $visual->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
+					{!! Form::model($visual, ['url'=>route('visualstatic.update', $visual->id), 'files' => true, 'method'=>'put', 'class'=>'form-horizontal']) !!}
 					@include('visualstatic._formSingle')
 					{!! Form::close()!!}
 				</div>

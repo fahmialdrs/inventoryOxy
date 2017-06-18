@@ -16,7 +16,7 @@
 					<h2 class="panel-title">Edit Form Registrasi Service</h2>
 				</div>
 				<div class="panel-body">
-					{!! Form::model($service, ['url'=>route('service.update', $service->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
+					{!! Form::model($service, ['url'=>route('service.update', $service->id), 'files' => true, 'method'=>'put', 'class'=>'form-horizontal']) !!}
 
 					@include('service._formSingle')
 					{!! Form::close()!!}

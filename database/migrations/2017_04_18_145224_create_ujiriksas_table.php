@@ -43,6 +43,7 @@ class CreateUjiriksasTable extends Migration
             $table->string('jumlah_barang');
             $table->string('nama_barang');
             $table->string('keluhan');
+            $table->timestamps();
             $table->integer('tube_id')->unsigned();
 
             $table->foreign('tube_id')->references('id')->on('tubes')

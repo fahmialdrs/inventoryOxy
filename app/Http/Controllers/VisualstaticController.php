@@ -151,44 +151,52 @@ class VisualstaticController extends Controller
         // ]);
 
         $visual = Visualresult::findOrFail($id);
-        $data = $request->except('fotovisual');
+        $data = $request->all();
+        // dd(isset($request->foto_tabung_visual));
+        array_forget($data,'foto_tabung_visual');
+        // dd($data);
+        
+        
         if (!$visual->update($data)) return redirect()->back();
 
-        // isi field cover jika ada cover yg di upload
+        // isi field foto visuak jika ada foto yg di upload
 
         if ($request->hasFile('foto_tabung_visual')) {
-            
-            //ambil file yang di upload
-            $uploaded = $request->file('foto_tabung_visual');
+            foreach ($visual->fotovisual as $ft) {
+             
+                $filepath = storage_path('app/public/foto/') . $ft->foto_tabung_visual;
 
-            // ambil extension file
-            $extension = $uploaded->getClientOriginalExtension();
+                    try {
+                        File::delete($filepath);
+                    } catch (FileNotFoundException $e) {
+                        // file sudah tidak ada
+                    }
 
-            // membuat nama file random
-            $filename = md5(time()) . '.' . $extension;
-
-            // simpan file ke folder public/img
-
-            $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-            $uploaded->move($destinationPath, $filename);
-
-            //hapus cover lama jika ada
-
-            if($visual->foto_tabung_masuk) {
-                $old_foto = $visual->foto_tabung_visual;
-                $filepath = public_path() . DIRECTORY_SEPARATOR . 'img'
-                . DIRECTORY_SEPARATOR . $visual->foto_tabung_visual;
-
-                try {
-                    File::delete($filepath);
-                } catch (FileNotFoundException $e) {
-                    // file sudah tidak ada
-                }
+                    $ft->delete();
             }
+            
+            foreach ($request->foto_tabung_visual as $foto) {
 
-            // mengisi field cover di book dengan filename yg baru dibuat
-            $visual->foto_tabung_visual = $filename;
-            $visual->save();
+                //ambil file yang di upload
+                // $uploaded = $request->file('foto_tabung_visual');
+
+                // ambil extension file
+                $extension = $foto->getClientOriginalExtension();
+
+                // membuat nama file random
+                $filename = md5(str_random(8)) . '.' . $extension;
+
+                // simpan file ke folder public/img
+
+                $destinationPath = storage_path('app/public/foto');
+                $foto->move($destinationPath, $filename);
+
+                // mengisi field foto visuak didatabase dengan filename yg baru dibuat
+                Fotovisual::create([
+                    'foto_tabung_visual' => $filename,
+                    'visualresult_id' => $visual->id
+                    ]);
+            }
         }
             Session::flash("flash_notification", [
             "level"=>"success",

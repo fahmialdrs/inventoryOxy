@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Itemujiriksa extends Model
 {
 	protected $guarded = [];
-	public $timestamps = false;
 
 	public function formujiriksa() {
     	return $this->belongsTo('App\Models\Formujiriksa');
