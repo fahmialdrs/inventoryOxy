@@ -154,13 +154,12 @@ class BillingController extends Controller
                         'amount' => $key['amount']
                     ]);
                     $billings->itembilling()->save($item);
-                    // dd($data);
             }
         }
-        $status = "-update-" . Carbon::today()->format('d-m-Y');
+        $status = "-update-" . Carbon::now()->format('dmYHis');
         $this->savePdf($billings->id, $status);
 
-        Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings) {
+        Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings, $status) {
             $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive Update');
             $m->attach(storage_path('app/public/invoice/Invoice-'. $billings->id . $status .'.pdf'));
         });

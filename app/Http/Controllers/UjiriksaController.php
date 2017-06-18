@@ -204,6 +204,22 @@ class UjiriksaController extends Controller
         $ujiriksas->fill($data)->save();
 
         if (isset($request->itemujiriksa)) { 
+            foreach ($ujiriksas->itemujiriksa as $i) {
+                $i->delete();
+
+                foreach($i->fototabung as $foto){
+                    
+                    $filepath = storage_path('app/public/foto/') . $foto->foto_tabung_masuk;
+
+                    try {
+                        File::delete($filepath);
+                    } catch (FileNotFoundException $e) {
+                        // file sudah tidak ada
+                    }
+
+                    $foto->delete();
+                }    
+            }
             foreach ($request->itemujiriksa as $key ) { 
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
@@ -211,10 +227,7 @@ class UjiriksaController extends Controller
                     'tube_id' => $key['tube_id'],
                     'keluhan' => $key['keluhan']
                 ]);
-                $ujiriksas->itemujiriksa()->fill($item)->save();
-
-                // dd($request->hasFile($key['fototabung']));
-                    // isi field cover jika ada cover yg di upload
+                $ujiriksas->itemujiriksa()->save($item);
                 
                 if (is_array($key['fototabung'])) {
                     
@@ -247,65 +260,20 @@ class UjiriksaController extends Controller
             }
         }
 
-        $status = "-update-" . Carbon::today()->format('d-m-Y');
+        $status = "-update-" . Carbon::now()->format('dmYHis');
         $this->savePdf($ujiriksas->id, $status);
 
-        Mail::send('ujiriksa.emailFormUpdate', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+        Mail::send('ujiriksa.emailFormUpdate', compact('ujiriksas'), function ($m) use ($ujiriksas, $status) {
             $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('Form Ujiriksa NDT Dive Update');
             $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $ujiriksas->id . $status .'.pdf'));
         });
         
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message" => "Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
+            "message" => "Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi <b> $ujiriksas->no_registrasi </b>Berhasil"
             ]);
 
         return redirect()->route('ujiriksa.index');
-
-        // if (!$ujiriksas->update($request->all())) return redirect()->back();
-
-        // // isi field cover jika ada cover yg di upload
-
-        // if ($request->hasFile('foto_tabung_masuk')) {
-            
-        //     //ambil file yang di upload
-        //     $uploaded = $request->file('foto_tabung_masuk');
-
-        //     // ambil extension file
-        //     $extension = $uploaded->getClientOriginalExtension();
-
-        //     // membuat nama file random
-        //     $filename = md5(time()) . '.' . $extension;
-
-        //     // simpan file ke folder public/img
-
-        //     $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'img';
-        //     $uploaded->move($destinationPath, $filename);
-
-        //     //hapus cover lama jika ada
-
-        //     if($ujiriksas->foto_tabung_masuk) {
-        //         $old_foto = $ujiriksas->foto_tabung_masuk;
-        //         $filepath = public_path() . DIRECTORY_SEPARATOR . 'img'
-        //         . DIRECTORY_SEPARATOR . $ujiriksas->foto_tabung_masuk;
-
-        //         try {
-        //             File::delete($filepath);
-        //         } catch (FileNotFoundException $e) {
-        //             // file sudah tidak ada
-        //         }
-        //     }
-
-        //     // mengisi field cover di book dengan filename yg baru dibuat
-        //     $ujiriksas->foto_tabung_masuk = $filename;
-        //     $ujiriksas->save();
-        // }
-        //     Session::flash("flash_notification", [
-        //     "level"=>"success",
-        //     "message"=>"Perubahan Form Registrasi Ujiriksa Dengan Nomer Registrasi $ujiriksas->no_registrasi Berhasil"
-        // ]);
-
-        //     return redirect()->route('ujiriksa.index');
     }
 
     /**

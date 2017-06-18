@@ -97,6 +97,11 @@
             <div class="col-md-2">
             <table class="table table-responsive">
               <tr>
+                <td class="text-muted">Keterangan</td>
+                <td class="text-muted">:</td>
+                <td>{{ $ujiriksas->keterangan }}</td>
+              </tr>
+              <tr>
                 <td class="text-muted">Perkiraan Biaya</td>
                 <td class="text-muted">:</td>
                 <td>Rp. {{ $ujiriksas->perkiraan_biaya }}</td>
