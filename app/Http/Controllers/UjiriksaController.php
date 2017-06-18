@@ -216,8 +216,7 @@ class UjiriksaController extends Controller
 
                 $ujiriksas->itemujiriksa()->save($item);
 
-                // dd($request->file('itemujiriksa'));
-                if ($request->file('itemujiriksa') != null) {
+                if (isset($key['fototabung'])) {
                     
                     //ambil file yang di upload
                     $uploaded =$key['fototabung'];
@@ -246,26 +245,26 @@ class UjiriksaController extends Controller
                 // reset itemujiriksa_id pada fototabung
                 foreach ($ujiriksas->itemujiriksa as $i) {
 
-                if ($request->file('itemujiriksa') == null) {
+                if (isset($key['fototabung']) == false) {
                     foreach($i->fototabung as $foto){
                         $foto->itemujiriksa_id = $item->id;
                         $foto->save();
                     }
                 }
                 // hapus fototabung
-                elseif($request->file('itemujiriksa') != null) {
-                    foreach($i->fototabung as $foto){
+                // elseif(isset($key['fototabung'])) {
+                //     foreach($i->fototabung as $foto){
                         
-                        $filepath = storage_path('app/public/foto/') . $foto->foto_tabung_masuk;
+                //         $filepath = storage_path('app/public/foto/') . $foto->foto_tabung_masuk;
 
-                        try {
-                            File::delete($filepath);
-                        } catch (FileNotFoundException $e) {
-                            // file sudah tidak ada
-                        }
-                        $foto->delete();
-                    }
-                }
+                //         try {
+                //             File::delete($filepath);
+                //         } catch (FileNotFoundException $e) {
+                //             // file sudah tidak ada
+                //         }
+                //         $foto->delete();
+                //     }
+                // }
                 $i->delete();    
                 }
             }
