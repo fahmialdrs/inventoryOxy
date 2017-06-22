@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Tube;
+use App\Models\Alat;
 use App\User;
 use Session;
 use App\Http\Requests\StoreCustomerRequest;
@@ -23,9 +24,11 @@ class CustomerController extends Controller
     {
         $customers = Customer::all();
         $tabungs = Tube::with('customer')->orderBy('created_at', 'desc')->get();
+        $alats = Alat::with('customer')->orderBy('created_at', 'desc')->get();
         return view('inventory.index', array(
             'customers' => $customers,
-            'tabungs' => $tabungs
+            'tabungs' => $tabungs,
+            'alats' => $alats
             ));
 
         
@@ -38,7 +41,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('inventory.customer.create');
+        return view('inventory.alat.create');
     }
 
     /**
@@ -69,7 +72,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->find($id);
+        $customers = Customer::with(['tube.itemujiriksa.formujiriksa', 'alat.jenisalat','alat.merk'])->find($id);
         // $tabungs = Tube::where('customer_id', $id)->with(['itemujiriksa.formujiriksa'])->get();
         // dd($tabungs->itemujiriksa);
         return view('inventory.customer.show', array(

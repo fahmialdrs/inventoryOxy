@@ -57,7 +57,8 @@
                             <!-- <li><a href="{{ url('/admin/home') }}">Dashboard</a></li> -->
                             @role('admin')
                             {!! Html::smartNav(route('customer.index'), 'Data Inventory') !!}
-                            {!! Html::smartNav(route('ujiriksa.index'), 'Ujiriksa') !!}
+                            {!! Html::smartNav(route('jenisalat.index'), 'Data Peralatan') !!}
+                            {!! Html::smartNav(route('ujiriksa.index'), 'Layanan') !!}
                             {!! Html::smartNav(route('billing.index'), 'Billing') !!}
                             {!! Html::smartNav(route('user.index'), 'Manajemen User') !!}
                             <!-- <li><a href="{{ route('customer.index') }}">Data Inventory</a></li>

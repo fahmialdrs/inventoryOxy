@@ -31,4 +31,8 @@ class Itemujiriksa extends Model
     public function serviceresult() {
         return $this->hasOne('App\Models\Serviceresult');
     }
+
+    public function alat() {
+        return $this->belongsTo('App\Models\Alat');
+    }
 }

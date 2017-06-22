@@ -17,6 +17,7 @@
 					<p> 
 						<a class="btn btn-primary" href="{{ route('customer.create') }}">Tambah Customer</a> 
 						<a class="btn btn-primary" href="{{ route('tabung.create') }}">Tambah Tabung</a>
+						<a class="btn btn-primary" href="{{ route('alat.create') }}">Tambah Peralatan</a>
 					</p>
 					<p class="pull-right"> 
 						<a class="btn btn-warning" href="{{ route('customer.exportExcel') }}">Export Data Customer</a> 
@@ -24,13 +25,18 @@
 					</p>
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
-								<a href="#table_customer" aria-controls="customer" role="tab" data-toggle="tab">
+								<a href="#table_customer" aria-controls="table_customer" role="tab" data-toggle="tab">
 									<i class="fa fa-pencil-square-o"></i> Data Customer
 								</a>
 							</li>
 							<li role="presentation">
 								<a href="#table_tabung" aria-controls="tabung" role="tab" data-toggle="tab">
 									<i class="fa fa-cloud-upload"></i> Data Tabung
+								</a>
+							</li>
+							<li role="presentation">
+								<a href="#table_alat" aria-controls="alat" role="tab" data-toggle="tab">
+									<i class="fa fa-wrench"></i> Data Peralatan
 								</a>
 							</li>						
 						</ul>
@@ -52,7 +58,7 @@
 						            <td><a href="{{ route('customer.show',$c->id) }}">{{ $c->nama }}</a></td>
 						            <td>{{ $c->email }}</td>
 						            <td>{{ $c->no_telp }}</td>
-						            <td>{{ $c->tanggal_member }}</td>
+						            <td>{{ date("d-m-Y", strtotime($c->tanggal_member)) }}</td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
 										  <div class="btn-group navbar-right">
@@ -92,7 +98,7 @@
 								            <th>Tanggal Visual Terakhir</th>
 								            <th>Tanggal Visual Selanjutnya</th>
 								            <th>Nama Pemilik</th>
-								            <th searchable=false, orderable=false>Action</th>
+								            <th searchable=false, orderable=false>Aksi</th>
 								        </tr>
 								    </thead>
 								    <tbody>
@@ -133,6 +139,54 @@
 								    </tbody>
 								</table>
 							</div>
+
+							<div class="tab-pane" role="tabpanel" id="table_alat">
+								<table id="alat" class="display">
+								    <thead>
+								        <tr>
+								            <th>No Alat</th>
+								            <th>Jenis Alat</th>
+								            <th>Merk</th>
+								            <th>Tipe</th>
+								            <th>Nama Pemilik</th>
+								            <th searchable=false, orderable=false>Aksi</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								    @foreach ($alats as $a)
+								        <tr>
+								            <td><a href="{{ route('alat.show',$a->id) }}">{{ $a->no_alat }}</a></td>
+								            <td>{{ $a->jenisalat->nama_alat }}</td>
+								            <td>{{ $a->merk->nama_merk }}</td>
+								            <td>{{ $a->tipe }}</td>
+								            <td><a href="{{ route('customer.show',['id'=>$a->id]) }}">{{ $a->customer->nama }}</a></td>
+								            <td>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  	<li>
+															<a type="button" href="{{ route('alat.edit', $a->id) }}">Edit</a>
+													  	</li>
+													  	<!-- <li>
+													  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
+													  	</li> -->
+													  	<li>
+													  		<a type="button" href="{{ route('alat.destroy', $a->id) }}">Hapus</a>
+													  	</li>
+													  	<li role="separator" class="divider"></li>
+													    <li><a href="#" target="_blank">Unduh Barcode</a></li>
+													  </ul>
+													</div>
+												</div>
+								            </td>
+								        </tr>
+								    @endforeach
+								    </tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -157,6 +211,15 @@
 			"aaSorting": [],
 	  	"columnDefs": [ {
 		    "targets": [ 8 ],
+		    "searchable": false,
+		    "orderable": false
+	    	} ]
+		} );
+
+		$('#alat').dataTable( {
+			"aaSorting": [],
+	  	"columnDefs": [ {
+		    "targets": [ 5 ],
 		    "searchable": false,
 		    "orderable": false
 	    	} ]

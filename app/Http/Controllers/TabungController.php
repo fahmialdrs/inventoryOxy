@@ -49,7 +49,7 @@ class TabungController extends Controller
 
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Berhasil menambah data Tabung untuk Customer <b> $tabungs->customer->nama </b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
+            "message" => "Berhasil menambah data Tabung untuk Customer <b>". $tabungs->customer->nama ."</b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
             ]);
 
         return redirect()->route('customer.index');

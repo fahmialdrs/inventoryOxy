@@ -22,8 +22,9 @@ class CreateBillingsTable extends Migration
             $table->integer('subtotal');
             $table->integer('ongkir');
             $table->integer('discount');
+            $table->integer('ppn');
             $table->integer('total');
-            $table->string('terbilang');
+            $table->string('terbilang')->nullable();
             $table->string('catatan')->nullable();
             $table->string('status');
             $table->timestamps();

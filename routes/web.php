@@ -385,4 +385,94 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'hydrostatic.template',
 		'uses' => 'HydrostaticController@generateExcelTemplate'
 		]);
-});
+
+
+	Route::get('alat', [
+		'as' => 'alat.index',
+		'uses' => 'AlatController@index'
+		]);
+	Route::get('alat/create', [
+		'as' => 'alat.create',
+		'uses' => 'AlatController@create'
+		]);
+	Route::get('alat/show/{alat}', [
+		'as' => 'alat.show',
+		'uses' => 'AlatController@show'
+		]);
+	Route::post('alat/store', [
+		'as' => 'alat.store',
+		'uses' => 'AlatController@store'
+		]);
+	Route::get('alat/{alat}/edit', [
+		'as' => 'alat.edit',
+		'uses' => 'AlatController@edit'
+		]);
+	Route::match(['put', 'patch'], 'alat/update/{alat}', [
+		'as' => 'alat.update',
+		'uses' => 'AlatController@update'
+		]);
+	Route::get('alat/destroy/{id}', [
+		'as' => 'alat.destroy',
+		'uses' => 'AlatController@destroy'
+		]);
+
+
+	Route::get('jenisalat', [
+		'as' => 'jenisalat.index',
+		'uses' => 'JenisalatController@index'
+		]);
+	Route::get('jenisalat/create', [
+		'as' => 'jenisalat.create',
+		'uses' => 'JenisalatController@create'
+		]);
+	Route::get('jenisalat/show/{jenisalat}', [
+		'as' => 'jenisalat.show',
+		'uses' => 'JenisalatController@show'
+		]);
+	Route::post('jenisalat/store', [
+		'as' => 'jenisalat.store',
+		'uses' => 'JenisalatController@store'
+		]);
+	Route::get('jenisalat/{jenisalat}/edit', [
+		'as' => 'jenisalat.edit',
+		'uses' => 'JenisalatController@edit'
+		]);
+	Route::match(['put', 'patch'], 'jenisalat/update/{jenisalat}', [
+		'as' => 'jenisalat.update',
+		'uses' => 'JenisalatController@update'
+		]);
+	Route::get('jenisalat/destroy/{id}', [
+		'as' => 'jenisalat.destroy',
+		'uses' => 'JenisalatController@destroy'
+		]);
+
+
+	Route::get('merk', [
+		'as' => 'merk.index',
+		'uses' => 'MerkController@index'
+		]);
+	Route::get('merk/create', [
+		'as' => 'merk.create',
+		'uses' => 'MerkController@create'
+		]);
+	Route::get('merk/show/{merk}', [
+		'as' => 'merk.show',
+		'uses' => 'MerkController@show'
+		]);
+	Route::post('merk/store', [
+		'as' => 'merk.store',
+		'uses' => 'MerkController@store'
+		]);
+	Route::get('merk/{merk}/edit', [
+		'as' => 'merk.edit',
+		'uses' => 'MerkController@edit'
+		]);
+	Route::match(['put', 'patch'], 'merk/update/{merk}', [
+		'as' => 'merk.update',
+		'uses' => 'MerkController@update'
+		]);
+	Route::get('merk/destroy/{id}', [
+		'as' => 'merk.destroy',
+		'uses' => 'MerkController@destroy'
+		]);
+}); 

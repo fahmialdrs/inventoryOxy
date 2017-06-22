@@ -19,4 +19,8 @@ class Customer extends Model
     public function billing() {
     	return $this->hasMany('App\Models\Billing');
     }
+
+    public function alat() {
+        return $this->hasMany('App\Models\Alat');
+    }
 }

@@ -23,6 +23,7 @@ class BillingSeeder extends Seeder
         	'subtotal'=>1100000,
         	'ongkir'=>10000,
         	'discount'=>10,
+            'ppn'=>10,
         	'total'=>1000000,
         	'terbilang'=>'Satu Juta',
             'catatan'=>'Barang tidak dapat dikembalikan',

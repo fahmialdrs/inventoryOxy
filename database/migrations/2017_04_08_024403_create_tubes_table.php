@@ -30,6 +30,36 @@ class CreateTubesTable extends Migration
 
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
         });
+
+        Schema::create('jenisalats', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nama_alat')->unique();            
+            $table->boolean('reminder');
+            $table->string('keterangan')->nullable();
+        });
+
+        Schema::create('merks', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nama_merk')->unique();
+            $table->string('keterangan')->nullable();
+        });
+
+        Schema::create('alats', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('no_alat');
+            $table->integer('customer_id')->unsigned();
+            $table->integer('jenisalat_id')->unsigned();
+            $table->integer('merk_id')->unsigned();
+            $table->string('tipe');
+            $table->string('ukuran');
+            $table->string('warna');
+            $table->string('catatan')->nullable();
+            $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('jenisalat_id')->references('id')->on('jenisalats')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('merk_id')->references('id')->on('merks')->onUpdate('cascade')->onDelete('cascade');
+        });
     }
 
     /**
@@ -39,6 +69,9 @@ class CreateTubesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('alats');
+        Schema::dropIfExists('merks');
+        Schema::dropIfExists('jenisalats');
         Schema::dropIfExists('tubes');
     }
 }

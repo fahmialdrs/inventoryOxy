@@ -44,9 +44,14 @@ class CreateUjiriksasTable extends Migration
             $table->string('nama_barang');
             $table->string('keluhan');
             $table->timestamps();
-            $table->integer('tube_id')->unsigned();
+            $table->integer('tube_id')->unsigned()->nullable();
 
             $table->foreign('tube_id')->references('id')->on('tubes')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->integer('alat_id')->unsigned()->nullable();
+
+            $table->foreign('alat_id')->references('id')->on('alats')
                 ->onUpdate('cascade')->onDelete('cascade');
         
             $table->integer('formujiriksa_id')->unsigned();

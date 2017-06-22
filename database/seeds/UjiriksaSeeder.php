@@ -23,7 +23,6 @@ class UjiriksaSeeder extends Seeder
     {
         $form1 = Formujiriksa::create([
         	'no_registrasi'=>'VSL01',
-        	'progress'=>'On Progress',
         	'jenis_uji'=>'Visualstatic',
         	'progress'=>'Selesai',
         	'nama_pengambil'=>'fahmi',
@@ -74,7 +73,6 @@ class UjiriksaSeeder extends Seeder
 
         $form2 = Formujiriksa::create([
             'no_registrasi'=>'HYDR01',
-            'progress'=>'On Progress',
             'jenis_uji'=>'Hydrostatic',
             'progress'=>'Selesai',
             'nama_pengambil'=>'fahmi',
@@ -132,7 +130,6 @@ class UjiriksaSeeder extends Seeder
 
         $form3 = Formujiriksa::create([
             'no_registrasi'=>'SVC01',
-            'progress'=>'On Progress',
             'jenis_uji'=>'Service',
             'progress'=>'Selesai',
             'nama_pengambil'=>'fahmi',
@@ -179,6 +176,56 @@ class UjiriksaSeeder extends Seeder
         $fotoresultservice2 = Fotoservice::create([
             'serviceresult_id'=> $resultservice1->id,
             'foto_tabung_service'=>'IMG0017.jpg'
-            ]);        
+            ]);    
+
+        $form4 = Formujiriksa::create([
+            'no_registrasi'=>'SVC02',
+            'jenis_uji'=>'Service',
+            'progress'=>'Selesai',
+            'nama_pengambil'=>'fahmi',
+            'keterangan'=>'Service booties',            
+            'nama_penyerah'=>'fahmi',
+            'perkiraan_selesai'=>'2017-01-01',
+            'perkiraan_biaya'=>'1000000',
+            'progress_at'=>'2017-01-01',
+            'done_at'=>'2017-01-01',
+            'user_id'=>2,
+            'customer_id'=>1
+            ]);
+
+        $item4= Itemujiriksa::create([
+            'jumlah_barang' => '1',
+            'nama_barang' => 'booties',
+            'keluhan' => ' Service',
+            'alat_id' => 1,
+            'formujiriksa_id' => $form4->id
+            ]);
+
+        $fototabung7 = Fototabung::create([
+            'foto_tabung_masuk'=>'IMG0016.jpg',
+            'keterangan_foto'=>'Service booties',
+            'itemujiriksa_id'=> $item4->id
+            ]);
+
+        $fototabung8 = Fototabung::create([
+            'foto_tabung_masuk'=>'IMG0017.jpg',
+            'keterangan_foto'=>'Service boot',
+            'itemujiriksa_id'=> $item4->id
+            ]);
+
+        $resultservice2 = Serviceresult::create([
+            'itemujiriksa_id'=> $form4->id,
+            'keterangan_service'=>'hasil service 1'
+            ]);
+
+        $fotoresultservice3 = Fotoservice::create([
+            'serviceresult_id'=> $resultservice2->id,
+            'foto_tabung_service'=>'IMG0016.jpg'
+            ]);
+
+        $fotoresultservice4 = Fotoservice::create([
+            'serviceresult_id'=> $resultservice2->id,
+            'foto_tabung_service'=>'IMG0017.jpg'
+            ]);     
     }
 }
