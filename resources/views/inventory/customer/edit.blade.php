@@ -7,7 +7,7 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/customer') }}">Customer</a></li>
+				<li><a href="{{ url('/admin/inventory') }}">Customer</a></li>
 				<li class="active">Edit Customer</li>
 			</ul>
 			<div class="panel panel-default">

@@ -165,7 +165,7 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
-    public function  exportExcelDetail($id){
+    public function exportExcelDetail($id){
 
     $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->findOrFail($id);
 

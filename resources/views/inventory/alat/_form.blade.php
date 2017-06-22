@@ -1,17 +1,3 @@
-<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-    <label for="no_alat" class="col-md-4 control-label">Nomer Alat</label>
-
-    <div class="col-md-4">
-        <input id="no_alat" type="text" class="form-control" name="no_alat" value="{{ old('no_alat') }}" required autofocus>
-
-        @if ($errors->has('no_alat'))
-            <span class="help-block">
-                <strong>{{ $errors->first('no_alat') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
     {!! Form::label('customer_id', 'Pemilik', ['class'=>'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
@@ -40,8 +26,11 @@
     <label for="tipe" class="col-md-4 control-label">Tipe Alat</label>
 
     <div class="col-md-4">
+    @if(isset($alats->tipe))
+        <input id="tipe" type="text" class="form-control" name="tipe" value="{{ $alats->tipe }}">
+    @else
         <input id="tipe" type="text" class="form-control" name="tipe" value="{{ old('tipe') }}">
-
+    @endif
         @if ($errors->has('tipe'))
             <span class="help-block">
                 <strong>{{ $errors->first('tipe') }}</strong>
@@ -54,11 +43,31 @@
     <label for="ukuran" class="col-md-4 control-label">Ukuran</label>
 
     <div class="col-md-4">
+    @if(isset($alats->ukuran))
+        <input id="ukuran" type="text" class="form-control" name="ukuran" value="{{ $alats->ukuran }}">
+    @else
         <input id="ukuran" type="text" class="form-control" name="ukuran" value="{{ old('ukuran') }}">
-
+    @endif
         @if ($errors->has('ukuran'))
             <span class="help-block">
                 <strong>{{ $errors->first('ukuran') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('warna') ? ' has-error' : '' }}">
+    <label for="warna" class="col-md-4 control-label">Warna Alat</label>
+
+    <div class="col-md-4">
+    @if(isset($alats->warna))
+        <input id="warna" type="text" class="form-control" name="warna" value="{{ $alats->warna }}">
+    @else
+        <input id="warna" type="text" class="form-control" name="warna" value="{{ old('warna') }}">
+    @endif
+        @if ($errors->has('warna'))
+            <span class="help-block">
+                <strong>{{ $errors->first('warna') }}</strong>
             </span>
         @endif
     </div>
@@ -68,8 +77,11 @@
     <label for="catatan" class="col-md-4 control-label">Catatan</label>
 
     <div class="col-md-4">
+    @if(isset($alats->catatan))
+        <textarea id="catatan" type="text" class="form-control" name="catatan">{{ $alats->catatan }}</textarea>
+    @else
         <textarea id="catatan" type="text" class="form-control" name="catatan">{{ old('catatan') }}</textarea>
-
+    @endif
         @if ($errors->has('catatan'))
             <span class="help-block">
                 <strong>{{ $errors->first('catatan') }}</strong>

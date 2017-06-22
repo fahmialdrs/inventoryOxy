@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use App\Models\Alat;
+use Carbon\Carbon;
+use Excel;
+use Illuminate\Support\Facades\Auth;
 
 class AlatController extends Controller
 {
@@ -34,7 +39,29 @@ class AlatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'customer_id' => 'required|exists:customers,id',
+            'jenisalat_id' => 'required|exists:jenisalats,id',
+            'merk_id' => 'required|exists:merks,id',
+            'tipe' => 'required|max:255',
+            'ukuran' => 'required|max:255',
+            'warna' => 'required|max:255',
+        ]);
+
+        $noalat = Carbon::now()->format('dmyhis');
+        $data = $request->all();
+        $data['no_alat'] = $noalat;
+
+        $alats = Alat::create($data);
+
+        Session::flash("flash_notification", [
+            "level" => "success",
+            "message" => "Berhasil Menambah Alat <b>" . $alats->jenisalat->nama_alat . "</b> Atas Nama Customer <b>". $alats->customer->nama . "</b>"
+            ]);
+
+        return redirect()->route('customer.index');
+
+
     }
 
     /**
@@ -45,7 +72,8 @@ class AlatController extends Controller
      */
     public function show($id)
     {
-        //
+        $alats = Alat::findOrFail($id);
+        return view('inventory.alat.show')->with(compact('alats'));
     }
 
     /**
@@ -56,7 +84,8 @@ class AlatController extends Controller
      */
     public function edit($id)
     {
-        //
+        $alats = Alat::findOrFail($id);
+        return view('inventory.alat.edit')->with(compact('alats'));
     }
 
     /**
@@ -68,7 +97,25 @@ class AlatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'customer_id' => 'required|exists:customers,id',
+            'jenisalat_id' => 'required|exists:jenisalats,id',
+            'merk_id' => 'required|exists:merks,id',
+            'tipe' => 'required|max:255',
+            'ukuran' => 'required|max:255',
+            'warna' => 'required|max:255',
+        ]);
+
+        $alats = Alat::findOrFail($id);
+        if (!$alats->update($request->all())) return redirect()->back();
+
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Data Alat Dengan Nomer <b> $alats->no_alat </b> Berhasil Diubah"
+        ]);
+
+        return redirect()->route('customer.index');
+
     }
 
     /**
@@ -79,6 +126,28 @@ class AlatController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $alats = Alat::findOrFail($id);
+        $alats->delete();
+
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Data Alat Dengan Nomer <b> $alats->no_alat </b> Berhasil Dihapus"
+        ]);
+
+        return redirect()->route('customer.index');
     }
+
+    public function exportExcelDetail($id){
+
+    $alats = Alat::with(['itemujiriksa.formujiriksa', 'jenisalat', 'merk', 'customer'])->findOrFail($id);
+
+    $export = Excel::create('Detail Alat '.$alats->no_alat, function($excel) use ($alats){
+        $excel->setTitle('Data Detail Alat NDT Dive')->setCreator(Auth::user()->name);
+        $excel->sheet($alats->no_alat, function($sheet) use ($alats){
+            $sheet->loadView('inventory.alat.exportExcel',['alats'=>$alats]);
+      });
+    })->download('xls');
+
+    return redirect()->route('customer.index');
+   }
 }

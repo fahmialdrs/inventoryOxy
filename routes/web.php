@@ -415,6 +415,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'alat.destroy',
 		'uses' => 'AlatController@destroy'
 		]);
+	Route::get('exportExcelDetail/alat/{id}', [
+		'as' => 'alat.exportExcelDetail',
+		'uses' => 'AlatController@exportExcelDetail'
+		]);
 
 
 	Route::get('jenisalat', [
