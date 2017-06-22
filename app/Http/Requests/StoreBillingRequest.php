@@ -30,6 +30,7 @@ class StoreBillingRequest extends FormRequest
             'subtotal' => 'required|numeric',
             'ongkir' => 'required|numeric',
             'discount' => 'required|numeric',
+            'ppn' => 'required|numeric',
             'total' => 'required|numeric',
             'terbilang' => 'required|max:255'
         ];

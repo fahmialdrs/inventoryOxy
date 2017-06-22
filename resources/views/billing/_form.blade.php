@@ -207,6 +207,29 @@
     </div>
 </div>
 
+<div class="form-group{{ $errors->has('ppn') ? ' has-error' : '' }}">
+    <label for="ppn" class="col-md-2 control-label">PPN</label>
+
+    <div class="col-md-4">
+    @if(isset($billings->ppn))
+        <div class="input-group">
+            <input id="ppn" type="number" class="form-control" name="ppn" value="{{ $billings->ppn ?? '0' }}" onblur="grandtotal()">
+            <div class="input-group-addon">%</div>
+        </div>
+    @else
+        <div class="input-group">
+            <input id="ppn" type="number" class="form-control" name="ppn" value="{{ old('ppn') ?? '0' }}" onblur="grandtotal()">
+            <div class="input-group-addon">%</div>
+        </div>
+    @endif
+        @if ($errors->has('ppn'))
+            <span class="help-block">
+                <strong>{{ $errors->first('ppn') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
 <div class="form-group{{ $errors->has('total') ? ' has-error' : '' }}">
     <label for="total" class="col-md-2 control-label">Total</label>
 
@@ -359,13 +382,18 @@
     {   
         var subtotal = $('#subtotal').val();
         var discount = $('#discount').val();
+        var ppn = $('#ppn').val();
         var ongkir = $('#ongkir').val();
         var total;
         var disc;
+        var totalsementara;
+        var totalppn;
 
         total = parseInt(subtotal) + parseInt(ongkir);
         disc = (parseInt(total) * (parseInt(discount) / 100));
-        $('#total').val(parseInt(total) - parseInt(disc));
+        totalsementara = parseInt(total) - parseInt(disc);
+        totalppn = (parseInt(totalsementara) * (parseInt(ppn) / 100));
+        $('#total').val(parseInt(totalsementara) + parseInt(totalppn));
     }
 
 </script>

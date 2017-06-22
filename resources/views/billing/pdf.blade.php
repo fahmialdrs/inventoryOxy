@@ -111,6 +111,11 @@
                 <td class="text-muted">:</td>
                 <td>{{ $billings->discount }} %</td>
               </tr>
+              <tr>
+                <td class="text-muted">PPN</td>
+                <td class="text-muted">:</td>
+                <td>{{ $billings->ppn }} %</td>
+              </tr>
               <tr> 
                 <td class="text-muted"><b>Total</b></td>
                 <td class="text-muted">:</td>
