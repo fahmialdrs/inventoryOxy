@@ -7,6 +7,7 @@ use App\Models\Formujiriksa;
 use App\Models\Itemujiriksa;
 use App\Models\Fototabung;
 use App\Models\Tube;
+use App\Models\Alat;
 use App\Models\Hydrostaticresult;
 use App\Models\Visualresult;
 use App\Models\Serviceresult;
@@ -28,8 +29,14 @@ class UjiriksaController extends Controller
      */
     public function index()
     {
-        $formujiriksas = Formujiriksa::with('itemujiriksa')->orderBy('created_at', 'desc')->get();
-        return view('ujiriksa.index')->with(compact('formujiriksas'));
+        $hydro = Formujiriksa::with('itemujiriksa')->where('jenis_uji', 'Hydrostatic')->orderBy('created_at', 'desc')->get();
+        $visual = Formujiriksa::with('itemujiriksa')->where('jenis_uji', 'Visualstatic')->orderBy('created_at', 'desc')->get();
+        $service = Formujiriksa::with('itemujiriksa')->where('jenis_uji', 'Service')->orderBy('created_at', 'desc')->get();
+        return view('ujiriksa.index', array(
+            'hydro' => $hydro,
+            'visual' => $visual,
+            'service' => $service
+            ));
     }
 
     /**
@@ -40,7 +47,11 @@ class UjiriksaController extends Controller
     public function create()
     {
         $tabungs = Tube::all();
-        return view('ujiriksa.create')->with(compact('tabungs'));
+        $alats = Alat::all();
+        return view('ujiriksa.create', array(
+                'tabungs' => $tabungs,
+                'alats' => $alats
+            ));
     }
 
     /**
@@ -90,13 +101,24 @@ class UjiriksaController extends Controller
         $table->save();
 
         if (isset($request->itemujiriksa)) { 
-            foreach ($request->itemujiriksa as $key ) { 
+            foreach ($request->itemujiriksa as $key ) {
+                // dd($key['tube_id'] == null);
+            if ($key['tube_id'] != null) {
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
                     'nama_barang' => $key['nama_barang'],
                     'tube_id' => $key['tube_id'],
                     'keluhan' => $key['keluhan']
                 ]);
+            }                
+            elseif ($key['alat_id'] != null) {
+                $item = new Itemujiriksa([
+                    'jumlah_barang' => $key['jumlah_barang'],
+                    'nama_barang' => $key['nama_barang'],
+                    'alat_id' => $key['alat_id'],
+                    'keluhan' => $key['keluhan']
+                ]);
+            } 
                 $table->itemujiriksa()->save($item);
 
                 // dd($request->hasFile($key['fototabung']));
@@ -174,10 +196,11 @@ class UjiriksaController extends Controller
     public function edit($id)
     {
         $tabungs = Tube::all();
+        $alats = Alat::all();
         $selectedTubes = Itemujiriksa::where('formujiriksa_id',$id)->with('tube')->get();
         // dd($selectedTubes->tube->id);
         $ujiriksas = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.fototabung')->findOrFail($id);
-        return view('ujiriksa.edit')->with(compact('ujiriksas', 'tabungs', 'selectedTubes'));
+        return view('ujiriksa.edit')->with(compact('ujiriksas', 'tabungs', 'selectedTubes', 'alats'));
     }
 
     /**
@@ -207,12 +230,22 @@ class UjiriksaController extends Controller
         if (isset($request->itemujiriksa)) { 
             
             foreach ($request->itemujiriksa as $key ) { 
-                $item = new Itemujiriksa([
-                    'jumlah_barang' => $key['jumlah_barang'],
-                    'nama_barang' => $key['nama_barang'],
-                    'tube_id' => $key['tube_id'],
-                    'keluhan' => $key['keluhan']
-                ]);
+                if ($key['tube_id'] != null) {
+                    $item = new Itemujiriksa([
+                        'jumlah_barang' => $key['jumlah_barang'],
+                        'nama_barang' => $key['nama_barang'],
+                        'tube_id' => $key['tube_id'],
+                        'keluhan' => $key['keluhan']
+                    ]);
+                }                
+                elseif ($key['alat_id'] != null) {
+                    $item = new Itemujiriksa([
+                        'jumlah_barang' => $key['jumlah_barang'],
+                        'nama_barang' => $key['nama_barang'],
+                        'alat_id' => $key['alat_id'],
+                        'keluhan' => $key['keluhan']
+                    ]);
+                }
 
                 $ujiriksas->itemujiriksa()->save($item);
 

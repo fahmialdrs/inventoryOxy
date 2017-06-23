@@ -8,6 +8,9 @@ class Formujiriksa extends Model
 {
     protected $guarded = ['nama_pengambil'];
     protected $dates = array('progress_at','done_at');
+    protected $casts = [
+    'is_service_alat' => 'boolean',
+    ];
     
     
     public function itemujiriksa() {

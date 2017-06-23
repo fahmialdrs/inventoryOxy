@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Edit Form Registrasi Ujiriksa')
+@section('title','Edit Form Registrasi Layanan')
 
 @section('content')
 <div class="container">
@@ -7,12 +7,12 @@
 		<div class="col-md-12">
 			<ul class="breadcrumb">
 				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/ujiriksa') }}">Ujiriksa</a></li>
-				<li class="active">Edit Form Registrasi Ujiriksa</li>
+				<li><a href="{{ url('/admin/ujiriksa') }}">Layanan</a></li>
+				<li class="active">Edit Form Registrasi Layanan</li>
 			</ul>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2 class="panel-title">Edit Form Registrasi Ujiriksa</h2>
+					<h2 class="panel-title">Edit Form Registrasi Layanan</h2>
 				</div>
 				<div class="panel-body" style="overflow:auto; ">
 					<!-- <form class="form-horizontal" role="form" method="put" action="{{ route('ujiriksa.update', $ujiriksas->id) }}" enctype="multipart/form-data"> -->

@@ -42,7 +42,7 @@
         	<input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
 		</label>
         <label class="radio-inline">
-            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+            <input id="service" type="radio" name="jenis_uji" value="Service"> Service
         </label>
         @elseif($ujiriksas->jenis_uji == "Visualstatic")
         <label class="radio-inline">
@@ -52,7 +52,7 @@
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic" checked> Visualstatic
         </label>
         <label class="radio-inline">
-            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+            <input id="service" type="radio" name="jenis_uji" value="Service"> Service
         </label>
         @elseif($ujiriksas->jenis_uji == "Service")
         <label class="radio-inline">
@@ -62,7 +62,7 @@
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
         </label>
         <label class="radio-inline">
-            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service" checked> Service
+            <input id="service" type="radio" name="jenis_uji" value="Service" checked> Service
         </label>
         @endif
     @else
@@ -73,8 +73,9 @@
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
         </label>
         <label class="radio-inline">
-            <input id="jenis_uji" type="radio" name="jenis_uji" value="Service"> Service
+            <input id="service" type="radio" name="jenis_uji" value="Service"> Service
         </label>
+
     @endif
 
         @if ($errors->has('jenis_uji'))
@@ -84,6 +85,51 @@
         @endif
     </div>
 </div>
+
+@if(isset($ujiriksas->is_service_alat))
+@if($ujiriksas->is_service_alat == 1)
+
+<div class="form-group" id="radio_service">
+    <label for="jenis_uji" class="col-md-4 control-label">Jenis Service</label>
+
+    <div class="col-md-4">
+        <label class="radio-inline">
+            <input id="tabung" type="radio" name="is_service_alat" value="0" > Tabung
+        </label>
+        <label class="radio-inline">
+            <input id="alat" type="radio" name="is_service_alat" value="1" checked> Alat
+        </label>
+    </div>
+</div>
+
+@else
+<div class="form-group" id="radio_service">
+    <label for="jenis_uji" class="col-md-4 control-label">Jenis Service</label>
+
+    <div class="col-md-4">
+        <label class="radio-inline">
+            <input id="tabung" type="radio" name="is_service_alat" value="0" checked> Tabung
+        </label>
+        <label class="radio-inline">
+            <input id="alat" type="radio" name="is_service_alat" value="1"> Alat
+        </label>
+    </div>
+</div>
+@endif
+@else
+<div class="form-group" id="radio_service" style="display:none">
+    <label for="jenis_uji" class="col-md-4 control-label">Jenis Service</label>
+
+    <div class="col-md-4">
+        <label class="radio-inline">
+            <input id="tabung" type="radio" name="is_service_alat" value="0" checked> Tabung
+        </label>
+        <label class="radio-inline">
+            <input id="alat" type="radio" name="is_service_alat" value="1"> Alat
+        </label>
+    </div>
+</div>
+@endif
 
 <!-- <div class="form-group{{ $errors->has('kondisi_tabung') ? ' has-error' : '' }}">
     <label for="kondisi_tabung" class="col-md-4 control-label">Kondisi Tabung</label>
@@ -180,7 +226,16 @@
         <tr>
             <th>Jumlah Barang</th>
             <th>Nama Barang</th>
-            <th>No Tabung</th>
+            @if (isset($ujiriksas->is_service_alat))
+            @if ($ujiriksas->is_service_alat == 0)
+            <th class="form_tabung">No Tabung</th>
+            @else
+            <th class="form_alat">No Alat</th>
+            @endif
+            @else
+            <th class="form_tabung">No Tabung</th>
+            <th class="form_alat" style="display:none">No Alat</th>
+            @endif
             <th>Keluhan</th>
             <th>Foto</th>
             <th><a class="btn btn-default" id='add_field_button'>Tambah Kolom</a></th>
@@ -197,7 +252,8 @@
             <td>
                 <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]">
             </td>
-            <td>
+            @if ($ujiriksas->is_service_alat == 0)
+            <td class="form_tabung">
                 <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
@@ -205,6 +261,16 @@
                     @endforeach
                 </select>
             </td>
+            @else
+            <td class="form_alat">
+                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat">
+                    <option disabled selected value></option>
+                    @foreach($ujiriksas->itemujiriksa as $t)
+                        <option value="{{ $t->alat->id }}">{{ $t->alat->no_alat }}</option>
+                    @endforeach
+                </select>
+            </td>
+            @endif
             <td>
                 <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]">
             </td>
@@ -229,11 +295,19 @@
             <td>
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
             </td>
-            <td>
+            <td class="form_tabung">
                 <select name="itemujiriksa[0][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
                     <option disabled selected value></option>
                     @foreach($tabungs as $t)
                         <option value={{ $t->id }}> {{ $t->no_tabung }}</option>
+                    @endforeach
+                </select>
+            </td>
+            <td class="form_alat" style="display:none">
+                <select name="itemujiriksa[0][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat">
+                    <option disabled selected value></option>
+                    @foreach($alats as $at)
+                        <option value="{{ $at->id }}">{{ $at->no_alat }}</option>
                     @endforeach
                 </select>
             </td>
@@ -248,6 +322,7 @@
         @endif
     </tbody>
 </table>
+
 
 
 <div class="form-group">
@@ -285,11 +360,19 @@
             <td>\
                 <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]">\
             </td>\
-            <td>\
+            <td class="form_tabung">\
                 <select name="itemujiriksa[' + x +'][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">\
                     <option disabled selected value></option>\
                     @foreach($tabungs as $t)\
                         <option value={{ $t->id }}> {{ $t->no_tabung }}</option>\
+                    @endforeach\
+                </select>\
+            </td>\
+            <td class="form_alat" style="display:none">\
+                <select name="itemujiriksa[0][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat">\
+                    <option disabled selected value></option>\
+                    @foreach($alats as $at)\
+                        <option value="{{ $at->id }}">{{ $at->no_alat }}</option>\
                     @endforeach\
                 </select>\
             </td>\
@@ -308,6 +391,34 @@
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parents("tr").remove(); x--;
     })
+});
+</script>
+<script>
+    $(document).ready(function() {
+   $('input[name="jenis_uji"]').click(function() {
+       if($(this).attr('id') == 'service') {
+            $('#radio_service').show();           
+       }
+
+       else {
+            $('#tabung').prop('checked',true);
+            $('#radio_service').hide();
+            $('.form_alat').hide();
+            $('.form_tabung').show();   
+       }
+   });
+
+   $('input[name="is_service_alat"]').click(function() {
+       if($(this).attr('id') == 'alat') {
+            $('.form_alat').show();
+            $('.form_tabung').hide();
+       }
+
+       else {
+            $('.form_alat').hide();
+            $('.form_tabung').show();   
+       }
+   });
 });
 </script>
 @endsection

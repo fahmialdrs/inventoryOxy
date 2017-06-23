@@ -7,105 +7,314 @@
 			<div class="col-md-12">
 				<ul class="breadcrumb">
 					<li><a href="{{ url('/home') }}">Dashboard</a></li>
-					<li class="active">Ujiriksa</li>
+					<li class="active">Layanan</li>
 				</ul>
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h2 class="panel-title">Ujiriksa</h2>
+						<h2 class="panel-title">Layanan</h2>
 					</div>
 					<div class="panel-body">
-					<p class="btn-group"> 
-						<a class="btn btn-info" href="{{ route('ujiriksa.create') }}">Registrasi Uji</a> 
-					</p>
-						<table id="table_id" class="display">
-						    <thead>
-						        <tr>
-						        	<th>No Registrasi Uji</th>
-						            <th>Jenis Uji</th>
-						            <th>Progress</th>
-						            <th>Tanggal Masuk</th>
-						            <th>Tanggal Selesai</th>
-						            <th>Nama Pemilik</th>
-						            <th>Action</th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						    @foreach($formujiriksas as $fu)
-						        <tr>
-						        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
-						            <td>{{ $fu->jenis_uji }}</td>
-						        	<td>{{ $fu->progress }}</td>
-						            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
-						            @if(isset($fu->done_at))
-						            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
-						            @else
-						            <td>{{ "Belum Diinput" }}</td>
-						            @endif
-						            <td><a href="#">{{ $fu->customer->nama }}</a></td>
-						            <td>
-						            	<div class="btn-group dropdown" role="group" aria-label="...">
-										  <div class="btn-group navbar-right">
-											  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											    Action <span class="caret"></span>
-											  </button>
-											  <ul class="dropdown-menu ">
-											  <li class="dropdown-header">Aksi</li>
-											  @if($fu->progress == 'Selesai')
-											  @if($fu->jenis_uji == 'Hydrostatic')
-											  	<li>
-													<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
-											  	</li>
-											  @endif
-											  @if($fu->jenis_uji == 'Visualstatic')
-											  	<li>
-													<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
-											  	</li>
-											  @endif
-											  @if($fu->jenis_uji == 'Service')
-											  	<li>
-													<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
-											  	</li>
-											  @endif
-											  @endif
-											  	<li>
-													<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
-											  	</li>
-											  	<li>
-													<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
-											  	</li>											  	
-											  	@if($fu->progress == 'Waiting List')
-											  	<li role="separator" class="divider"></li>
-											  	<li class="dropdown-header">Ubah Status Progress</li>
-											    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Dikerjakan</a></li>
-											    @elseif($fu->progress == 'Sedang Dikerjakan')
-											    <li role="separator" class="divider"></li>
-											  	<li class="dropdown-header">Ubah Status Progress</li>
-											    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Selesai</a></li>
-											    @elseif($fu->progress == 'Selesai')
-											    @if(!isset($fu->nama_pengambil))
-											    <li role="separator" class="divider"></li>
-											  	<li class="dropdown-header">Input Nama Pengambil</li>
-											    <li><a href="#" onclick="myFunction()">Diambil</a></li>
-											    <form id="form" role="form" action="{{ route('ujiriksa.storePengambil', $fu->id)}}" method="post">
-												{!! csrf_field() !!}
-											    	<input type="hidden" id="pengambil" name="nama_pengambil" />
-												</form>
-												@endif
-											    @else
-											    @endif
-											    <li role="separator" class="divider"></li>
-											    <li class="dropdown-header">Aksi Tambahan</li>
-											    <li><a href="{{ route('ujiriksa.exportPdf', $fu->id) }}" target="_blank">Export PDF</a></li>
-											    <!-- <li><a href="#">Kirim Email</a></li> -->
-											    
-											  </ul>
-											</div>
-										</div>
-						            </td>
-						        </tr>
-						    @endforeach
-						    </tbody>
-						</table>
+						<p class="btn-group"> 
+							<a class="btn btn-info" href="{{ route('ujiriksa.create') }}">Registrasi Uji</a> 
+						</p>
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active">
+								<a href="#table_hydro" aria-controls="table_hydro" role="tab" data-toggle="tab">
+									<i class="fa fa-pencil-square-o"></i> Hydrostatic
+								</a>
+							</li>
+							<li role="presentation">
+								<a href="#table_visual" aria-controls="table_visual" role="tab" data-toggle="tab">
+									<i class="fa fa-cloud-upload"></i> Visualstatic
+								</a>
+							</li>
+							<li role="presentation">
+								<a href="#table_service" aria-controls="table_service" role="tab" data-toggle="tab">
+									<i class="fa fa-cloud-upload"></i> Service
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" role="tabpanel" id="table_hydro">
+								<table id="hydro" class="display">
+								    <thead>
+								        <tr>
+								        	<th>No Registrasi Uji</th>
+								            <th>Jenis Layanan</th>
+								            <th>Progress</th>
+								            <th>Keterangan</th>
+								            <th>Tanggal Masuk</th>
+								            <th>Tanggal Selesai</th>
+								            <th>Nama Pemilik</th>
+								            <th>Action</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								    @foreach($hydro as $fu)
+								        <tr>
+								        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
+								            <td>{{ $fu->jenis_uji }}</td>
+								        	<td>{{ $fu->progress }}</td>
+								        	<td>{{ $fu->keterangan }}</td>
+								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            @if(isset($fu->done_at))
+								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            @else
+								            <td>{{ "Belum Diinput" }}</td>
+								            @endif
+								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  <li class="dropdown-header">Aksi</li>
+													  @if($fu->progress == 'Selesai')
+													  @if($fu->jenis_uji == 'Hydrostatic')
+													  	<li>
+															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Visualstatic')
+													  	<li>
+															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Service')
+													  	<li>
+															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
+													  	</li>
+													  @endif
+													  @endif
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
+													  	</li>
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+													  	</li>											  	
+													  	@if($fu->progress == 'Waiting List')
+													  	<li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Dikerjakan</a></li>
+													    @elseif($fu->progress == 'Sedang Dikerjakan')
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Selesai</a></li>
+													    @elseif($fu->progress == 'Selesai')
+													    @if(!isset($fu->nama_pengambil))
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Input Nama Pengambil</li>
+													    <li><a href="#" onclick="myFunction()">Diambil</a></li>
+													    <form id="form" role="form" action="{{ route('ujiriksa.storePengambil', $fu->id)}}" method="post">
+														{!! csrf_field() !!}
+													    	<input type="hidden" id="pengambil" name="nama_pengambil" />
+														</form>
+														@endif
+													    @else
+													    @endif
+													    <li role="separator" class="divider"></li>
+													    <li class="dropdown-header">Aksi Tambahan</li>
+													    <li><a href="{{ route('ujiriksa.exportPdf', $fu->id) }}" target="_blank">Export PDF</a></li>
+													    <!-- <li><a href="#">Kirim Email</a></li> -->
+													    
+													  </ul>
+													</div>
+												</div>
+								            </td>
+								        </tr>
+								    @endforeach
+								    </tbody>
+								</table>
+							</div>
+							<div class="tab-pane" role="tabpanel" id="table_visual">
+								<table id="visual" class="display">
+								    <thead>
+								        <tr>
+								        	<th>No Registrasi Uji</th>
+								            <th>Jenis Uji</th>
+								            <th>Progress</th>
+								            <th>Keterangan</th>
+								            <th>Tanggal Masuk</th>
+								            <th>Tanggal Selesai</th>
+								            <th>Nama Pemilik</th>
+								            <th>Action</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								    @foreach($visual as $fu)
+								        <tr>
+								        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
+								            <td>{{ $fu->jenis_uji }}</td>
+								        	<td>{{ $fu->progress }}</td>
+								        	<td>{{ $fu->keterangan }}</td>
+								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            @if(isset($fu->done_at))
+								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            @else
+								            <td>{{ "Belum Diinput" }}</td>
+								            @endif
+								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  <li class="dropdown-header">Aksi</li>
+													  @if($fu->progress == 'Selesai')
+													  @if($fu->jenis_uji == 'Hydrostatic')
+													  	<li>
+															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Visualstatic')
+													  	<li>
+															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Service')
+													  	<li>
+															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
+													  	</li>
+													  @endif
+													  @endif
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
+													  	</li>
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+													  	</li>											  	
+													  	@if($fu->progress == 'Waiting List')
+													  	<li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Dikerjakan</a></li>
+													    @elseif($fu->progress == 'Sedang Dikerjakan')
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Selesai</a></li>
+													    @elseif($fu->progress == 'Selesai')
+													    @if(!isset($fu->nama_pengambil))
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Input Nama Pengambil</li>
+													    <li><a href="#" onclick="myFunction()">Diambil</a></li>
+													    <form id="form" role="form" action="{{ route('ujiriksa.storePengambil', $fu->id)}}" method="post">
+														{!! csrf_field() !!}
+													    	<input type="hidden" id="pengambil" name="nama_pengambil" />
+														</form>
+														@endif
+													    @else
+													    @endif
+													    <li role="separator" class="divider"></li>
+													    <li class="dropdown-header">Aksi Tambahan</li>
+													    <li><a href="{{ route('ujiriksa.exportPdf', $fu->id) }}" target="_blank">Export PDF</a></li>
+													    <!-- <li><a href="#">Kirim Email</a></li> -->
+													    
+													  </ul>
+													</div>
+												</div>
+								            </td>
+								        </tr>
+								    @endforeach
+								    </tbody>
+								</table>
+							</div>
+							<div class="tab-pane" role="tabpanel" id="table_service">
+								<table id="service" class="display">
+								    <thead>
+								        <tr>
+								        	<th>No Registrasi Uji</th>
+								            <th>Jenis Uji</th>
+								            <th>Progress</th>
+								            <th>Keterangan</th>
+								            <th>Tanggal Masuk</th>
+								            <th>Tanggal Selesai</th>
+								            <th>Nama Pemilik</th>
+								            <th>Action</th>
+								        </tr>
+								    </thead>
+								    <tbody>
+								    @foreach($service as $fu)
+								        <tr>
+								        	<td><a href="{{ route('ujiriksa.show', $fu->id) }}">{{ $fu->no_registrasi }}</a></td>
+								            <td>{{ $fu->jenis_uji }}</td>
+								        	<td>{{ $fu->progress }}</td>
+								        	<td>{{ $fu->keterangan }}</td>
+								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            @if(isset($fu->done_at))
+								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            @else
+								            <td>{{ "Belum Diinput" }}</td>
+								            @endif
+								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td>
+								            	<div class="btn-group dropdown" role="group" aria-label="...">
+												  <div class="btn-group navbar-right">
+													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													    Action <span class="caret"></span>
+													  </button>
+													  <ul class="dropdown-menu ">
+													  <li class="dropdown-header">Aksi</li>
+													  @if($fu->progress == 'Selesai')
+													  @if($fu->jenis_uji == 'Hydrostatic')
+													  	<li>
+															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Visualstatic')
+													  	<li>
+															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
+													  	</li>
+													  @endif
+													  @if($fu->jenis_uji == 'Service')
+													  	<li>
+															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
+													  	</li>
+													  @endif
+													  @endif
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
+													  	</li>
+													  	<li>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+													  	</li>											  	
+													  	@if($fu->progress == 'Waiting List')
+													  	<li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Dikerjakan</a></li>
+													    @elseif($fu->progress == 'Sedang Dikerjakan')
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Ubah Status Progress</li>
+													    <li><a href="{{ route('ujiriksa.changeStatus', $fu->id) }}">Selesai</a></li>
+													    @elseif($fu->progress == 'Selesai')
+													    @if(!isset($fu->nama_pengambil))
+													    <li role="separator" class="divider"></li>
+													  	<li class="dropdown-header">Input Nama Pengambil</li>
+													    <li><a href="#" onclick="myFunction()">Diambil</a></li>
+													    <form id="form" role="form" action="{{ route('ujiriksa.storePengambil', $fu->id)}}" method="post">
+														{!! csrf_field() !!}
+													    	<input type="hidden" id="pengambil" name="nama_pengambil" />
+														</form>
+														@endif
+													    @else
+													    @endif
+													    <li role="separator" class="divider"></li>
+													    <li class="dropdown-header">Aksi Tambahan</li>
+													    <li><a href="{{ route('ujiriksa.exportPdf', $fu->id) }}" target="_blank">Export PDF</a></li>
+													    <!-- <li><a href="#">Kirim Email</a></li> -->
+													    
+													  </ul>
+													</div>
+												</div>
+								            </td>
+								        </tr>
+								    @endforeach
+								    </tbody>
+								</table>
+							</div>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -116,10 +325,10 @@
 @section('scripts')
 <script>
 	$(document).ready( function () {
-	    $('#table_id').DataTable({
+	    $('.display').DataTable({
 	    "aaSorting": [],
 	  	"columnDefs": [ {
-		    "targets": [ 6 ],
+		    "targets": [ 7 ],
 		    "searchable": false,
 		    "orderable": false
 	    } ]
@@ -139,7 +348,7 @@
     }
 	}
 </script>
-<script>
+<!-- <script>
 	$(function() {
 		$('\
 			<div id="filter_status" class ="dataTables_length" style="display: inline-block; margin-left:30px;">\
@@ -182,5 +391,5 @@ $(document).ready(function() {
         table.draw();
     } );
 } );
-</script>
+</script> -->
 @endsection
