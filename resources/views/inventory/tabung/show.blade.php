@@ -161,22 +161,23 @@
 								            <td>{{ "Belum Selesai" }}</td>
 								            @endif
 								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
-								            @if(isset($t->hydrostaticresult))
-								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
-								            @else
-								            <td>Hasil Belum di Input</td>
-								            @endif
+									            @if(isset($t->hydrostaticresult))
+									            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
+									            @else
+									            <td>Hasil Belum di Input</td>
+									            @endif
 								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
-								            @if(isset($t->visualresult))
-								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
-								            @else
-								            <td>Hasil Belum di Input</td>
-								            @endif
+									            @if(isset($t->visualresult))
+									            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
+									            @else
+									            <td>Hasil Belum di Input</td>
+									            @endif
 								            @elseif($t->formujiriksa->jenis_uji == "Service")
-								            @if(isset($t->serviceresult))
-											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
-											@else
-											<td>Hasil Belum di Input</td>
+									            @if(isset($t->serviceresult))
+												<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
+												@else
+												<td>Hasil Belum di Input</td>
+												@endif
 											@endif
 								            <td>
 												<div class="btn-group dropdown" role="group" aria-label="...">

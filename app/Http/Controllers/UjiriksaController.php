@@ -7,6 +7,7 @@ use App\Models\Formujiriksa;
 use App\Models\Itemujiriksa;
 use App\Models\Fototabung;
 use App\Models\Tube;
+use App\Models\Customer;
 use App\Models\Alat;
 use App\Models\Hydrostaticresult;
 use App\Models\Visualresult;
@@ -405,5 +406,21 @@ class UjiriksaController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function getDataTabung($id) {
+        $tabungs = Tube::where('customer_id', $id)->paginate(15);
+        foreach ($tabungs as $t) {
+            $result[] = ['id' => $t->id, 'name' => $t->no_tabung ];
+        }
+        return response()->json($result);
+    }
+
+    public function getDataAlat($id) {
+        $alats = Alat::where('customer_id', $id)->paginate(15);
+        foreach ($alats as $at) {
+            $result[] = ['id' => $at->id, 'name' => $at->no_alat ];
+        }
+        return response()->json($result);
     }
 }

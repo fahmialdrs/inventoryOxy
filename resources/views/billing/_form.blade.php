@@ -18,7 +18,7 @@
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
     {!! Form::label('customer_id', 'Nama Customer', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih Nama Customer']) !!}
+        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control', 'id' => 'customer', 'placeholder' => 'Pilih Nama Customer']) !!}
         {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>

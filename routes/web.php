@@ -102,6 +102,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'customer.exportExcelDetail',
 		'uses' => 'CustomerController@exportExcelDetail'
 		]);
+	Route::get('getDataCustomer/customer/{id}', [
+		'as' => 'customer.getDataCustomer',
+		'uses' => 'CustomerController@getDataCustomer'
+		]);
 
 
 	// Route::resource('tabung', 'TabungController');
@@ -189,6 +193,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('export/ujiriksa/{id}', [
 		'as' => 'ujiriksa.exportPdf',
 		'uses' => 'UjiriksaController@exportPdf'
+		]);
+	Route::get('getDataTabung/ujiriksa/{id}', [
+		'as' => 'ujiriksa.getDataTabung',
+		'uses' => 'UjiriksaController@getDataTabung'
+		]);
+	Route::get('getDataAlat/ujiriksa/{id}', [
+		'as' => 'ujiriksa.getDataAlat',
+		'uses' => 'UjiriksaController@getDataAlat'
 		]);
 
 	// Route::resource('service', 'ServiceController');

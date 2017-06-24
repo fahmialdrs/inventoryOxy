@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Billing;
+use App\Models\Customer;
 use App\Models\Itembilling;
 use App\Http\Requests\StoreBillingRequest;
 use App\Http\Requests\UpdateBillingRequest;
@@ -241,5 +242,11 @@ class BillingController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function getDataCustomer($id) {
+        $customers = Customer::where('id', $id)->paginate(15);
+
+        return response()->json($customer);
     }
 }
