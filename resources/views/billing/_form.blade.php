@@ -312,6 +312,30 @@
 
 @section('scripts')
 <script>
+$(document).ready(function(){
+   $("#customer").change(function(){
+     var customer =$("#customer").val();
+     $.ajax({
+    type:"get",
+    url:"/admin/getDataCustomer/billing/"+customer,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+      console.log(url);
+    },
+    success:function(data){
+        var json = data,
+        obj = JSON.parse(json);
+          $("#alamat").val(obj.alamat);
+          $('#email').val(obj.email);
+    }
+     });
+   });
+});
+</script>
+<script>
     $(document).ready(function() {
     var max_fields      = 10; //maximum input boxes allowed
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper

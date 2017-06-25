@@ -102,10 +102,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'customer.exportExcelDetail',
 		'uses' => 'CustomerController@exportExcelDetail'
 		]);
-	Route::get('getDataCustomer/customer/{id}', [
-		'as' => 'customer.getDataCustomer',
-		'uses' => 'CustomerController@getDataCustomer'
-		]);
 
 
 	// Route::resource('tabung', 'TabungController');
@@ -281,6 +277,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('kirimEmail/billing/{id}', [
 		'as' => 'billing.kirimEmail',
 		'uses' => 'BillingController@kirimEmail'
+		]);
+
+	Route::get('getDataCustomer/billing/{id}', [
+		'as' => 'billing.getDataCustomer',
+		'uses' => 'BillingController@getDataCustomer'
 		]);
 
 	// Route::resource('user', 'UserController');

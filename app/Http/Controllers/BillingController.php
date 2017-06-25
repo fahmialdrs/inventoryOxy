@@ -245,8 +245,8 @@ class BillingController extends Controller
     }
 
     public function getDataCustomer($id) {
-        $customers = Customer::where('id', $id)->paginate(15);
-
-        return response()->json($customer);
+        $customers = Customer::where('id', $id);
+        $result = $customers->alamat;
+        return response()->json($result);
     }
 }

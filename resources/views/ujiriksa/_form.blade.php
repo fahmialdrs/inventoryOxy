@@ -433,15 +433,11 @@ $(document).ready(function() {
                 <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]">\
             </td>\
             <td class="form_tabung">\
-                <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%">\
+                <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%">\
                 </select>\
             </td>\
             <td class="form_alat" style="display:none">\
-                <select name="itemujiriksa[0][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat">\
-                    <option disabled selected value></option>\
-                    @foreach($alats as $at)\
-                        <option value="{{ $at->id }}">{{ $at->no_alat }}</option>\
-                    @endforeach\
+                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">\
                 </select>\
             </td>\
             <td>\
@@ -454,11 +450,85 @@ $(document).ready(function() {
         </tr>'); //add input box
             x++; //text box increment
         }
+
+    $('.tube').select2({
+            width: 'resolve',
+            placeholder: "Pilih No Tabung",
+            ajax: {
+                url: function(){
+                    var value = $('#customer').val();
+                    var url = "/admin/getDataTabung/ujiriksa/"+value;
+                    console.log(url);
+                    return url;
+                },
+                dataType: 'json',
+                type: "GET",
+                delay: 20,
+                data: function (params) {
+                  return {
+                    q: params.term, // search term
+                    page: params.page
+                  };
+                },
+                processResults: function (data, page) {
+                  // parse the results into the format expected by Select2.
+                  // since we are using custom formatting functions we do not need to
+                  // alter the remote JSON data
+                  return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    })
+                  };
+                },
+                cache: true
+              },
+    });
+
+    $('.alat').select2({
+            width: 'resolve',
+            placeholder: "Pilih No Alat",
+            ajax: {
+                url: function(){
+                    var value = $('#customer').val();
+                    var url = "/admin/getDataAlat/ujiriksa/"+value;
+                    console.log(url);
+                    return url;
+                },
+                dataType: 'json',
+                type: "GET",
+                delay: 250,
+                data: function (params) {
+                  return {
+                    q: params.term, // search term
+                    page: params.page
+                  };
+                },
+                processResults: function (data, page) {
+                  // parse the results into the format expected by Select2.
+                  // since we are using custom formatting functions we do not need to
+                  // alter the remote JSON data
+                  return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    })
+                  };
+                },
+                cache: true
+              },
+    });
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parents("tr").remove(); x--;
     })
+
+
 });
 </script>
 <script>
