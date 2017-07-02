@@ -14,7 +14,7 @@
                     <div class="panel-heading">
                         <h2 class="panel-title">Detail Form Ujiriksa {{ $form->no_registrasi }}</h2>
                     </div>
-                    <div class="panel-body">                    
+                    <div class="panel-body" style="overflow:auto; ">                    
                         <br><br><br>
                         <div class="col-md-8">
                         <table class="table table-responsive">
@@ -99,7 +99,11 @@
                                     <td>{{ $t->nama_barang or '' }}</td>
                                     <td>{{ $t->tube->no_tabung or '' }}</td>
                                     <td>{{ $t->keluhan or '' }}</td>
-                                    <td>Foto</td>
+                                    <td>
+                                        @foreach($t->fototabung as $foto)                     
+                                            <img src="{{ asset('storage/foto/'.$foto->foto_tabung_masuk) }}" class="img-rounded" width="100" height="75">                    
+                                       @endforeach
+                                    </td>
 
                                     @if( $form->jenis_uji == "Hydrostatic")
                                     @if(isset($t->hydrostaticresult))

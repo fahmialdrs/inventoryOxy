@@ -355,6 +355,24 @@ class UjiriksaController extends Controller
         elseif($status == "Sedang Dikerjakan"){
             $ujiriksas->progress = "Selesai";
             $ujiriksas->done_at = Carbon::today();
+            if ($ujiriksas->jenis_uji == "Hydrostatic") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_hydrostatic = Carbon::today();
+                    $i->tube->save();
+                }
+            }
+            elseif ($ujiriksas->jenis_uji == "Visualstatic") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_visualstatic = Carbon::today();
+                    $i->tube->save();
+                }
+            }
+            elseif ($ujiriksas->jenis_uji == "Service") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_service = Carbon::today();
+                    $i->tube->save();
+                }
+            }
 
             Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
                 $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');

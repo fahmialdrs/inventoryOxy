@@ -41,7 +41,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('inventory.alat.create');
+        return view('inventory.customer.create');
     }
 
     /**

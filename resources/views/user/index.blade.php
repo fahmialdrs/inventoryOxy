@@ -22,7 +22,7 @@
 						            <th>Email</th>
 						            <th>Role</th>
 						            <th>Tanggal Dibuat</th>
-						            <th class="action">Action</th>
+						            <th class="action">Aksi</th>
 						        </tr>
 						    </thead>
 						    <tbody>
@@ -36,7 +36,7 @@
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
 										  <div class="btn-group navbar-right">
 											  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-											    Action <span class="caret"></span>
+											    Aksi <span class="caret"></span>
 											  </button>
 											  <ul class="dropdown-menu ">
 											  	<li>

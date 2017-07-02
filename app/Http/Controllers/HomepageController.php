@@ -26,7 +26,7 @@ class HomepageController extends Controller
         ]);
 
     	$noreg = $request->no_registrasi;
-        $form = Formujiriksa::where('no_registrasi', $noreg)->with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult')->firstOrFail();
+        $form = Formujiriksa::where('no_registrasi', $noreg)->with('itemujiriksa.tube', 'itemujiriksa.fototabung', 'itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult.fotovisual', 'itemujiriksa.serviceresult.fotoservice')->firstOrFail();
         // dd($form);
         // $itemujiriksa = Itemujiriksa::where('formujiriksa_id', $form->id)->get();
         return view('homepage.result', array(

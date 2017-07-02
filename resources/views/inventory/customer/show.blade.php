@@ -90,7 +90,7 @@
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
 													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													    Action <span class="caret"></span>
+													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
 													  	<li>
@@ -145,7 +145,7 @@
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
 													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													    Action <span class="caret"></span>
+													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
 													  	<li>
@@ -187,7 +187,7 @@
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
 													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													    Action <span class="caret"></span>
+													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
 													  	<li>
@@ -242,7 +242,7 @@
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
 													  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													    Action <span class="caret"></span>
+													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
 													  	<li>
@@ -301,7 +301,7 @@
 
 		    $('#histori_alat').dataTable( {
 			  	"columnDefs": [ {
-				    "targets": [ 4 ],
+				    "targets": [ 5 ],
 				    "searchable": false,
 				    "orderable": false
 			    } ]
