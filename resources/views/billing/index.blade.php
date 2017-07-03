@@ -49,7 +49,7 @@
 											  	</li>
 												@endif
 											  	<li>
-													<a type="button" href="{{ route('billing.destroy', ['id' => $b->id]) }}">Delete</a>
+													<a type="button" href="{{ route('billing.destroy', ['id' => $b->id]) }}" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')">Delete</a>
 											  	</li>
 											  	<li role="separator" class="divider"></li>
 											  	@if($b->status != "Sudah Bayar")

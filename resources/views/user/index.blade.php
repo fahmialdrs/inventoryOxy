@@ -43,7 +43,7 @@
 													<a type="button" href="{{ route('user.edit', $u->id)}}">Edit</a>
 											  	</li>
 											  	<li>
-													<a type="button" href="#">Delete</a>
+													<a type="button" href="{{ route('user.destroy', $u->id)}}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Delete</a>
 											  	</li>
 											  </ul>
 											</div>

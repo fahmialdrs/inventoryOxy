@@ -230,8 +230,8 @@ class UjiriksaController extends Controller
 
         if (isset($request->itemujiriksa)) { 
             
-            foreach ($request->itemujiriksa as $key ) { 
-                if ($key['tube_id'] != null) {
+            foreach ($request->itemujiriksa as $index => $key) {
+                if (isset($key['tube_id'])) {
                     $item = new Itemujiriksa([
                         'jumlah_barang' => $key['jumlah_barang'],
                         'nama_barang' => $key['nama_barang'],
@@ -239,7 +239,7 @@ class UjiriksaController extends Controller
                         'keluhan' => $key['keluhan']
                     ]);
                 }                
-                elseif ($key['alat_id'] != null) {
+                elseif (isset($key['alat_id'])) {
                     $item = new Itemujiriksa([
                         'jumlah_barang' => $key['jumlah_barang'],
                         'nama_barang' => $key['nama_barang'],
@@ -276,15 +276,18 @@ class UjiriksaController extends Controller
                     }
                 }
 
-                // reset itemujiriksa_id pada fototabung
-                foreach ($ujiriksas->itemujiriksa as $i) {
-
                 if (isset($key['fototabung']) == false) {
+
+                // reset itemujiriksa_id pada fototabung
+                foreach ($ujiriksas->itemujiriksa as $index => $i) {  
+                    
                     foreach($i->fototabung as $foto){
                         $foto->itemujiriksa_id = $item->id;
                         $foto->save();
                     }
                 }
+                $i->delete();
+
                 // hapus fototabung
                 // elseif(isset($key['fototabung'])) {
                 //     foreach($i->fototabung as $foto){
@@ -299,7 +302,6 @@ class UjiriksaController extends Controller
                 //         $foto->delete();
                 //     }
                 // }
-                $i->delete();    
                 }
             }
             

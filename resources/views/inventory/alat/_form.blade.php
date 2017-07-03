@@ -97,7 +97,7 @@
             Simpan
         </button>
         @if(request()->route()->getName() != "alat.edit")
-        <button type="submit" class="btn btn-success">
+        <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Benar?')">
             Simpan & Buat Baru
         </button>
         @endif

@@ -73,7 +73,7 @@
 											  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
 											  	</li> -->
 											  	<li>
-											  		<a type="button" href="{{ route('customer.destroy', $c->id) }}">Hapus</a>												
+											  		<a type="button" href="{{ route('customer.destroy', $c->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>												
 											  	</li>
 											  	<li role="separator" class="divider"></li>
 											    <li><a href="#">Unduh Label</a></li>
@@ -126,7 +126,7 @@
 													  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
 													  	</li> -->
 													  	<li>
-													  		<a type="button" href="{{ route('tabung.destroy', $t->id) }}">Hapus</a>
+													  		<a type="button" href="{{ route('tabung.destroy', $t->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
 													    <li><a href="{{ route('tabung.barcode', $t->id) }}" target="_blank">Unduh Barcode</a></li>
@@ -174,7 +174,7 @@
 													  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
 													  	</li> -->
 													  	<li>
-													  		<a type="button" href="{{ route('alat.destroy', $a->id) }}">Hapus</a>
+													  		<a type="button" href="{{ route('alat.destroy', $a->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
 													    <li><a href="#" target="_blank">Unduh Barcode</a></li>

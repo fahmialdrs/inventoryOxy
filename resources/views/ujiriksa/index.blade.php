@@ -88,11 +88,11 @@
 													  	</li>
 													  @endif
 													  @endif
+														  	<!-- <li>
+																<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
+														  	</li> -->
 													  	<li>
-															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
-													  	</li>
-													  	<li>
-															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Delete</a>
 													  	</li>											  	
 													  	@if($fu->progress == 'Waiting List')
 													  	<li role="separator" class="divider"></li>
@@ -181,11 +181,11 @@
 													  	</li>
 													  @endif
 													  @endif
-													  	<li>
+													  	<!-- <li>
 															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
-													  	</li>
+													  	</li> -->
 													  	<li>
-															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Delete</a>
 													  	</li>											  	
 													  	@if($fu->progress == 'Waiting List')
 													  	<li role="separator" class="divider"></li>
@@ -274,11 +274,11 @@
 													  	</li>
 													  @endif
 													  @endif
-													  	<li>
+													  	<!-- <li>
 															<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
-													  	</li>
+													  	</li> -->
 													  	<li>
-															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}">Delete</a>
+															<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Delete</a>
 													  	</li>											  	
 													  	@if($fu->progress == 'Waiting List')
 													  	<li role="separator" class="divider"></li>

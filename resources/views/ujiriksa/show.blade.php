@@ -16,7 +16,7 @@
 						<h2 class="panel-title">Detail Form Layanan {{ $form->no_registrasi }}</h2>
 					</div>
 					<div class="panel-body">					
-						<a href="{{ route('ujiriksa.edit', $form->id) }}" class="btn btn-primary">Edit</a>
+						<!-- <a href="{{ route('ujiriksa.edit', $form->id) }}" class="btn btn-primary">Edit</a> -->
 						<br><br><br>
 						<div class="col-md-8">
 							<table class="table table-responsive">
