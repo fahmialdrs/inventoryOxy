@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Billing;
-use App\Models\ItemBilling;
+use App\Models\Itembilling;
 use database\seeds\TabungsSeeder;
 
 class BillingSeeder extends Seeder
