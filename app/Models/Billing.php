@@ -13,6 +13,6 @@ class Billing extends Model
     }
 
     public function itembilling() {
-    	return $this->hasMany('App\Models\ItemBilling');
+    	return $this->hasMany('App\Models\Itembilling');
     }
 }
