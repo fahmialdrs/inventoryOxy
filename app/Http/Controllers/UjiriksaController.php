@@ -104,7 +104,7 @@ class UjiriksaController extends Controller
         if (isset($request->itemujiriksa)) { 
             foreach ($request->itemujiriksa as $key ) {
                 // dd($key['tube_id'] == null);
-            if ($key['tube_id'] != null) {
+            if (isset($key['tube_id'])) {
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
                     'nama_barang' => $key['nama_barang'],
@@ -112,7 +112,7 @@ class UjiriksaController extends Controller
                     'keluhan' => $key['keluhan']
                 ]);
             }                
-            elseif ($key['alat_id'] != null) {
+            elseif (isset($key['alat_id'])) {
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
                     'nama_barang' => $key['nama_barang'],
