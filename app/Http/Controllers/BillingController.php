@@ -53,6 +53,7 @@ class BillingController extends Controller
         $data['status'] = 'Belum Bayar';
         // dd($request->subtotal);
         array_forget($data,'itembiling');
+        array_forget($data,'new');
         $table = new Billing;
         $table->fill($data);
         
@@ -85,7 +86,12 @@ class BillingController extends Controller
             "message" => "Berhasil membuat invoice dengan nomer <b> $table->no_invoice </b>"
             ]);
 
-        return redirect()->route('billing.index');
+        if (isset($request->new)) {
+            return redirect()->route('billing.create');
+        }
+        else {
+            return redirect()->route('billing.index');
+        }
     }
 
     /**

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 use PDF;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
-
+use App\Models\Olah;
 
 class UjiriksaController extends Controller
 {
@@ -38,6 +38,46 @@ class UjiriksaController extends Controller
             'visual' => $visual,
             'service' => $service
             ));
+    }
+
+    public function indexAll(Request $request) {
+
+        /**
+             * Costum Class buat ngolah request dan query
+             * @var Olah
+             */
+            $table = new Olah(Formujiriksa::with([]));
+
+            /**
+             * Pannggil Closure di costum class Olah 
+             * buat costum mana aja field yang bisa di search
+             */
+            $table->search(function($q) use ($request){
+                if(isset($request->search) && $request->search != ''){
+                    $q->where('no_registrasi', 'ILIKE', '%' . $request->search . '%');
+
+                }
+            });
+
+            $table->another(function($q) use ($request){
+                $q->orderBy('created_at', 'desc');
+            });
+            
+            /**
+             * Ambil hasil query yang udah di olah
+             * @var ambil()
+             */
+            $table = $table->ambil();
+            
+            return response()->json($table);
+
+        $data = Formujiriksa::with('itemujiriksa')->orderBy('created_at', 'desc')->get();
+        if(!$data) {
+            return response()->json(['error' => 'Data Form Registrasi Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
     }
 
     /**
@@ -97,6 +137,7 @@ class UjiriksaController extends Controller
         $data['progress'] = 'Waiting List';
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
+        array_forget($data,'new');
         $table = new Formujiriksa;
         $table->fill($data);
         $table->save();
@@ -169,7 +210,12 @@ class UjiriksaController extends Controller
             "message" => "Registrasi Ujiriksa dengan no Registrasi <b> $nouji </b> Berhasil"
             ]);
 
-        return redirect()->route('ujiriksa.index');
+        if (isset($request->new)) {
+            return redirect()->route('ujiriksa.create');
+        }
+        else {
+            return redirect()->route('ujiriksa.index');
+        }
     }
 
     /**
@@ -186,6 +232,17 @@ class UjiriksaController extends Controller
             'form' => $form,
             'itemujiriksa' => $itemujiriksa
             ));
+    }
+
+    public function showDetail(Request $request)
+    {
+        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung')->find($request['id']);
+        if(!$data) {
+            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
     }
 
     /**
@@ -442,5 +499,48 @@ class UjiriksaController extends Controller
             $result[] = ['id' => $at->id, 'name' => $at->no_alat ];
         }
         return response()->json($result);
+    }
+
+    public function changeStatusAPI(Request $request)
+    {
+        // dd($request->all());
+        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube')->find($request->id);
+        // dd($ujiriksas);
+        $status = $ujiriksas->progress;
+        if($status == "Waiting List") {
+            $ujiriksas->progress = "Sedang Dikerjakan";
+            $ujiriksas->progress_at = Carbon::today();
+            $ujiriksas->save();
+            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui']);   
+        }
+        elseif($status == "Sedang Dikerjakan"){
+            $ujiriksas->progress = "Selesai";
+            $ujiriksas->done_at = Carbon::today();
+            if ($ujiriksas->jenis_uji == "Hydrostatic") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_hydrostatic = Carbon::today();
+                    $i->tube->save();
+                }
+            }
+            elseif ($ujiriksas->jenis_uji == "Visualstatic") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_visualstatic = Carbon::today();
+                    $i->tube->save();
+                }
+            }
+            elseif ($ujiriksas->jenis_uji == "Service") {
+                foreach($ujiriksas->itemujiriksa as $i) {
+                    $i->tube->terakhir_service = Carbon::today();
+                    $i->tube->save();
+                }
+            }
+
+            Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+                $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+            });
+            $ujiriksas->save();
+
+            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui Dan Email Berhasil Terkirim']);
+        }
     }
 }

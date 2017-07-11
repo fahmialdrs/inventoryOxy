@@ -16,3 +16,44 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::get('ujiriksa', [
+	'as' => 'ujiriksa.indexAll',
+	'uses' => 'UjiriksaController@indexAll',
+	
+	]);
+
+Route::get('inventory/tabung', [
+	'as' => 'tabung.indexAll',
+	'uses' => 'TabungController@indexAll',
+	'middleware' => 'auth:api'
+	]);
+
+Route::get('inventory/alat', [
+	'as' => 'alat.indexAll',
+	'uses' => 'AlatController@indexAll',
+	'middleware' => 'auth:api'
+	]);
+
+Route::get('showDetail/{id}', [
+	'as' => 'ujiriksa.showDetail',
+	'uses' => 'UjiriksaController@showDetail',
+	'middleware' => 'auth:api'
+	]);
+
+Route::get('alat/showDetail/{id}', [
+	'as' => 'alat.showDetail',
+	'uses' => 'AlatController@showDetail',
+	'middleware' => 'auth:api'
+	]);
+
+Route::get('tabung/showDetail/{id}', [
+	'as' => 'tabung.showDetail',
+	'uses' => 'TabungController@showDetail',
+	'middleware' => 'auth:api'
+	]);
+
+Route::get('changeStatusAPI/ujiriksa', [
+		'as' => 'ujiriksa.changeStatusAPI',
+		'uses' => 'UjiriksaController@changeStatusAPI'
+		]);

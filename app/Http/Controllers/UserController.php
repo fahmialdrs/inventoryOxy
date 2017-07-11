@@ -43,6 +43,7 @@ class UserController extends Controller
         $data = $request->all();
         $password = $request->input('password');
         $data['password'] = bcrypt($password);
+        array_forget($data,'new');
 
         $users = User::create($data);
 
@@ -63,7 +64,13 @@ class UserController extends Controller
             "level" => "success",
             "message" => "Pendaftaran Pengguna Dengan Nama " . "<strong>" . $data['email'] ."</strong>" . " Password <strong>" . $password . "</strong> Berhasil Di Daftarkan" 
             ]);
-        return redirect()->route('user.index');
+
+        if (isset($request->new)) {
+            return redirect()->route('user.create');
+        }
+        else {
+            return redirect()->route('user.index');
+        }
     }
 
     /**

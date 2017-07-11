@@ -3,7 +3,7 @@
  * Created By Arief Hikam
  * https://github.com/ariefhikam
  */
-namespace App\CostumsClass;
+namespace App\Models;
 
 use Illuminate\Database\Query\Expression;
 
@@ -47,7 +47,7 @@ trait ModelTrait {
     {
         parent::boot();
 
-        static::addGlobalScope(new IdScope);
+        // static::addGlobalScope(new IdScope);
     }
 }
 

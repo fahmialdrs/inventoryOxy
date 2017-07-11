@@ -26,6 +26,16 @@ class TabungController extends Controller
         return view('inventory.tabung.index')->with(compact('tabungs'));
     }
 
+    public function indexAll() {
+        $data = Tube::with('customer')->orderBy('created_at', 'desc')->get();
+        if(!$data) {
+            return response()->json(['error' => 'Data Tabung Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,6 +55,7 @@ class TabungController extends Controller
     public function store(StoreTabungRequest $request)
     {
         $data = $request->all();
+        array_forget($data,'new');
         $tabungs = Tube::create($data);
 
         Session::flash("flash_notification", [
@@ -52,7 +63,12 @@ class TabungController extends Controller
             "message" => "Berhasil menambah data Tabung untuk Customer <b>". $tabungs->customer->nama ."</b> dengan nomer tabung <b> $tabungs->no_tabung </b>."
             ]);
 
-        return redirect()->route('customer.index');
+        if (isset($request->new)) {
+            return redirect()->route('tabung.create');
+        }
+        else {
+            return redirect()->route('customer.index');
+        }
     }
 
     /**
@@ -65,6 +81,17 @@ class TabungController extends Controller
     {
         $tabungs = Tube::with(['itemujiriksa.formujiriksa','customer.billing'])->findOrFail($id);
         return view('inventory.tabung.show')->with(compact('tabungs'));
+    }
+
+    public function showDetail($id)
+    {
+        $data = Tube::with(['itemujiriksa.formujiriksa'])->findOrFail($id);
+        if(!$data) {
+            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
     }
 
     /**

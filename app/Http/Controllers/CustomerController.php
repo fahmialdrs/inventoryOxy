@@ -53,6 +53,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->all();
+        array_forget($data,'new');
 
         $customers = Customer::create($data);
 
@@ -61,7 +62,12 @@ class CustomerController extends Controller
             "message" => "Berhasil menambah data customer <b> $customers->nama </b>"
             ]);
 
-        return redirect()->route('customer.index');
+        if (isset($request->new)) {
+            return redirect()->route('customer.create');
+        }
+        else {
+            return redirect()->route('customer.index');
+        }
     }
 
     /**

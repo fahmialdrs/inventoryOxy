@@ -109,11 +109,11 @@
             Simpan
         </button>
         @if(request()->route()->getName() != "tabung.edit")
-        <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Benar?')">
+        <button type="submit" name="new" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Benar?')">
             Simpan & Buat Baru
         </button>
         @endif
-        <button type="submit" class="btn btn-warning">
+        <button type="reset" class="btn btn-warning">
             Batal
         </button>
     </div>

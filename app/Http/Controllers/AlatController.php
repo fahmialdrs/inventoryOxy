@@ -21,6 +21,16 @@ class AlatController extends Controller
         //
     }
 
+    public function indexAll() {
+        $data = Alat::with('customer')->orderBy('created_at', 'desc')->get();
+        if(!$data) {
+            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -51,6 +61,7 @@ class AlatController extends Controller
         $noalat = Carbon::now()->format('dmyhis');
         $data = $request->all();
         $data['no_alat'] = $noalat;
+        array_forget($data,'new');
 
         $alats = Alat::create($data);
 
@@ -58,10 +69,12 @@ class AlatController extends Controller
             "level" => "success",
             "message" => "Berhasil Menambah Alat <b>" . $alats->jenisalat->nama_alat . "</b> Atas Nama Customer <b>". $alats->customer->nama . "</b>"
             ]);
-
-        return redirect()->route('customer.index');
-
-
+        if (isset($request->new)) {
+            return redirect()->route('alat.create');
+        }
+        else {
+            return redirect()->route('customer.index');
+        }
     }
 
     /**
@@ -74,6 +87,17 @@ class AlatController extends Controller
     {
         $alats = Alat::findOrFail($id);
         return view('inventory.alat.show')->with(compact('alats'));
+    }
+
+    public function showDetail($id)
+    {
+        $data = Alat::with(['itemujiriksa.formujiriksa'])->findOrFail($id);
+        if(!$data) {
+            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
     }
 
     /**

@@ -324,7 +324,7 @@
             Simpan
         </button>
         @if(request()->route()->getName() != "ujiriksa.edit")
-        <button type="submit" class="btn btn-success">
+        <button type="submit" name="new" class="btn btn-success">
             Simpan & Buat Baru
         </button>
         @endif

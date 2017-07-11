@@ -17,7 +17,8 @@
         "maatwebsite/excel": "~2.1.0",
         "nesbot/carbon": "^1.22",
         "santigarcor/laratrust": "3.0.*",
-        "simplesoftwareio/simple-qrcode": "~1"
+        "simplesoftwareio/simple-qrcode": "~1",
+        "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
