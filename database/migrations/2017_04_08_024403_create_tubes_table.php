@@ -54,6 +54,7 @@ class CreateTubesTable extends Migration
             $table->string('ukuran');
             $table->string('warna');
             $table->string('catatan')->nullable();
+            $table->timestamp('terakhir_service')->nullable();
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');

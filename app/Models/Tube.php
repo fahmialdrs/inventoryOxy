@@ -16,4 +16,5 @@ class Tube extends Model
     public function itemujiriksa() {
         return $this->hasMany('App\Models\Itemujiriksa');
     }
+
 }

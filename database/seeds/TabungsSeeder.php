@@ -120,6 +120,7 @@ class TabungsSeeder extends Seeder
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
+            'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat1->id,
             'merk_id' => $merk1->id,
             'customer_id' => $customer1->id
@@ -131,9 +132,10 @@ class TabungsSeeder extends Seeder
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
+            'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat1->id,
             'merk_id' => $merk2->id,
-            'customer_id' => $customer2->id
+            'customer_id' => $customer1->id
             ]);
 
         $alat3 = Alat::create([
@@ -142,6 +144,7 @@ class TabungsSeeder extends Seeder
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
+            'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat2->id,
             'merk_id' => $merk1->id,
             'customer_id' => $customer2->id
@@ -153,6 +156,7 @@ class TabungsSeeder extends Seeder
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
+            'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat2->id,
             'merk_id' => $merk2->id,
             'customer_id' => $customer2->id

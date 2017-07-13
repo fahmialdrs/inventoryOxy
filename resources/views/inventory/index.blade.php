@@ -108,7 +108,7 @@
 								            <td>{{ $t->kode_tabung }}</td>
 								            <td>{{ $t->isi_tabung }}</td>
 								            <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
-								            <td>{{ $t->terakhir_hydrostatic->addYears(1)->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->addYears(5)->format('d-m-Y') }}</td>
 								            <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
 								            <td>{{ $t->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</td>
 								            <td><a href="{{ route('customer.show',['id'=>$t->id]) }}">{{ $t->customer->nama }}</a></td>

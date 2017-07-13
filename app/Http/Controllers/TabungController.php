@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateTabungRequest;
 use PDF;
 use Excel;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CheckReminderTabung;
 
 class TabungController extends Controller
 {
@@ -20,6 +21,8 @@ class TabungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    use CheckReminderTabung;
     public function index()
     {
         $tabungs = Tube::with('customer')->orderBy('created_at', 'desc')->get();
@@ -208,5 +211,13 @@ class TabungController extends Controller
     })->download('xls');
 
     return redirect()->route('customer.index');
+   }
+
+   public function reminder() {
+    $this->table = Tube::with('jenisalat');
+
+    $checkHydro = $this->checkTabung();
+    $checkVisual = $this->checkTabungVisual();
+    dd($checkVisual);
    }
 }

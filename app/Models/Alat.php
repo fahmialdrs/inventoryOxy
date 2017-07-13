@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Alat extends Model
 {
     protected $guarded = [];
+    protected $dates = ['terakhir_service'];
 
     public function jenisalat() {
     	return $this->belongsTo('App\Models\Jenisalat');

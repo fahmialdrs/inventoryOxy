@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Alat;
+use App\Models\Jenisalat;
 use Carbon\Carbon;
 use Excel;
 use Illuminate\Support\Facades\Auth;
+use App\Models\CheckReminderTabung;
+use Illuminate\Support\Facades\DB;
 
 class AlatController extends Controller
 {
@@ -16,6 +19,8 @@ class AlatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    use CheckReminderTabung;
     public function index()
     {
         //
@@ -173,5 +178,26 @@ class AlatController extends Controller
     })->download('xls');
 
     return redirect()->route('customer.index');
+   }
+
+   public function reminder() {
+    // $table = Alat::with(array('jenisalat' => function($query)
+    // {
+    //      $query->where('jenisalats.reminder', 1);
+    // }))->get();
+
+    $table = Alat::with('jenisalat', 'customer')
+        ->whereHas('jenisalat', function($q) {
+           // Query the name field in status table
+           $q->where('reminder', '=', 1); // '=' is optional
+        })->get();
+
+    // $table = DB::table('jenisalats')
+    //         ->join('alats', 'jenisalats.id', '=', 'alats.jenisalat_id')
+    //         ->select('alats.*', 'jenisalats.reminder', 'jenisalats.nama_alat')
+    //         ->where('reminder', 1)
+    //         ->get();   
+
+    $checkAlat = $this->checkAlat($table);
    }
 }

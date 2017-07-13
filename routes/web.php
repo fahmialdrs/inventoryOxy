@@ -146,6 +146,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'tabung.exportExcelDetail',
 		'uses' => 'TabungController@exportExcelDetail'
 		]);
+	Route::get('checkReminder/tabung', [
+		'as' => 'tabung.checkReminder',
+		'uses' => 'TabungController@reminder'
+		]);
 
 
 	// Route::resource('ujiriksa', 'UjiriksaController');
@@ -432,7 +436,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'alat.exportExcelDetail',
 		'uses' => 'AlatController@exportExcelDetail'
 		]);
-
+	Route::get('checkReminder/alat', [
+		'as' => 'alat.checkReminder',
+		'uses' => 'AlatController@reminder'
+		]);
 
 	Route::get('jenisalat', [
 		'as' => 'jenisalat.index',
