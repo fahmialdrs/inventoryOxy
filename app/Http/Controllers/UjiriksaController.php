@@ -218,6 +218,113 @@ class UjiriksaController extends Controller
         }
     }
 
+    public function storeAPI(Request $request) {
+        // $this->validate($request, [
+        //     'tube_id' => 'required|exists:tubes,id',
+        //     'keluhan' => 'required|max:255',
+        //     'jenis_uji' => 'required|max:255',
+        //     'foto_tabung_masuk'=> 'image|max:8192',
+        // ]);
+
+        // request semua data
+        $data = $request->except('keterangan_foto');
+        // dd($request->all());
+
+        // tarik jenis uji
+        $jenisuji = $request->input('jenis_uji');
+
+        $date = Carbon::parse('now');
+        $counter = Formujiriksa::whereDate('created_at','=',date('Y-m-d'))->count()+1;
+        // dd($counter);
+        $kode = $date->format('dm').'-'. $counter . '/UJI/NDT/' . $date->format('Y');
+        
+        // penentuan nomer registrasi berdasarkan jenis uji
+        if ($jenisuji == 'Hydrostatic') {
+            $nouji = "HYDR-" . $kode;
+        }
+        elseif ($jenisuji == 'Visualstatic') {
+            $nouji = "VSL-". $kode;
+        }
+        elseif ($jenisuji == 'Service') {
+            $nouji = "SVC-". $kode;
+        }
+        $data['no_registrasi'] = $nouji;
+        $data['jenis_uji'] = $jenisuji;
+        $data['progress'] = 'Waiting List';
+        $data['user_id'] = Auth::user()->id;
+        array_forget($data,'itemujiriksa');
+        array_forget($data,'new');
+        $table = new Formujiriksa;
+        $table->fill($data);
+        $table->save();
+
+        if (isset($request->itemujiriksa)) { 
+            foreach ($request->itemujiriksa as $key ) {
+                // dd($key['tube_id'] == null);
+            if (isset($key['tube_id'])) {
+                $item = new Itemujiriksa([
+                    'jumlah_barang' => $key['jumlah_barang'],
+                    'nama_barang' => $key['nama_barang'],
+                    'tube_id' => $key['tube_id'],
+                    'keluhan' => $key['keluhan']
+                ]);
+            }                
+            elseif (isset($key['alat_id'])) {
+                $item = new Itemujiriksa([
+                    'jumlah_barang' => $key['jumlah_barang'],
+                    'nama_barang' => $key['nama_barang'],
+                    'alat_id' => $key['alat_id'],
+                    'keluhan' => $key['keluhan']
+                ]);
+            } 
+                $table->itemujiriksa()->save($item);
+
+                // dd($request->hasFile($key['fototabung']));
+                // if ($key->hasFile()) {
+                    // isi field cover jika ada cover yg di upload
+                
+                if (is_array($key['fototabung'])) {
+                    
+                    //ambil file yang di upload
+                    $uploaded =$key['fototabung'];
+                    
+                    foreach ($uploaded as $foto) {
+
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
+
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fototabung::create([
+                            'foto_tabung_masuk' => $filename,
+                            'itemujiriksa_id' => $item->id
+                            ]);
+                    // }
+                    }
+                }
+            }
+        }
+
+        $status = "";
+        $this->savePdf($table->id, $status);
+
+        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table) {
+            $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . '.pdf'));
+        });
+
+        return response()->json(['error' => false, 'message' => 'Pendaftaran Tabung Masuk Berhasil']);
+
+    }
+
     /**
      * Display the specified resource.
      *

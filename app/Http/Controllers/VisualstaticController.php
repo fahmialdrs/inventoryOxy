@@ -35,6 +35,12 @@ class VisualstaticController extends Controller
         return view('visualstatic.create')->with(compact('form'));
     }
 
+    public function createAPI($id)
+    {
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube')->get()->first();
+        return response()->json($form);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -95,6 +101,58 @@ class VisualstaticController extends Controller
             ]);
 
         return redirect()->route('ujiriksa.index');
+        
+    }
+
+    public function store(Request $request)
+    {
+        // $this->validate($request, [
+        //     'foto_tabung_visual' => 'image|max:8192',
+        //     'keterangan_foto' => 'required|max:255',
+        //     'formujiriksa_id'=>'required|exists:formujiriksas,id',
+        // ]);
+
+        $noform = $request->no_registrasi;
+        $data = $request->all();
+        // dd($request->all());
+        
+        if(isset($data)){
+            $dataVisual = $request->visualresult;
+            foreach ($dataVisual as $v ) {
+                $visual = new Visualresult([
+                    'keterangan_visual' => $v['keterangan_visual'],
+                    'itemujiriksa_id' => $v['itemujiriksa_id']
+                    ]);
+                                
+                $visual->save();
+
+                if (is_array($v['foto_tabung_visual'])) {
+                    $uploaded = $v['foto_tabung_visual'];
+
+                    foreach ($uploaded as $foto) {
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
+
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fotovisual::create([
+                            'foto_tabung_visual' => $filename,
+                            'visualresult_id' => $visual->id
+                            ]);
+                    }
+                }
+            }
+        }
+
+        return response()->json(['error' => false, 'message' => 'Hasil Uji Visualstatic Tabung Berhasil diinput']);
         
     }
 

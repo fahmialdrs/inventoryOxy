@@ -57,3 +57,28 @@ Route::get('changeStatusAPI/ujiriksa', [
 		'as' => 'ujiriksa.changeStatusAPI',
 		'uses' => 'UjiriksaController@changeStatusAPI'
 		]);
+
+Route::get('service/create/{id}', [
+		'as' => 'service.createAPI',
+		'uses' => 'ServiceController@createAPI'
+		]);
+
+Route::get('visualstatic/create/{id}', [
+		'as' => 'visualstatic.createAPI',
+		'uses' => 'VisualstaticController@createAPI'
+		]);
+
+Route::post('ujiriksa/storeAPI', [
+		'as' => 'ujiriksa.storeAPI',
+		'uses' => 'UjiriksaController@storeAPI'
+		]);
+
+Route::post('service/storeAPI', [
+		'as' => 'service.storeAPI',
+		'uses' => 'ServiceController@storeAPI'
+		]);
+
+Route::post('visualstatic/storeAPI', [
+		'as' => 'visualstatic.storeAPI',
+		'uses' => 'VisualstaticController@storeAPI'
+		]);

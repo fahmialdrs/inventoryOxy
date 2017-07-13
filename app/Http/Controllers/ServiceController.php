@@ -34,9 +34,16 @@ class ServiceController extends Controller
      */
     public function create($id)
     {
-        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube')->get()->first();
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube','itemujiriksa.alat')->get()->first();
         // dd($form);
         return view('service.create')->with(compact('form'));
+    }
+
+    public function createAPI($id)
+    {
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube','itemujiriksa.alat')->get()->first();
+        // dd($form);
+        return response()->json($form);
     }
 
     /**
@@ -93,6 +100,51 @@ class ServiceController extends Controller
             ]);
 
         return redirect()->route('ujiriksa.index');
+    }
+
+    public function store(Request $request)
+    {
+        $noform = $request->no_registrasi;
+        $data = $request->all();
+        // dd($request->all());
+
+        if(isset($data)){
+            $dataService = $request->serviceresult;
+            foreach ($dataService as $v ) {
+                $service = new Serviceresult([
+                    'keterangan_service' => $v['keterangan_service'],
+                    'itemujiriksa_id' => $v['itemujiriksa_id']
+                    ]);
+                                
+                $service->save();
+
+                if (is_array($v['foto_tabung_service'])) {
+                    $uploaded = $v['foto_tabung_service'];
+
+                    foreach ($uploaded as $foto) {
+                        // ambil extension file
+                        $extension = $foto->getClientOriginalExtension();
+
+                        // membuat nama file random
+                        $filename = md5(str_random(8)) . '.' . $extension;
+
+                        // simpan file ke folder storage/foto
+
+                        $destinationPath = storage_path('app/public/foto');
+                        $foto->move($destinationPath, $filename);
+
+                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                        
+                        Fotoservice::create([
+                            'foto_tabung_service' => $filename,
+                            'serviceresult_id' => $service->id
+                            ]);
+                    }
+                }
+            }
+        }
+
+        return response()->json(['error' => false, 'message' => 'Hasil Service Berhasil diinput']);
     }
 
     /**
