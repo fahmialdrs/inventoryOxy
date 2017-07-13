@@ -102,7 +102,7 @@ class ServiceController extends Controller
         return redirect()->route('ujiriksa.index');
     }
 
-    public function store(Request $request)
+    public function storeAPI(Request $request)
     {
         $noform = $request->no_registrasi;
         $data = $request->all();

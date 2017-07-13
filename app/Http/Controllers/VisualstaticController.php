@@ -104,7 +104,7 @@ class VisualstaticController extends Controller
         
     }
 
-    public function store(Request $request)
+    public function storeAPI(Request $request)
     {
         // $this->validate($request, [
         //     'foto_tabung_visual' => 'image|max:8192',
