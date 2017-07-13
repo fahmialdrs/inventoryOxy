@@ -427,10 +427,19 @@ class UjiriksaController extends Controller
                 }
             }
             elseif ($ujiriksas->jenis_uji == "Service") {
-                foreach($ujiriksas->itemujiriksa as $i) {
-                    $i->tube->terakhir_service = Carbon::today();
-                    $i->tube->save();
+                if ($ujiriksas->is_service_alat === 0) {
+                    foreach($ujiriksas->itemujiriksa as $i) {
+                        $i->tube->terakhir_service = Carbon::today();
+                        $i->tube->save();
+                    }
                 }
+                else {
+                    foreach($ujiriksas->itemujiriksa as $i) {
+                        $i->alat->terakhir_service = Carbon::today();
+                        $i->alat->save();
+                    }
+                }
+                
             }
 
             Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {

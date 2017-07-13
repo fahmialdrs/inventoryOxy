@@ -77,7 +77,11 @@
                       <th>No</th>
                       <th>Jumlah Barang</th>
                       <th>Nama Barang</th>
+                      @if($ujiriksas->is_service_alat === 0)
                       <th>No Tabung</th>
+                      @else
+                      <th>No Alat</th>
+                      @endif
                       <th>Keluhan</th>
                     </tr>
                 </thead>
@@ -88,7 +92,11 @@
                       <td><b><?php $a++ ?> {{ $a }}</b></td>
                       <td>{{ $t->jumlah_barang or '' }}</td>
                       <td>{{ $t->nama_barang or '' }}</td>
+                      @if($ujiriksas->is_service_alat === 0)
                       <td>{{ $t->tube->no_tabung or '' }}</td>
+                      @else
+                      <td>{{ $t->alat->no_alat or '' }}</td>
+                      @endif
                       <td>{{ $t->keluhan or '' }}</td>
                     </tr>
                 @endforeach
