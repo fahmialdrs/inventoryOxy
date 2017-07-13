@@ -251,8 +251,12 @@ class BillingController extends Controller
     }
 
     public function getDataCustomer($id) {
-        $customers = Customer::where('id', $id);
-        $result = $customers->alamat;
-        return response()->json($result);
+
+        $customers = Customer::find($id);
+        $result[] = ['id' => $customers->id, 'email' => $customers->email, 'alamat' => $customers->alamat];
+        return response()->json($customers);
+
+        // $customers = Customer::find($id);
+        // return response()->json($customers);
     }
 }

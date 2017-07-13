@@ -5,7 +5,7 @@
     @if(isset($billings->tanggal_invoice))
         <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ $billings->tanggal_invoice or old('tanggal_invoice') }}" required autofocus>
     @else
-        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ old('tanggal_invoice') }}" required autofocus>
+        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ date('Y-m-d') }}" required autofocus>
     @endif
         @if ($errors->has('tanggal_invoice'))
             <span class="help-block">
@@ -18,7 +18,7 @@
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
     {!! Form::label('customer_id', 'Nama Customer', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control', 'id' => 'customer', 'placeholder' => 'Pilih Nama Customer']) !!}
+        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'customer', 'placeholder' => 'Pilih Nama Customer']) !!}
         {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
@@ -28,9 +28,9 @@
 
     <div class="col-md-4">
     @if(isset($billings->customer_id))
-        <input id="alamat" type="text" class="form-control" name="alamat" value="{{ $billings->customer->alamat or old('alamat') }}" required>
+        <input id="alamat" type="text" class="form-control" name="alamat" value="{{ $billings->customer->alamat or old('alamat') }}" read only required>
     @else
-       <input id="alamat" type="text" class="form-control" name="alamat" value="{{ old('alamat') }}" required> 
+       <input id="alamat" type="text" class="form-control" name="alamat" value="{{ old('alamat') }}" readonly required> 
     @endif
         @if ($errors->has('alamat'))
             <span class="help-block">
@@ -324,10 +324,11 @@ $(document).ready(function(){
         page: params.page
       };
       console.log(url);
+      console.log(data);
     },
     success:function(data){
         var json = data,
-        obj = JSON.parse(json);
+        obj = json;
           $("#alamat").val(obj.alamat);
           $('#email').val(obj.email);
     }
@@ -335,6 +336,7 @@ $(document).ready(function(){
    });
 });
 </script>
+
 <script>
     $(document).ready(function() {
     var max_fields      = 10; //maximum input boxes allowed
