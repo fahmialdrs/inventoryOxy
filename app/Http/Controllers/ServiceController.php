@@ -155,7 +155,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Serviceresult::with(['fotoservice','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
+        $service = Serviceresult::with(['fotoservice','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer', 'itemujiriksa.alat.customer'])->find($id);
         // $form = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('service.show', array(
             'service' => $service

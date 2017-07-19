@@ -36,11 +36,19 @@
 								<td>:</td>
 								<td>{{ $service->itemujiriksa->formujiriksa->customer->nama }}</td>
 							</tr>
+							@if(isset($service->itemujiriksa->tube_id))
 							<tr>
 								<td class="text-muted">No Tabung</td>
 								<td>:</td>
 								<td>{{ $service->itemujiriksa->tube->no_tabung }}</td>
 							</tr>
+							@else
+							<tr>
+								<td class="text-muted">No Alat</td>
+								<td>:</td>
+								<td>{{ $service->itemujiriksa->alat->no_alat }}</td>
+							</tr>
+							@endif
 							<tr>
 								<td class="text-muted">Jumlah Barang</td>
 								<td>:</td>

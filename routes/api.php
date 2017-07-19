@@ -17,6 +17,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
+Route::post('login', 'Auth\LoginController@loginAPI');
+
 Route::get('ujiriksa', [
 	'as' => 'ujiriksa.indexAll',
 	'uses' => 'UjiriksaController@indexAll',
