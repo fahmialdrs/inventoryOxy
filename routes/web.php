@@ -440,6 +440,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'alat.checkReminder',
 		'uses' => 'AlatController@reminder'
 		]);
+	Route::get('barcode/alat/{id}', [
+		'as' => 'alat.barcode',
+		'uses' => 'AlatController@printBarcode'
+		]);
 
 	Route::get('jenisalat', [
 		'as' => 'jenisalat.index',

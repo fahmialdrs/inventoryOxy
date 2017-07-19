@@ -177,7 +177,7 @@
 													  		<a type="button" href="{{ route('alat.destroy', $a->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
-													    <li><a href="#" target="_blank">Unduh Barcode</a></li>
+													    <li><a href="{{ route('alat.barcode', $a->id) }}" target="_blank">Unduh Barcode</a></li>
 													  </ul>
 													</div>
 												</div>

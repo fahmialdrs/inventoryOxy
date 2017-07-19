@@ -11,6 +11,7 @@ use Excel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CheckReminderTabung;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class AlatController extends Controller
 {
@@ -200,4 +201,12 @@ class AlatController extends Controller
 
     $checkAlat = $this->checkAlat($table);
    }
+
+   public function printBarcode($id) {
+        $data = Alat::where('id', $id)->firstOrFail();
+        // dd($data);
+        $pdf = PDF::loadView('inventory.alat.barcode', compact('data'));
+        $filename = 'Barcode-'.' '.$data->no_alat.'.pdf';
+        return $pdf->inline();
+    }
 }
