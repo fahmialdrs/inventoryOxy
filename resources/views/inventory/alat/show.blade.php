@@ -48,6 +48,10 @@
 								<td>{{ $alats->warna }}</td>
 							</tr>
 							<tr>
+								<td class="text-muted">Terakhir Service</td>
+								<td>{{ $alats->terakhir_service->format('d-m-Y') }}</td>
+							</tr>
+							<tr>
 								<td class="text-muted">Catatan</td>
 								<td>{{ $alats->catatan }}</td>
 							</tr>

@@ -214,10 +214,9 @@ class TabungController extends Controller
    }
 
    public function reminder() {
-    $this->table = Tube::with('jenisalat');
+    $this->table = new Tube;
 
     $checkHydro = $this->checkTabung();
     $checkVisual = $this->checkTabungVisual();
-    dd($checkVisual);
    }
 }

@@ -42,17 +42,9 @@ class CheckReminder extends Command
     public function handle()
     {
         $this->table = new Tube;
-        if($this->checkTabung()) {
-            $this->info('Tanggal Sama hydro');
-        } else {
-            $this->error('Tanggal Tidak Sama hydro');
-        }
+        $this->checkTabung();
 
-        if($this->checkTabungVisual()) {
-            $this->info('Tanggal Sama visual');
-        } else {
-            $this->error('Tanggal Tidak Sama visual');
-        }
+        $this->checkTabungVisual();
 
         $table = Alat::with('jenisalat', 'customer')
         ->whereHas('jenisalat', function($q) {
@@ -60,10 +52,6 @@ class CheckReminder extends Command
            $q->where('reminder', '=', 1); // '=' is optional
         })->get();
 
-        if($this->checkAlat($table)) {
-            $this->info('Tanggal Sama alat');
-        } else {
-            $this->error('Tanggal Tidak Sama alat');
-        }    
+        $this->checkAlat($table);  
     }
 }

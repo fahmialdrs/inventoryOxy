@@ -73,6 +73,23 @@
     </div>
 </div>
 
+<div class="form-group{{ $errors->has('terakhir_service') ? ' has-error' : '' }}">
+    <label for="terakhir_service" class="col-md-4 control-label">Terakhir Service</label>
+
+    <div class="col-md-4">
+    @if(isset($alats->terakhir_service))
+        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ $alats->terakhir_service }}">
+    @else
+        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ old('terakhir_service') }}">
+    @endif
+        @if ($errors->has('terakhir_service'))
+            <span class="help-block">
+                <strong>{{ $errors->first('terakhir_service') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
 <div class="form-group{{ $errors->has('catatan') ? ' has-error' : '' }}">
     <label for="catatan" class="col-md-4 control-label">Catatan</label>
 
