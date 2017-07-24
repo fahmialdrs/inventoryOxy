@@ -142,9 +142,10 @@ class UjiriksaController extends Controller
         $table->fill($data);
         $table->save();
 
+        // dd($request->itemujiriksa);
         if (isset($request->itemujiriksa)) { 
             foreach ($request->itemujiriksa as $key ) {
-                // dd($key['tube_id'] == null);
+                
             if (isset($key['tube_id'])) {
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
@@ -166,8 +167,8 @@ class UjiriksaController extends Controller
                 // dd($request->hasFile($key['fototabung']));
                 // if ($key->hasFile()) {
                     // isi field cover jika ada cover yg di upload
-                
-                if (is_array($key['fototabung'])) {
+                // dd(isset($key['fototabung']));
+                if (isset($key['fototabung'])) {
                     
                     //ambil file yang di upload
                     $uploaded =$key['fototabung'];

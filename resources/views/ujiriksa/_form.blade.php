@@ -324,7 +324,7 @@
             Simpan
         </button>
         @if(request()->route()->getName() != "ujiriksa.edit")
-        <button type="submit" name="new" class="btn btn-success">
+        <button type="submit" name="new" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Benar?')">
             Simpan & Buat Baru
         </button>
         @endif
@@ -437,7 +437,7 @@ $(document).ready(function() {
                 </select>\
             </td>\
             <td class="form_alat" style="display:none">\
-                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">\
+                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%">\
                 </select>\
             </td>\
             <td>\
