@@ -1,7 +1,7 @@
 <div class="form-group{{ $errors->has('no_tabung') ? ' has-error' : '' }}">
 	{!! Form::label('no_tabung', 'No Tabung', ['class'=>'col-sm-2 control-label']) !!}
 	<div class="col-sm-4">
-		{!! Form::text('no_tabung', null, ['class'=>'form-control', 'placeholder' => 'contoh: 090469']) !!}
+		{!! Form::text('no_tabung', null, ['class'=>'form-control', 'placeholder' => 'contoh: 090469', 'autofocus' => 'true']) !!}
 		{!! $errors->first('no_tabung', '<p class="help-block">:message</p>') !!}		
 	</div>
 </div>
@@ -78,27 +78,54 @@
 </div>
 
 <div class="form-group{{ $errors->has('terakhir_hydrostatic') ? ' has-error' : '' }}">
-	{!! Form::label('terakhir_hydrostatic', 'Tanggal Terakhir Hydrostatic', ['class'=>'col-md-2 control-label']) !!}
-	<div class="col-sm-4">
-		{!! Form::date('terakhir_hydrostatic', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('terakhir_hydrostatic', '<p class="help-block">:message</p>') !!}
-	</div>
+    <label for="terakhir_hydrostatic" class="col-md-2 control-label">Tanggal Terakhir Hydrostatic</label>
+
+    <div class="col-md-4">
+    @if(isset($tabungs->terakhir_hydrostatic))
+        <input id="terakhir_hydrostatic" type="date" class="form-control" name="terakhir_hydrostatic" value="{{ $tabungs->terakhir_hydrostatic->format('Y-m-d') }}" required>
+    @else
+        <input id="terakhir_hydrostatic" type="date" class="form-control" name="terakhir_hydrostatic" value="{{ old('terakhir_hydrostatic') }}" required>
+    @endif
+        @if ($errors->has('terakhir_hydrostatic'))
+            <span class="help-block">
+                <strong>{{ $errors->first('terakhir_hydrostatic') }}</strong>
+            </span>
+        @endif
+    </div>
 </div>
 
 <div class="form-group{{ $errors->has('terakhir_visualstatic') ? ' has-error' : '' }}">
-	{!! Form::label('terakhir_visualstatic', 'Tanggal Terakhir Visualstatic', ['class'=>'col-sm-2 control-label']) !!}
-	<div class="col-sm-4">
-		{!! Form::date('terakhir_visualstatic', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('terakhir_visualstatic', '<p class="help-block">:message</p>') !!}
-	</div>
+    <label for="terakhir_visualstatic" class="col-md-2 control-label">Tanggal Terakhir Visualstatic</label>
+
+    <div class="col-md-4">
+    @if(isset($tabungs->terakhir_visualstatic))
+        <input id="terakhir_visualstatic" type="date" class="form-control" name="terakhir_visualstatic" value="{{ $tabungs->terakhir_visualstatic->format('Y-m-d') }}" required>
+    @else
+        <input id="terakhir_visualstatic" type="date" class="form-control" name="terakhir_visualstatic" value="{{ old('terakhir_visualstatic') }}" required>
+    @endif
+        @if ($errors->has('terakhir_visualstatic'))
+            <span class="help-block">
+                <strong>{{ $errors->first('terakhir_visualstatic') }}</strong>
+            </span>
+        @endif
+    </div>
 </div>
 
 <div class="form-group{{ $errors->has('terakhir_service') ? ' has-error' : '' }}">
-	{!! Form::label('terakhir_service', 'Tanggal Terakhir Service', ['class'=>'col-sm-2 control-label']) !!}
-	<div class="col-sm-4">
-		{!! Form::date('terakhir_service', null, ['class'=>'form-control']) !!}
-		{!! $errors->first('terakhir_service', '<p class="help-block">:message</p>') !!}
-	</div>
+    <label for="terakhir_service" class="col-md-2 control-label">Tanggal Terakhir Service</label>
+
+    <div class="col-md-4">
+    @if(isset($tabungs->terakhir_service))
+        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ $tabungs->terakhir_service->format('Y-m-d') }}" required>
+    @else
+        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ old('terakhir_service') }}" required>
+    @endif
+        @if ($errors->has('terakhir_service'))
+            <span class="help-block">
+                <strong>{{ $errors->first('terakhir_service') }}</strong>
+            </span>
+        @endif
+    </div>
 </div>
 
 

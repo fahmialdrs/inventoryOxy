@@ -64,7 +64,7 @@
 														  		<a type="button" href="{{ route('jenisalat.destroy', $j->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>												
 														  	</li>
 														  	<li role="separator" class="divider"></li>
-														    <li><a href="#">Unduh Label</a></li>
+														    <!-- <li><a href="#">Unduh Label</a></li> -->
 														  </ul>
 														</div>
 													</div>

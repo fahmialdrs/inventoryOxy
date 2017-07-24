@@ -44,7 +44,7 @@
                             </tr>
                         </table>
                     </div>
-                    
+                    @if($form->is_service_alat === 0)
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -79,7 +79,42 @@
                             @endforeach
                         </tbody>
                     </table>
-                    
+                    @else
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">No Alat</th>
+                                <th class="text-center">Jumlah Barang</th>
+                                <th class="text-center">Nama Barang</th>
+                                <th class="text-center">Keluhan</th>
+                                <th class="text-center">Keterangan Service</th>
+                                <th class="text-center">Foto Hasil Service</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $a = 0; ?>
+                            @foreach($service as $t)
+                            <tr>
+                                <td><b> {{ $a+1 }}</b></td>            
+                                <td>{{ $t->alat->no_alat }}</td>
+                                <td>{{ $t->jumlah_barang }}</td>
+                                <td>{{ $t->nama_barang }}</td>
+                                <td>{{ $t->keluhan }}</td>
+                                <td>{{ $t->serviceresult->keterangan_service}}</td>
+                                <td>
+                                @foreach($t->serviceresult->fotoservice as $ft)
+                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+                                @endforeach
+                                </td>
+                                <td><a href="{{ route('service.edit', $t->serviceresult->id) }}" class="btn btn-xs btn-primary">Edit</a></td
+                            </tr>
+                            <?php $a++ ?>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @endif
                 </div>
             </div>
         </div>

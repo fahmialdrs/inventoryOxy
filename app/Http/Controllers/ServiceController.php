@@ -165,7 +165,7 @@ class ServiceController extends Controller
     public function showAll($id)
     {
         $form = Formujiriksa::with('customer')->find($id);
-        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'serviceresult.fotoservice'])->get();
+        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'alat.customer', 'serviceresult.fotoservice'])->get();
         // dd($service);
         return view('service.showAll', array(
             'service' => $service,
@@ -181,7 +181,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = Serviceresult::with('fotoservice','itemujiriksa.formujiriksa','itemujiriksa.tube.customer')->findOrFail($id);
+        $service = Serviceresult::with('fotoservice','itemujiriksa.formujiriksa','itemujiriksa.tube.customer', 'itemujiriksa.alat.customer')->findOrFail($id);
         return view('service.edit')->with(compact('service'));
     }
 

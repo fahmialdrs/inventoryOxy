@@ -71,20 +71,11 @@
 													  </button>
 													  <ul class="dropdown-menu ">
 													  <li class="dropdown-header">Aksi</li>
+
 													  @if($fu->progress == 'Selesai')
-													  @if($fu->jenis_uji == 'Hydrostatic')
+													  @if(!isset($fu->itemujiriksa->first()->hydrostaticresult))
 													  	<li>
 															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Visualstatic')
-													  	<li>
-															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Service')
-													  	<li>
-															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
 													  	</li>
 													  @endif
 													  @endif
@@ -165,19 +156,9 @@
 													  <ul class="dropdown-menu ">
 													  <li class="dropdown-header">Aksi</li>
 													  @if($fu->progress == 'Selesai')
-													  @if($fu->jenis_uji == 'Hydrostatic')
-													  	<li>
-															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Visualstatic')
+													  @if(!isset($fu->itemujiriksa->first()->visualresult))
 													  	<li>
 															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Service')
-													  	<li>
-															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
 													  	</li>
 													  @endif
 													  @endif
@@ -257,18 +238,7 @@
 													  </button>
 													  <ul class="dropdown-menu ">
 													  <li class="dropdown-header">Aksi</li>
-													  @if($fu->progress == 'Selesai')
-													  @if($fu->jenis_uji == 'Hydrostatic')
-													  	<li>
-															<a type="button" href="{{ route('hydrostatic.create', $fu->id) }}">Input Hasil Hydrostatic</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Visualstatic')
-													  	<li>
-															<a type="button" href="{{ route('visualstatic.create', $fu->id) }}">Input Hasil Visual</a>
-													  	</li>
-													  @endif
-													  @if($fu->jenis_uji == 'Service')
+													  @if($fu->progress == 'Selesai')@if(!isset($fu->itemujiriksa->first()->serviceresult))
 													  	<li>
 															<a type="button" href="{{ route('service.create', $fu->id) }}">Input Hasil Service</a>
 													  	</li>

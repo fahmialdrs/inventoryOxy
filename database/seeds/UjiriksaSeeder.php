@@ -190,6 +190,7 @@ class UjiriksaSeeder extends Seeder
             'progress_at'=>'2017-01-01',
             'done_at'=>'2017-01-01',
             'user_id'=>2,
+            'is_service_alat'=>1,
             'customer_id'=>1
             ]);
 

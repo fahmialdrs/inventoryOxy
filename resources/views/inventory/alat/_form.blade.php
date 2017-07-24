@@ -78,7 +78,7 @@
 
     <div class="col-md-4">
     @if(isset($alats->terakhir_service))
-        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ $alats->terakhir_service }}">
+        <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ $alats->terakhir_service->format('Y-m-d') }}">
     @else
         <input id="terakhir_service" type="date" class="form-control" name="terakhir_service" value="{{ old('terakhir_service') }}">
     @endif

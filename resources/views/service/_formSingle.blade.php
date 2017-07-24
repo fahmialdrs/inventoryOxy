@@ -12,6 +12,7 @@
     </div>
 </div>
 
+@if(isset($service->itemujiriksa->tube_id))
 <div class="form-group{{ $errors->has('tube_id') ? ' has-error' : '' }}">
     {!! Form::label('tube_id', 'No Tabung', ['class'=>'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
@@ -19,6 +20,15 @@
         {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
+@else
+<div class="form-group{{ $errors->has('alat_id') ? ' has-error' : '' }}">
+    {!! Form::label('alat_id', 'No Alat', ['class'=>'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+        <input id="alat_id" type="text" class="form-control" name="alat_id" value="{{ $service->itemujiriksa->alat->no_alat }}" disabled>
+        {!! $errors->first('alat_id', '<p class="help-block">:message</p>') !!}     
+    </div>
+</div>
+@endif
 
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
     {!! Form::label('customer_id', 'Nama Pemilik', ['class'=>'col-sm-4 control-label']) !!}
