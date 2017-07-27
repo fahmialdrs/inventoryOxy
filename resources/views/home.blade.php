@@ -11,10 +11,8 @@
                     <div class="panel-body">
                         Selamat Datang dimenu Administrasi
                         <hr>
-                        <h4>Statistik Form Ujiriksa</h4>
-                        <canvas id="chartUjiriksa" width="400" height="150"></canvas>
-                        <h4>Statistik Data Customer</h4>
-                        <canvas id="chartCust" width="400" height="150"></canvas>
+                        <h4>Statistik Layanan</h4>
+                        <canvas id="chartUjiriksa" width="600" height="290"></canvas>
                     </div>
                 </div>
             </div>
@@ -23,18 +21,47 @@
 @endsection
 
 @section('scripts')
-<script src= {{ asset('js/Chart.min.js') }}></script>
+<script src= {{ asset('js/chart.min.js') }}></script>
 <script>
+    var year = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var hydro = {!! $hydros !!}
+    var visual = {!! $visuals !!}
+    var servicet = {!! $servicets !!}
+    var servicea = {!! $serviceas !!}
+    console.log(hydro);
+
     var data = {
-        labels: {!! json_encode($ujiriksa) !!},
+        labels: year,
         datasets: [{
-            label:'Jumlah Tabung yang Diujikan',
-            data: {!! json_encode($tabung) !!},
+            label:'Hydrostatic',
+            data: hydro,
             backgroundColor: "rgba(151,187,205,0.5)",
             borderColor: "rgba(151,187,205,0.5)",
+            borderWidth: 2,
+        },
+        {
+            label:'Visualstatic',
+            data: visual,
+            backgroundColor: "rgba(205, 152, 152, 0.5)",
+            borderColor: "rgba(151,187,205,0.5)",
+            borderWidth: 2,
+        },
+        {
+            label:'Service Tabung',
+            data: servicet,
+            backgroundColor: "rgba(154, 205, 152, 0.5)",
+            borderColor: "rgba(151,187,205,0.5)",
+            borderWidth: 2,
+        }
+        ,{
+            label:'Service Alat',
+            data: servicea,
+            backgroundColor: "rgba(197, 152, 205, 0.5)",
+            borderColor: "rgba(151,187,205,0.5)",
+            borderWidth: 2,
         }]
     };
-
+    console.log(data);
     var options = {
         scales: {
             yAxes: [{
@@ -47,36 +74,6 @@
     };
 
     var ctx = document.getElementById("chartUjiriksa").getContext("2d");
-
-    var authorChart = new Chart(ctx, {
-        type: 'line', 
-        data: data,
-        options: options
-    });
-</script>
-<script>
-    var data = {
-        labels: {!! json_encode($customers) !!},
-        datasets: [{
-            label:'Data Tabung Customer',
-            data: {!! json_encode($tube) !!},
-            backgroundColor: "rgba(151,187,205,0.5)",
-            borderColor: "rgba(151,187,205,0.5)",
-        }]
-    };
-
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true,
-                    stepSize: 1
-                }
-            }]
-        }
-    };
-
-    var ctx = document.getElementById("chartCust").getContext("2d");
 
     var authorChart = new Chart(ctx, {
         type: 'bar', 
