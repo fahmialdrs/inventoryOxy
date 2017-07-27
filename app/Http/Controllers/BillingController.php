@@ -218,7 +218,7 @@ class BillingController extends Controller
         // dd($billings);
         $pdf = PDF::loadView('billing.pdf', compact('billings'));
         $filename = 'Invoice-'.' '.$billings->no_invoice.'.pdf';
-        return $pdf->stream($filename);
+        return $pdf->download($filename);
     }
 
     public function kirimEmail($id) {
@@ -227,6 +227,13 @@ class BillingController extends Controller
             $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
             $m->attach($this->exportPdf($table->id));
         });
+        // $status = "";
+        // $this->savePdf($table->id, $status);
+
+        // Mail::send('billing.email', compact('table'), function ($m) use ($table) {
+        //     $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
+        //     $m->attach(storage_path('app/public/invoice/Invoice-'. $table->id . '.pdf'));
+        // });
 
         Session::flash("flash_notification", [
             "level" => "success", 
