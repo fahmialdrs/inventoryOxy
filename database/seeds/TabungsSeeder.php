@@ -6,6 +6,7 @@ use App\Models\Tube;
 use App\Models\Alat;
 use App\Models\Jenisalat;
 use App\Models\Merk;
+use App\Models\Tipe;
 
 class TabungsSeeder extends Seeder
 {
@@ -114,51 +115,61 @@ class TabungsSeeder extends Seeder
             'keterangan' => 'Amscud'
             ]);
 
+        $tipe1 = Tipe::create([
+            'nama_tipe' => 't one',
+            'keterangan' => 't one'
+            ]);
+
+        $tipe2 = Tipe::create([
+            'nama_tipe' => 'm-25',
+            'keterangan' => 'm-25'
+            ]);
+
         $alat1 = Alat::create([
             'no_alat' => '002',
-            'tipe' => 'DIMENSION I3',
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
             'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat1->id,
             'merk_id' => $merk1->id,
+            'tipe_id' => $tipe1->id,
             'customer_id' => $customer1->id
             ]);
 
         $alat2 = Alat::create([
             'no_alat' => '003',
-            'tipe' => 'DIMENSION I3',
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
             'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat1->id,
             'merk_id' => $merk2->id,
+            'tipe_id' => $tipe1->id,
             'customer_id' => $customer1->id
             ]);
 
         $alat3 = Alat::create([
             'no_alat' => '004',
-            'tipe' => 'DIMENSION I3',
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
             'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat2->id,
             'merk_id' => $merk1->id,
+            'tipe_id' => $tipe2->id,
             'customer_id' => $customer2->id
             ]);
 
         $alat4 = Alat::create([
             'no_alat' => '001',
-            'tipe' => 'DIMENSION I3',
             'ukuran' => 'XXS',
             'warna' => 'Hitam',
             'catatan' => 'Clean',
             'terakhir_service' => '2017-01-01',
             'jenisalat_id' => $jenisalat2->id,
             'merk_id' => $merk2->id,
+            'tipe_id' => $tipe2->id,
             'customer_id' => $customer2->id
             ]);
     }

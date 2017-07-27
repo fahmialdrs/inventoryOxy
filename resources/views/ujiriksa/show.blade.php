@@ -42,12 +42,12 @@
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Perkiraan Selesai</td>
-									<td>{{ date("d-m-Y", strtotime($form->perkiraan_selesai)) }}</td>
+									<td>{{ date("d-M-Y", strtotime($form->perkiraan_selesai)) }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Pengerjaan</td>
 									@if(isset($form->progress_at))
-									<td>{{ $form->progress_at->format('d-m-Y') }}</td>
+									<td>{{ $form->progress_at->format('d-M-Y') }}</td>
 									@else
 									<td>{{ "Belum Dikerjakan" }}</td>
 									@endif
@@ -55,7 +55,7 @@
 								<tr>
 									<td class="text-muted">Tanggal Selesai</td>
 									@if(isset($form->done_at))
-									<td>{{ $form->done_at->format('d-m-Y') }}</td>
+									<td>{{ $form->done_at->format('d-M-Y') }}</td>
 									@else
 									<td>{{ "Belum Selesai" }}</td>
 									@endif

@@ -31,7 +31,7 @@
 						            <td><a href="#">{{ $u->name }}</a></td>
 						            <td>{{ $u->email }}</td>
 						            <td>{{ $u->roles->first()->display_name }}</td>
-						            <td>{{ $u->created_at }}</td>
+						            <td>{{ $u->created_at->format('d-M-Y') }}</td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
 										  <div class="btn-group navbar-right">
@@ -69,7 +69,10 @@
 		    "targets": [ 4 ],
 		    "searchable": false,
 		    "orderable": false
-	    } ]
+	    },
+	    {
+			"type": "date-dd-mmm-yyyy", targets :[3]
+		}  ]
 } );
 	} );
 </script>

@@ -34,7 +34,7 @@
 						            <td>{{ $b->customer->nama }}</td>
 						            <td>{{ $b->customer->email }}</td>
 						            <td>{{ $b->perihal }}</td>
-						            <td>{{ $b->created_at->format('d-m-Y') }}</td>
+						            <td>{{ $b->created_at->format('d-M-Y') }}</td>
 						            <td>{{ $b->status }}</td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -82,7 +82,10 @@
 			    "targets": [ 6 ],
 			    "searchable": false,
 			    "orderable": false
-	    	} ]
+	    	},
+		    {
+    			"type": "date-dd-mmm-yyyy", targets :[4]
+    		}  ]
 } );
 	} );
 </script>

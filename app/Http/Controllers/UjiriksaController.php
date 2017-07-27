@@ -17,6 +17,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use PDF;
+use Excel;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use App\Models\Olah;
@@ -198,12 +199,12 @@ class UjiriksaController extends Controller
             }
         }
 
-        $status = "";
+        $status = $date->format('dmYHis');
         $this->savePdf($table->id, $status);
 
-        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table) {
+        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
             $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
-            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . '.pdf'));
+            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
         });
         
         Session::flash("flash_notification", [
@@ -314,12 +315,12 @@ class UjiriksaController extends Controller
             }
         }
 
-        $status = "";
+        $status = $data->format('dmYHis');
         $this->savePdf($table->id, $status);
 
-        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table) {
+        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
             $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
-            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . '.pdf'));
+            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
         });
 
         return response()->json(['error' => false, 'message' => 'Pendaftaran Tabung Masuk Berhasil']);
@@ -550,13 +551,13 @@ class UjiriksaController extends Controller
                 
             }
 
-            Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
-                $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
-            });
+            // Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+            //     $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+            // });
             $ujiriksas->save();
             Session::flash("flash_notification", [
             "level" => "success", 
-            "message" => "Status Formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diperbaharui dan Email Telah Terkirim ke <b>". $ujiriksas->customer->email . "</b>"
+            "message" => "Status Formujiriksa <b> $ujiriksas->no_registrasi </b> Sudah Diperbaharui"
             ]); 
         }
 
@@ -589,7 +590,7 @@ class UjiriksaController extends Controller
     }
 
     public function savePdf($id, $status) {
-        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'user')->find($id);
+        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'itemujiriksa.alat', 'user')->find($id);
         // dd($billings);
         $pdf = PDF::loadView('ujiriksa.pdf', compact('ujiriksas'));
         $filename = 'Form Ujiriksa-'. $ujiriksas->id . $status .'.pdf';
@@ -652,12 +653,27 @@ class UjiriksaController extends Controller
                 }
             }
 
-            Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
-                $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
-            });
+            // Mail::send('ujiriksa.email', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+            //     $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+            // });
             $ujiriksas->save();
 
-            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui Dan Email Berhasil Terkirim']);
+            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui']);
         }
     }
+
+    public function exportExcel(){
+
+    $ujiriksas = Itemujiriksa::with(['tube','alat.jenisalat', 'alat.tipe', 'alat.merk', 'formujiriksa.customer'])->get();
+    // dd($ujiriksas);
+
+    $export = Excel::create('Data Layanan Keseluruhan NDT Dive', function($excel) use ($ujiriksas){
+        $excel->setTitle('Data Layanan Keseluruhan NDT Dive')->setCreator(Auth::user()->name);
+        $excel->sheet('Layanan Keseluruhan', function($sheet) use ($ujiriksas){
+            $sheet->loadView('ujiriksa.exportExcel',['ujiriksas'=>$ujiriksas]);
+      });
+    })->download('xls');
+
+    return redirect()->route('ujiriksa.index');
+   }
 }

@@ -22,20 +22,11 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('tipe') ? ' has-error' : '' }}">
-    <label for="tipe" class="col-md-4 control-label">Tipe Alat</label>
-
-    <div class="col-md-4">
-    @if(isset($alats->tipe))
-        <input id="tipe" type="text" class="form-control" name="tipe" value="{{ $alats->tipe }}">
-    @else
-        <input id="tipe" type="text" class="form-control" name="tipe" value="{{ old('tipe') }}">
-    @endif
-        @if ($errors->has('tipe'))
-            <span class="help-block">
-                <strong>{{ $errors->first('tipe') }}</strong>
-            </span>
-        @endif
+<div class="form-group{{ $errors->has('tipe_id') ? ' has-error' : '' }}">
+    {!! Form::label('tipe_id', 'Tipe Alat', ['class'=>'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+        {!! Form::select('tipe_id', [''=>'']+App\Models\Tipe::pluck('nama_tipe','id')->all(), null, ['class' => 'js-selectize form-control', 'placeholder' => 'Pilih Tipe Alat']) !!}
+        {!! $errors->first('tipe_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
 

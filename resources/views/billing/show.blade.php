@@ -43,17 +43,17 @@
 							<tr>
 								<td class="text-muted">Tanggal Invoice</td>
 								<td class="text-muted">:</td>
-								<td>{{ date("d-m-Y",strtotime($billings->tanggal_invoice)) }}</td>
+								<td>{{ date("d-M-Y",strtotime($billings->tanggal_invoice)) }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Dibuat Tanggal</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->created_at->format('d-m-Y') }}</td>
+								<td>{{ $billings->created_at->format('d-M-Y') }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Terakhir Diubah</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->updated_at->format('d-m-Y') }}</td>
+								<td>{{ $billings->updated_at->format('d-M-Y') }}</td>
 							</tr>
 						</table>
 						</div>

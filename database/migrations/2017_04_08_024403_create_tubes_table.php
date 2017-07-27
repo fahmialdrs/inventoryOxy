@@ -44,13 +44,19 @@ class CreateTubesTable extends Migration
             $table->string('keterangan')->nullable();
         });
 
+        Schema::create('tipes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nama_tipe')->unique();
+            $table->string('keterangan')->nullable();
+        });
+
         Schema::create('alats', function (Blueprint $table) {
             $table->increments('id');
             $table->string('no_alat');
             $table->integer('customer_id')->unsigned();
             $table->integer('jenisalat_id')->unsigned();
             $table->integer('merk_id')->unsigned();
-            $table->string('tipe');
+            $table->integer('tipe_id')->unsigned();
             $table->string('ukuran');
             $table->string('warna');
             $table->string('catatan')->nullable();
@@ -60,6 +66,7 @@ class CreateTubesTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('jenisalat_id')->references('id')->on('jenisalats')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('merk_id')->references('id')->on('merks')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('tipe_id')->references('id')->on('tipes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -71,6 +78,7 @@ class CreateTubesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('alats');
+        Schema::dropIfExists('tipes');
         Schema::dropIfExists('merks');
         Schema::dropIfExists('jenisalats');
         Schema::dropIfExists('tubes');

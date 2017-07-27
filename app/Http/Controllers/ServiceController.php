@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\Serviceresult;
 use App\Models\Fotoservice;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 
 class ServiceController extends Controller
 {
@@ -56,7 +57,6 @@ class ServiceController extends Controller
     {
         $noform = $request->no_registrasi;
         $data = $request->all();
-        // dd($request->all());
 
         if(isset($data)){
             $dataService = $request->serviceresult;
@@ -65,7 +65,7 @@ class ServiceController extends Controller
                     'keterangan_service' => $v['keterangan_service'],
                     'itemujiriksa_id' => $v['itemujiriksa_id']
                     ]);
-                                
+                // dd($service->load('itemujiriksa'));
                 $service->save();
 
                 if (is_array($v['foto_tabung_service'])) {
@@ -93,6 +93,12 @@ class ServiceController extends Controller
                 }
             }
         }
+
+        $services = $service->with('itemujiriksa.formujiriksa.customer')->orderBy('created_at', 'desc')->first();
+
+        Mail::send('service.email', compact('services'), function ($m) use ($services) {
+            $m->to($services->itemujiriksa->formujiriksa->customer->email, $services->itemujiriksa->formujiriksa->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+        });
 
         Session::flash("flash_notification", [
             "level"=>"success",
@@ -143,6 +149,12 @@ class ServiceController extends Controller
                 }
             }
         }
+
+        $services = $service->with('itemujiriksa.formujiriksa.customer')->orderBy('created_at', 'desc')->first();
+
+        Mail::send('service.email', compact('services'), function ($m) use ($services) {
+            $m->to($services->itemujiriksa->formujiriksa->customer->email, $services->itemujiriksa->formujiriksa->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+        });
 
         return response()->json(['error' => false, 'message' => 'Hasil Service Berhasil diinput']);
     }

@@ -22,7 +22,7 @@
 							<tr>
 								<td class="text-muted">Tanggal Pemadatan</td>
 								<td>:</td>
-								<td>{{ $hydro->tanggal_uji }}</td>
+								<td>{{ date("d-M-Y", strtotime($hydro->tanggal_uji)) }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">No Registrasi Uji</td>

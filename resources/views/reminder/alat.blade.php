@@ -20,14 +20,16 @@
 	<tr>
 		<td>Terakhir Service</td>
 		<td>:</td>
-		<td>{{$alat->terakhir_service->format('d-m-Y')}}</td>
+		<td>{{$alat->terakhir_service->format('d-M-Y')}}</td>
 	</tr>
 	<tr>
 		<td>Service Selanjutnya</td>
 		<td>:</td>
-		<td>{{$alat->terakhir_service->addYears(1)->format('d-m-Y') }}</td>
+		<td>{{$alat->terakhir_service->addYears(1)->format('d-M-Y') }}</td>
 	</tr>
 </table>
 
-<p>Make all checks payable to Pt. Nautika Dira Tera BCA Acc 505 550 3131</p>
-<p>If you have any questions concerning this invoice, contact Adry, 021-7231132, adry@ndtdive.com</p>
+<p><b>PT. Nautika Dira Tera</b><br>
+Epiwalk Office Suite Lt.3 Unit B309 Komp Rasuna Said Kuningan Jakarta Selatan 12940 <br>
+Workshop : Jl. Kri Ajak No.40C Komp AL Radio Dalam Kebayoran Baru Jkt 12140 021-7231132</p>
+<p>Contact : Fitri 021-7231132 <br>Email :info@ndtdive.com</p>

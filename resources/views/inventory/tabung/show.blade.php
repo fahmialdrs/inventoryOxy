@@ -53,7 +53,7 @@
 								<tr>
 									<td class="text-muted">Tanggal Pembuatan Tabung</td>
 									<td>:</td>
-									<td>{{ date("d-m-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
+									<td>{{ date("d-M-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Status Tabung</td>
@@ -63,27 +63,27 @@
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
 									<td>:</td>
-									<td>{{ $tabungs->terakhir_hydrostatic->format('d-m-Y') }}</td>
+									<td>{{ $tabungs->terakhir_hydrostatic->format('d-M-Y') }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted"><b>Tanggal Selanjutnya Hydrostatic</b></td>
 									<td>:</td>
-									<td><b>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('d-m-Y') }}</b></td>
+									<td><b>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('d-M-Y') }}</b></td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Visualstatic</td>
 									<td>:</td>
-									<td>{{ $tabungs->terakhir_visualstatic->format('d-m-Y') }}</td>
+									<td>{{ $tabungs->terakhir_visualstatic->format('d-M-Y') }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted"><b>Tanggal Selanjutnya Visualstatic</b></td>
 									<td>:</td>
-									<td><b>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</b></td>
+									<td><b>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('d-M-Y') }}</b></td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Service</td>
 									<td>:</td>
-									<td>{{ $tabungs->terakhir_service->format('d-m-Y') }}</td>
+									<td>{{ $tabungs->terakhir_service->format('d-M-Y') }}</td>
 								</tr>
 							</table>
 						</div>
@@ -156,7 +156,7 @@
 								            <td>{{ $t->keluhan or '' }}</td>								            
 								            <td>{{ $t->formujiriksa->progress or '' }}</td>
 								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-m-Y')  }}</td>
+								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y')  }}</td>
 								            @else
 								            <td>{{ "Belum Selesai" }}</td>
 								            @endif
@@ -215,10 +215,13 @@
 		    $('.display').dataTable( {
 		    	"order": [[ 4, "desc" ]],
 			  	"columnDefs": [ {
-				    "targets": [ 6 ],
+				    "targets": [ 5,6 ],
 				    "searchable": false,
 				    "orderable": false
-			    } ]
+			    },
+	    {
+	    	"type": "date-dd-mmm-yyyy", targets :[4]
+	    } ]
 		} );
 
 		

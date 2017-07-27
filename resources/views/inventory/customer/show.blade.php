@@ -37,7 +37,7 @@
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Member</td>
-								<td>{{ date("d-m-Y", strtotime($customers->tanggal_member)) }}</td>
+								<td>{{ date("d-M-Y", strtotime($customers->tanggal_member)) }}</td>
 							</tr>
 						</table>
 						<ul class="nav nav-tabs" role="tablist">
@@ -83,8 +83,8 @@
 								        <tr>
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->gas_diisikan }}</td>
-								            <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
-								            <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->format('d-M-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->format('d-M-Y') }}</td>
 								            <td>{{ $t->status }}</td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -129,7 +129,7 @@
 								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
 								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-m-Y') }}</td>
+								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y') }}</td>
 								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
 								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
 								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
@@ -182,7 +182,7 @@
 								            <td><a href="{{ route('alat.show',$a->id) }}">{{ $a->no_alat }}</a></td>
 								            <td>{{ $a->jenisalat->nama_alat }}</td>
 								            <td>{{ $a->merk->nama_merk }}</td>
-								            <td>{{ $a->tipe }}</td>
+								            <td>{{ $a->tipe->nama_tipe }}</td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
@@ -226,7 +226,7 @@
 								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
 								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-m-Y') }}</td>
+								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y') }}</td>
 								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
 								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
 								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
@@ -279,7 +279,10 @@
 				    "targets": [ 5 ],
 				    "searchable": false,
 				    "orderable": false
-			    } ]
+			    },
+			    {
+	    			"type": "date-dd-mmm-yyyy", targets :[2, 3]
+	    		} ]
 		} );
 
 		    $('#histori').dataTable( {
@@ -288,7 +291,10 @@
 				    "targets": [ 5 ],
 				    "searchable": false,
 				    "orderable": false
-			    } ]
+			    },
+			    {
+	    			"type": "date-dd-mmm-yyyy", targets :[3]
+	    		} ]
 		} );
 
 		    $('#alat').dataTable( {
@@ -301,10 +307,10 @@
 
 		    $('#histori_alat').dataTable( {
 			  	"columnDefs": [ {
-				    "targets": [ 5 ],
+				    "targets": [ 4, 5 ],
 				    "searchable": false,
 				    "orderable": false
-			    } ]
+			    }]
 		} );
 		
 			} );

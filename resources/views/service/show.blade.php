@@ -24,7 +24,7 @@
 							<tr>
 								<td class="text-muted">Tanggal Service</td>
 								<td>:</td>
-								<td>{{ $service->itemujiriksa->formujiriksa->progress_at }}</td>
+								<td>{{ $service->itemujiriksa->formujiriksa->progress_at->format('d-M-Y') }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">No Registrasi Uji</td>

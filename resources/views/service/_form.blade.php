@@ -38,7 +38,11 @@
     <thead>
         <tr>
             <th class="text-center">No</th>
+            @if($form->is_service_alat === 0)
             <th class="text-center">No Tabung</th>
+            @else
+            <th class="text-center">No Alat</th>
+            @endif
             <th class="text-center">Jumlah Barang</th>
             <th class="text-center">Nama Barang</th>
             <th class="text-center">Keluhan</th>
@@ -50,13 +54,22 @@
         <?php $a = 0; ?>
         @foreach($form->itemujiriksa as $t)
         <tr>
-            <td><b> {{ $a+1 }}</b></td>            
+            <td><b> {{ $a+1 }}</b></td>
+            @if($form->is_service_alat === 0)            
             <td>
                 <div class="{{ $errors->has('tube_id') ? ' has-error' : '' }}">
                     <input id="tube_id" type="text" class="" name="serviceresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>
                     {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
                 </div>
             </td>
+            @else
+            <td>
+                <div class="{{ $errors->has('alat_id') ? ' has-error' : '' }}">
+                    <input id="alat_id" type="text" class="" name="serviceresult[{{ $a }}][alat_id]" value="{{ $t->alat->no_alat or old('alat_id') }}" disabled>
+                    {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
+                </div>
+            </td>
+            @endif
             <td>
                 <div class="{{ $errors->has('jumlah_barang') ? ' has-error' : '' }}">
                     <input id="jumlah_barang" type="text" class="" name="serviceresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>

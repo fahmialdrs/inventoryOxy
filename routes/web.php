@@ -202,6 +202,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'ujiriksa.getDataAlat',
 		'uses' => 'UjiriksaController@getDataAlat'
 		]);
+	Route::get('exportExcel/ujiriksa', [
+		'as' => 'ujiriksa.exportExcel',
+		'uses' => 'UjiriksaController@exportExcel'
+		]);
 
 	// Route::resource('service', 'ServiceController');
 	Route::get('service', [
@@ -502,5 +506,34 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 	Route::get('merk/destroy/{id}', [
 		'as' => 'merk.destroy',
 		'uses' => 'MerkController@destroy'
+		]);
+
+	Route::get('tipe', [
+		'as' => 'tipe.index',
+		'uses' => 'TipeController@index'
+		]);
+	Route::get('tipe/create', [
+		'as' => 'tipe.create',
+		'uses' => 'TipeController@create'
+		]);
+	Route::get('tipe/show/{tipe}', [
+		'as' => 'tipe.show',
+		'uses' => 'TipeController@show'
+		]);
+	Route::post('tipe/store', [
+		'as' => 'tipe.store',
+		'uses' => 'TipeController@store'
+		]);
+	Route::get('tipe/{tipe}/edit', [
+		'as' => 'tipe.edit',
+		'uses' => 'TipeController@edit'
+		]);
+	Route::match(['put', 'patch'], 'tipe/update/{tipe}', [
+		'as' => 'tipe.update',
+		'uses' => 'TipeController@update'
+		]);
+	Route::get('tipe/destroy/{id}', [
+		'as' => 'tipe.destroy',
+		'uses' => 'TipeController@destroy'
 		]);
 }); 

@@ -40,15 +40,15 @@
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Perkiraan Selesai</td>
-                                <td>{{ $form->perkiraan_selesai }}</td>
+                                <td>{{ date("d-M-Y", strtotime($form->perkiraan_selesai)) }}</td>
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Pengerjaan</td>
-                                <td>{{ $form->progress_at }}</td>
+                                <td>{{ $form->progress_at->format('d-M-Y') }}</td>
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Selesai</td>
-                                <td>{{ $form->done_at }}</td>
+                                <td>{{ $form->done_at->format('d-M-Y') }}</td>
                             </tr>
                             <tr>
                                 <td class="text-muted">Hasil Uji</td>

@@ -10,6 +10,7 @@ use App\Models\Itemujiriksa;
 use App\Models\Fotovisual;
 use Illuminate\Support\Facades\Session;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class VisualstaticController extends Controller
@@ -95,6 +96,12 @@ class VisualstaticController extends Controller
             }
         }
 
+        $visuals = $visual->with('itemujiriksa.formujiriksa.customer')->orderBy('created_at', 'desc')->first();
+
+        Mail::send('visualstatic.email', compact('visuals'), function ($m) use ($visuals) {
+            $m->to($visuals->itemujiriksa->formujiriksa->customer->email, $visuals->itemujiriksa->formujiriksa->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+        });
+
         Session::flash("flash_notification", [
             "level"=>"success",
             "message" => "Input Hasil Uji Visualstatic Dengan No Registrasi <b> $noform </b> Berhasil"
@@ -151,6 +158,12 @@ class VisualstaticController extends Controller
                 }
             }
         }
+
+        $visuals = $visual->with('itemujiriksa.formujiriksa.customer')->orderBy('created_at', 'desc')->first();
+
+        Mail::send('visualstatic.email', compact('visuals'), function ($m) use ($visuals) {
+            $m->to($visuals->itemujiriksa->formujiriksa->customer->email, $visuals->itemujiriksa->formujiriksa->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+        });
 
         return response()->json(['error' => false, 'message' => 'Hasil Uji Visualstatic Tabung Berhasil diinput']);
         

@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Jenisalat;
-use App\Models\Merk;
-use App\Models\Tipe;
 use Illuminate\Support\Facades\Session;
+use App\Models\Tipe;
 
-class JenisalatController extends Controller
+class TipeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,14 +15,7 @@ class JenisalatController extends Controller
      */
     public function index()
     {
-        $jenisalat = Jenisalat::all();
-        $merkalat = Merk::all();
-        $tipealat = Tipe::all();
-        return view('peralatan.index', array(
-            'jenisalat' => $jenisalat,
-            'merkalat' => $merkalat,
-            'tipealat' => $tipealat
-            ));
+        //
     }
 
     /**
@@ -34,7 +25,7 @@ class JenisalatController extends Controller
      */
     public function create()
     {
-        return view('peralatan.jenisalat.create');
+        return view('peralatan.tipealat.create');
     }
 
     /**
@@ -46,19 +37,18 @@ class JenisalatController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama_alat' => 'required|unique:jenisalats|max:255',
-            'reminder'=>'required',
+            'nama_tipe' => 'required|unique:tipes|max:255',
         ]);
 
         $data = $request->all();
         
-        $jenisalat = new Jenisalat;
-        $jenisalat->fill($data);
-        $jenisalat->save();
+        $tipealat = new Tipe;
+        $tipealat->fill($data);
+        $tipealat->save();
 
         Session::flash("flash_notification", [
             "level" => "success",
-            "message" => "Berhasil menambah jenis alat <b> $jenisalat->nama_alat </b>"
+            "message" => "Berhasil menambah tipe alat <b> $tipealat->nama_tipe </b>"
             ]);
 
         return redirect()->route('jenisalat.index');
@@ -83,11 +73,11 @@ class JenisalatController extends Controller
      */
     public function edit($id)
     {
-        $jenisalats = Jenisalat::findOrFail($id);
-        $jenisalat = Jenisalat::all();
-        return view('peralatan.jenisalat.edit', array(
-            'jenisalat' => $jenisalat,
-            'jenisalats' => $jenisalats
+        $tipealats = Tipe::findOrFail($id);
+        $tipealat = Tipe::all();
+        return view('peralatan.tipealat.edit', array(
+            'tipealats' => $tipealats,
+            'tipealat' => $tipealat
             ));
     }
 
@@ -101,16 +91,15 @@ class JenisalatController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_alat' => 'required|unique:jenisalats|max:255',
-            'reminder'=>'required',
+            'nama_tipe' => 'required|max:255',
         ]);
 
-        $jenisalat = Jenisalat::find($id);
-        if (!$jenisalat->update($request->all())) return redirect()->back();
+        $tipealat = Tipe::find($id);
+        if (!$tipealat->update($request->all())) return redirect()->back();
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Data Jenis Alat <b> $jenisalat->nama_alat </b> Berhasil Diubah"
+            "message"=>"Data Tipe Alat <b> $tipealat->nama_tipe </b> Berhasil Diubah"
         ]);
 
         return redirect()->route('jenisalat.index');
@@ -124,12 +113,12 @@ class JenisalatController extends Controller
      */
     public function destroy($id)
     {
-        $jenisalat = Jenisalat::findOrFail($id);
-        $jenisalat->delete();
+        $tipealat = Tipe::findOrFail($id);
+        $tipealat->delete();
 
         Session::flash("flash_notification", [
             "level"=>"success",
-            "message"=>"Data Jenis Alat <b> $jenisalat->nama_alat </b> Berhasil Dihapus"
+            "message"=>"Data Tipe Alat <b> $tipealat->nama_tipe </b> Berhasil Dihapus"
         ]);
 
         return redirect()->route('jenisalat.index');

@@ -17,6 +17,9 @@
 						<p class="btn-group"> 
 							<a class="btn btn-info" href="{{ route('ujiriksa.create') }}">Registrasi Uji</a> 
 						</p>
+						<p class="btn-group pull-right"> 
+							<a class="btn btn-warning" href="{{ route('ujiriksa.exportExcel') }}">Export Data Layanan</a> 
+						</p>
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
 								<a href="#table_hydro" aria-controls="table_hydro" role="tab" data-toggle="tab">
@@ -56,9 +59,9 @@
 								            <td>{{ $fu->jenis_uji }}</td>
 								        	<td>{{ $fu->progress }}</td>
 								        	<td>{{ $fu->keterangan }}</td>
-								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->created_at->format('d-M-Y') }}</td>
 								            @if(isset($fu->done_at))
-								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->done_at->format('d-M-Y') }}</td>
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
@@ -140,9 +143,9 @@
 								            <td>{{ $fu->jenis_uji }}</td>
 								        	<td>{{ $fu->progress }}</td>
 								        	<td>{{ $fu->keterangan }}</td>
-								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->created_at->format('d-M-Y') }}</td>
 								            @if(isset($fu->done_at))
-								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->done_at->format('d-M-Y') }}</td>
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
@@ -223,9 +226,9 @@
 								            <td>{{ $fu->jenis_uji }}</td>
 								        	<td>{{ $fu->progress }}</td>
 								        	<td>{{ $fu->keterangan }}</td>
-								            <td>{{ $fu->created_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->created_at->format('d-M-Y') }}</td>
 								            @if(isset($fu->done_at))
-								            <td>{{ $fu->done_at->format('d-m-Y') }}</td>
+								            <td>{{ $fu->done_at->format('d-M-Y') }}</td>
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
@@ -301,7 +304,10 @@
 		    "targets": [ 7 ],
 		    "searchable": false,
 		    "orderable": false
-	    } ]
+	    },
+	    {
+			"type": "date-dd-mmm-yyyy", targets :[4]
+		}  ]
 });
 	} );
 </script>

@@ -73,13 +73,13 @@ class BillingController extends Controller
             }
         }
 
-        $status = "";
-        $this->savePdf($table->id, $status);
+        // $status = "";
+        // $this->savePdf($table->id, $status);
 
-        Mail::send('billing.email', compact('table'), function ($m) use ($table) {
-            $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
-            $m->attach(storage_path('app/public/invoice/Invoice-'. $table->id . '.pdf'));
-        });
+        // Mail::send('billing.email', compact('table'), function ($m) use ($table) {
+        //     $m->to($table->customer->email, $table->customer->nama)->subject('Invoice NDT Dive');
+        //     $m->attach(storage_path('app/public/invoice/Invoice-'. $table->id . '.pdf'));
+        // });
 
         Session::flash("flash_notification", [
             "level" => "success",
@@ -163,13 +163,13 @@ class BillingController extends Controller
                     $billings->itembilling()->save($item);
             }
         }
-        $status = "-update-" . Carbon::now()->format('dmYHis');
-        $this->savePdf($billings->id, $status);
+        // $status = "-update-" . Carbon::now()->format('dmYHis');
+        // $this->savePdf($billings->id, $status);
 
-        Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings, $status) {
-            $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive Update');
-            $m->attach(storage_path('app/public/invoice/Invoice-'. $billings->id . $status .'.pdf'));
-        });
+        // Mail::send('billing.emailUpdate', compact('billings'), function ($m) use ($billings, $status) {
+        //     $m->to($billings->customer->email, $billings->customer->nama)->subject('Invoice NDT Dive Update');
+        //     $m->attach(storage_path('app/public/invoice/Invoice-'. $billings->id . $status .'.pdf'));
+        // });
 
         Session::flash("flash_notification", [
             "level" => "success",

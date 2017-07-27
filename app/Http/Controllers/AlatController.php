@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Alat;
 use App\Models\Jenisalat;
+use App\Models\Tipe;
 use Carbon\Carbon;
 use Excel;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class AlatController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'jenisalat_id' => 'required|exists:jenisalats,id',
             'merk_id' => 'required|exists:merks,id',
-            'tipe' => 'required|max:255',
+            'tipe_id' => 'required|exists:tipes,id',
             'ukuran' => 'required|max:255',
             'warna' => 'required|max:255',
         ]);

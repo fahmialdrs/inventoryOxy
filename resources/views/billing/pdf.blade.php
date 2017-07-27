@@ -26,16 +26,12 @@
     <div class="row">
       <div class="col-md-12">
         <div class="col-md-12">
-          <span >
-            <img src="{{ public_path('/img/logondt.png') }}" style="padding-bottom: 10px">
-          </span>          
-           <span class="line-height">
-            <p>Epiwalk Office Suite Lt. 3 Unit B309 Komplek Rasuna Epicentrum</p> 
-            <p>Jl. HR. Rasuna Said Kuningan Jakarta Selatan 12940.</p> 
-            <p>Telp. +62 21 2994 1655  Fax. +62 21 29941744.</p> 
-            <p>Workshop : Jl. KRI Ajak no.40C Komp. AL Radio Dalam Kebayoran Baru.</p>
-            <p>JKT 12140 021-7231132/021-92698274</p>
-          </span>
+            <img src="{{ public_path('/img/logondt.png') }}" class="pull-left" style="margin-bottom:40px; margin-right: 15px; float: left;" height="65px">
+            <p><b>PT. Nautika Dira Tera</b><br>
+            Epiwalk Office Suite Lt. 3 Unit B309 Komplek Rasuna Epicentrum <br>
+            Jl. HR. Rasuna Said Kuningan Jakarta Selatan 12940. <br>
+            Workshop : Jl. KRI Ajak no.40C Komp. AL Radio Dalam Kebayoran Baru. <br>
+            JKT 12140 021-7231132/021-92698274</p>
         </div>                  
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -140,6 +136,6 @@
     </div>
   </div>    
   <p>Make all checks payable to Pt. Nautika Dira Tera BCA Acc 505 550 3131</p>
-  <p>If you have any questions concerning this invoice, contact Adry, 021-7231132, adry@ndtdive.com</p>
+  <p>If you have any questions concerning this invoice, Contact Fitri 021-7231132, info@ndtdive.com</p>
 </body>
 </html>

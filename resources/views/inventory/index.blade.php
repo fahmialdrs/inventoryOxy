@@ -58,7 +58,7 @@
 						            <td><a href="{{ route('customer.show',$c->id) }}">{{ $c->nama }}</a></td>
 						            <td>{{ $c->email }}</td>
 						            <td>{{ $c->no_telp }}</td>
-						            <td>{{ date("d-m-Y", strtotime($c->tanggal_member)) }}</td>
+						            <td>{{ date("d-M-Y", strtotime($c->tanggal_member)) }}</td>
 						            <td>
 						            	<div class="btn-group dropdown" role="group" aria-label="...">
 										  <div class="btn-group navbar-right">
@@ -107,10 +107,10 @@
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
 								            <td>{{ $t->kode_tabung }}</td>
 								            <td>{{ $t->isi_tabung }}</td>
-								            <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
-								            <td>{{ $t->terakhir_hydrostatic->addYears(5)->format('d-m-Y') }}</td>
-								            <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
-								            <td>{{ $t->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->format('d-M-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->addYears(5)->format('d-M-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->format('d-M-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->addYears(1)->format('d-M-Y') }}</td>
 								            <td><a href="{{ route('customer.show',['id'=>$t->id]) }}">{{ $t->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -158,7 +158,7 @@
 								            <td><a href="{{ route('alat.show',$a->id) }}">{{ $a->no_alat }}</a></td>
 								            <td>{{ $a->jenisalat->nama_alat }}</td>
 								            <td>{{ $a->merk->nama_merk }}</td>
-								            <td>{{ $a->tipe }}</td>
+								            <td>{{ $a->tipe->nama_tipe }}</td>
 								            <td><a href="{{ route('customer.show',['id'=>$a->id]) }}">{{ $a->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -213,7 +213,10 @@
 		    "targets": [ 8 ],
 		    "searchable": false,
 		    "orderable": false
-	    	} ]
+	    	},
+	    {
+	    	"type": "date-dd-mmm-yyyy", targets :[3, 4, 5, 6]
+	    } ]
 		} );
 
 		$('#alat').dataTable( {

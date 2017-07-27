@@ -40,7 +40,7 @@
                             <tr>
                                 <td>Tanggal Uji</td>
                                 <td>:</td>
-                                <td>{{ $form->progress_at->format('d-m-Y') }}</td>
+                                <td>{{ $form->progress_at->format('d-M-Y') }}</td>
                             </tr>
                         </table>
                     </div>

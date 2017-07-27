@@ -17,6 +17,10 @@ class Alat extends Model
     	return $this->belongsTo('App\Models\Merk');
     }
 
+    public function tipe() {
+        return $this->belongsTo('App\Models\Tipe');
+    }
+
     public function customer() {
     	return $this->belongsTo('App\Models\Customer');
     }

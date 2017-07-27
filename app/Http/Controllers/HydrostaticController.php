@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Excel;
 use Validator;
+use Illuminate\Support\Facades\Mail;
 
 
 class HydrostaticController extends Controller
@@ -79,6 +80,12 @@ class HydrostaticController extends Controller
                 $hydro->save();
             }
         }
+
+        $hydros = $hydro->with('itemujiriksa.formujiriksa.customer')->orderBy('created_at', 'desc')->first();
+
+        Mail::send('hydrostatic.email', compact('hydros'), function ($m) use ($hydros) {
+            $m->to($hydros->itemujiriksa->formujiriksa->customer->email, $hydros->itemujiriksa->formujiriksa->customer->nama)->subject('NDT Dive Laporan Pengerjaan');
+        });
 
         Session::flash("flash_notification", [
             "level"=>"success",

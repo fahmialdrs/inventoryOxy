@@ -22,7 +22,7 @@
 							<tr>
 								<td class="text-muted">Tanggal Visual</td>
 								<td>:</td>
-								<td>{{ $visual->itemujiriksa->formujiriksa->progress_at }}</td>
+								<td>{{ $visual->itemujiriksa->formujiriksa->progress_at->format('d-M-Y') }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">No Registrasi Uji</td>
@@ -64,7 +64,7 @@
 								<td>:</td>
 								<td>
 									@foreach ($visual->fotovisual as $foto)
-										{{ $foto->foto_tabung_visual }} <br>
+										<img src="{{ asset('storage/foto/'.$foto->foto_tabung_visual) }}" class="img-rounded" width="100" height="75"><br>
 									@endforeach
 								</td>
 							</tr>

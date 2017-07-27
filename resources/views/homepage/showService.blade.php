@@ -22,7 +22,7 @@
 							<tr>
 								<td class="text-muted">Tanggal Service</td>
 								<td>:</td>
-								<td>{{ $service->itemujiriksa->formujiriksa->progress_at }}</td>
+								<td>{{ $service->itemujiriksa->formujiriksa->progress_at->format('d-M-Y') }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">No Registrasi Uji</td>
@@ -64,7 +64,7 @@
 								<td>:</td>
 								<td>
 									@foreach ($service->fotoservice as $foto)
-										{{ $foto->foto_tabung_service }} <br>
+										<img src="{{ asset('storage/foto/'.$foto->foto_tabung_service) }}" class="img-rounded" width="100" height="75"><br>
 									@endforeach
 								</td>
 							</tr>

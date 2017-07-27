@@ -39,7 +39,7 @@
                             <tr>
                                 <td>Tanggal Uji</td>
                                 <td>:</td>
-                                <td>{{ $form->progress_at }}</td>
+                                <td>{{ $form->progress_at->format('d-M-Y') }}</td>
                             </tr>
                         </table>
                     </div>
@@ -68,7 +68,7 @@
                                 <td>{{ $t->serviceresult->keterangan_service}}</td>
                                 <td>
                                 @foreach($t->serviceresult->fotoservice as $ft)
-                                    {{ $ft->foto_tabung_service }}<br>
+                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75"><br>
                                 @endforeach
                                 </td>
                             </tr>

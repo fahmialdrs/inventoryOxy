@@ -108,6 +108,7 @@
     <script src="{{ asset('js/jquery-3.2.0.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
+    <script src="http://cdn.datatables.net/plug-ins/1.10.15/sorting/date-dd-MMM-yyyy.js"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>

@@ -25,6 +25,11 @@
 									<i class="fa fa-cloud-upload"></i> Data Merk Alat
 								</a>
 							</li>
+							<li role="presentation">
+								<a href="#table_tipe" aria-controls="table_tipe" role="tab" data-toggle="tab">
+									<i class="fa fa-cloud-upload"></i> Data Tipe Alat
+								</a>
+							</li>
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" role="tabpanel" id="table_jenisalat">
@@ -73,8 +78,7 @@
 									    @endforeach
 									    </tbody>
 									</table>
-								</div>
-								
+								</div>								
 							</div>
 							<div class="tab-pane" role="tabpanel" id="table_merk">
 								<div class="col-md-6">
@@ -109,6 +113,51 @@
 														  	</li> -->
 														  	<li>
 														  		<a type="button" href="{{ route('merk.destroy', $m->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>
+														  	</li>
+														  	<li role="separator" class="divider"></li>
+														  </ul>
+														</div>
+													</div>
+									            </td>
+									        </tr>
+									    @endforeach
+									    </tbody>
+									</table>
+								</div>
+							</div>
+							<div class="tab-pane" role="tabpanel" id="table_tipe">
+								<div class="col-md-6">
+									@include('peralatan.tipealat.create')
+								</div>
+								<div class="col-md-6">
+									<table class="table table-responsive">
+									    <thead>
+									        <tr>
+									            <th>Nama Tipe</th>
+									            <th>Keterangan</th>
+									            <th>Aksi</th>
+									        </tr>
+									    </thead>
+									    <tbody>
+									    @foreach ($tipealat as $t)
+									        <tr>
+									            <td>{{ $t->nama_tipe }}</td>
+									            <td>{{ $t->keterangan }}</td>
+									            <td>
+									            	<div class="btn-group dropdown" role="group" aria-label="...">
+													  <div class="btn-group navbar-right">
+														  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+														    Aksi <span class="caret"></span>
+														  </button>
+														  <ul class="dropdown-menu ">
+														  	<li>
+																<a type="button" href="{{ route('tipe.edit', $t->id) }}">Edit</a>
+														  	</li>
+														  	<!-- <li>
+														  		<a type="submit" href="" onclick="return confirm('Anda yakin akan menghapus data ?');" value="Delete"> Delete</a>
+														  	</li> -->
+														  	<li>
+														  		<a type="button" href="{{ route('tipe.destroy', $t->id) }}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Hapus</a>
 														  	</li>
 														  	<li role="separator" class="divider"></li>
 														  </ul>

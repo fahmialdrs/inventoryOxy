@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@if(isset($service->itemujiriksa->tube_id))
+@if(isset($service->itemujiriksa->first()->tube_id))
 <div class="form-group{{ $errors->has('tube_id') ? ' has-error' : '' }}">
     {!! Form::label('tube_id', 'No Tabung', ['class'=>'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
