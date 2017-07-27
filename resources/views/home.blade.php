@@ -76,7 +76,7 @@
     var ctx = document.getElementById("chartUjiriksa").getContext("2d");
 
     var authorChart = new Chart(ctx, {
-        type: 'bar', 
+        type: 'line', 
         data: data,
         options: options
     });
