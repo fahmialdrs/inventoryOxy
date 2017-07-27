@@ -65,7 +65,7 @@
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
-								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td><a href="{{ route('customer.show', $fu->customer->id) }}">{{ $fu->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
@@ -149,7 +149,7 @@
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
-								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td><a href="{{ route('customer.show', $fu->customer->id) }}">{{ $fu->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
@@ -232,7 +232,7 @@
 								            @else
 								            <td>{{ "Belum Diinput" }}</td>
 								            @endif
-								            <td><a href="#">{{ $fu->customer->nama }}</a></td>
+								            <td><a href="{{ route('customer.show', $fu->customer->id) }}">{{ $fu->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">

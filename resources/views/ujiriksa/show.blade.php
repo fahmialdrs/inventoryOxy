@@ -63,7 +63,7 @@
 								<tr>
 									<td class="text-muted">Hasil Uji</td>
 									 @if( $form->jenis_uji == "Hydrostatic")
-									 @if($form->progress == "Selesai")
+									 @if((isset($form->itemujiriksa->first()->hydrostaticresult)))
 							            <td><a href="{{ route('hydrostatic.showAll', $form->id) }}">Hasil Keseluruhan Hydrostatic</a></td>
 							        @else
 							            <td>Hasil Belum di Input</td>
@@ -71,7 +71,7 @@
 							        @endif
 
 						            @if( $form->jenis_uji == "Visualstatic")
-						            @if($form->progress == "Selesai")
+						            @if((isset($form->itemujiriksa->first()->visualresult)))
 						            <td><a href="{{ route('visualstatic.showAll', $form->id) }}">Hasil Keseluruhan Visualstatic</a></td>
 						            @else
 						            <td>Hasil Belum di Input</td>						            
@@ -79,12 +79,16 @@
 						            @endif
 
 						            @if( $form->jenis_uji == "Service")
-						            @if($form->progress == "Selesai")
+						            @if(isset($form->itemujiriksa->first()->serviceresult))
 						            <td><a href="{{ route('service.showAll', $form->id) }}">Hasil Keseluruhan Service</a></td>
 						            @else
 						            <td>Hasil Belum di Input</td>				            
 						            @endif
 						            @endif
+								</tr>
+								<tr>
+									<td class="text-muted">Nama Pengambil</td>
+									<td>{{ $form->nama_pengambil or 'Belum Diambil' }}</td>
 								</tr>
 							</table>
 						</div>

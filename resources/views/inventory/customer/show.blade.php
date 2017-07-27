@@ -227,15 +227,12 @@
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
 								            @if(isset($t->formujiriksa->done_at))
 								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y') }}</td>
-								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
-								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
-								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
-								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
-								            @elseif($t->formujiriksa->jenis_uji == "Service")
-											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
-											@endif
 								            @else
-								            <td>{{ "Belum Selesai" }}</td>
+								            <td>Belum Selesai</td>
+								            @endif
+								            @if(isset($t->serviceresult))
+											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
+								            @else
 								            <td>Hasil Belum Ada</td>
 								            @endif
 								            <td>
