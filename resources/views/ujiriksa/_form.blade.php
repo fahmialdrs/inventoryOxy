@@ -188,9 +188,9 @@
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
             @if(isset($ujiriksas->perkiraan_biaya))
-            <input id="perkiraan_biaya" type="number" class="form-control" name="perkiraan_biaya" value="{{ $ujiriksas->perkiraan_biaya }}" required>
+            <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ $ujiriksas->perkiraan_biaya }}" required>
             @else
-            <input id="perkiraan_biaya" type="number" class="form-control" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
+            <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
             @endif
         </div>
 
@@ -335,6 +335,22 @@
 </div>
 
 @section('scripts')
+<script>
+    $('input.number').keyup(function(event) {
+
+  // skip for arrow keys
+  if(event.which >= 37 && event.which <= 40) return;
+
+  // format number
+  $(this).val(function(index, value) {
+    return value
+    .replace(/\D/g, "")
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    ;
+  });
+});
+</script>
+</script>
 <script type="text/javascript">
 $(document).ready(function() {
   var $select2Elm = $('.tube');

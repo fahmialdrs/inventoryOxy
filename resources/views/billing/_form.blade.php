@@ -105,7 +105,7 @@
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-{{$a}}" type="number" value="{{ $i->amount }}" name="itembiling[{{$a}}][amount]" required>
+                    <input id="amnt-{{$a}}" type="number" value="{{ $i->amount }}" name="itembiling[{{$a}}][amount]" readonly required>
                 </div>
             </td>
             <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>
@@ -116,21 +116,21 @@
         <?php $a=0; ?>
         <tr class="bill">
             <td>
-                <input id="qty-0" class="qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
+                <input id="qty-0" class="form-control qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
             </td>                
             <td>
-                <textarea id="des" type="text" name="itembiling[0][deskripsi]" required>{{ $i->deskripsi or old('itembiling[0][deskripsi]') }}</textarea>
+                <textarea id="des" type="text" class="form-control" name="itembiling[0][deskripsi]" required>{{ $i->deskripsi or old('itembiling[0][deskripsi]') }}</textarea>
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="upr-0" class="upr" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
+                    <input id="upr-0" class="form-control upr" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
                 </div>                
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-0" class="amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]">
+                    <input id="amnt-0" class="form-control amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" readonly required>
                 </div>
             </td>
         </tr>
@@ -138,6 +138,7 @@
         @endif
     </tbody>
 </table>
+
 <div class="form-group{{ $errors->has('subtotal') ? ' has-error' : '' }}">
     <label for="subtotal" class="col-md-2 control-label">Subtotal</label>
 
@@ -145,12 +146,12 @@
     @if(isset($billings->subtotal))
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ $billings->subtotal }}">
+            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ $billings->subtotal }}" readonly>
         </div>
     @else
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ old('subtotal') ?? '0' }}">
+            <input id="subtotal" type="number" class="form-control" name="subtotal" value="{{ old('subtotal') ?? '0' }}" readonly>
         </div>
     @endif
         @if ($errors->has('subtotal'))
@@ -237,12 +238,12 @@
     @if(isset($billings->total))
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="total" type="text" class="form-control" name="total" value="{{ $billings->total ?? '0' }}">
+            <input id="total" type="text" class="form-control" name="total" value="{{ $billings->total ?? '0' }}" readonly>
         </div>
     @else
         <div class="input-group">
             <div class="input-group-addon">Rp.</div>
-            <input id="total" type="text" class="form-control" name="total" value="{{ old('total') ?? '0' }}">
+            <input id="total" type="text" class="form-control" name="total" value="{{ old('total') ?? '0' }}"readonly>
         </div>
     @endif
         @if ($errors->has('total'))
@@ -350,21 +351,21 @@ $(document).ready(function(){
             
             $(wrapper).append('<tr class="bill">\
             <td>\
-                <input id="qty-' + x +'" class="qty" type="number" value="{{ old('itembiling[][quantity]') }}" name="itembiling[' + x +'][quantity]">\
+                <input id="qty-' + x +'" class="form-control qty" type="number" value="{{ old('itembiling[][quantity]') }}" name="itembiling[' + x +'][quantity]">\
             </td>\
             <td>\
-                <textarea type="text" value="{{ old('itembiling[][deskripsi]') }}" name="itembiling[' + x +'][deskripsi]" required></textarea>\
+                <textarea type="text" class="form-control" value="{{ old('itembiling[][deskripsi]') }}" name="itembiling[' + x +'][deskripsi]" required></textarea>\
             </td>\
             <td>\
                 <div class="input-group">\
                     <div class="input-group-addon">Rp.</div>\
-                    <input id="upr-' + x +'" class="upr" type="number" value="{{ old('itembiling[][unitprice]') }}" name="itembiling[' + x +'][unitprice]" onblur="calculate()" required>\
+                    <input id="upr-' + x +'" class="form-control upr" type="number" value="{{ old('itembiling[][unitprice]') }}" name="itembiling[' + x +'][unitprice]" onblur="calculate()" required>\
                 </div>\
             </td>\
             <td>\
                 <div class="input-group">\
                     <div class="input-group-addon">Rp.</div>\
-                    <input id="amnt-' + x +'" class="amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]">\
+                    <input id="amnt-' + x +'" class="form-control amnt" type="number" value="{{ old('itembiling[][amount]') }}" name="itembiling[' + x +'][amount]" readonly>\
                 </div>\
             </td>\
             <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>\
