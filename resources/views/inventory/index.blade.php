@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul class="breadcrumb">
-					<li><a href="{{ url('/home') }}">Dashboard</a></li>
+					<li><a href="{{ url('/admin/home') }}">Dashboard</a></li>
 					<li class="active">Data Inventory</li>
 				</ul>
 				<div class="panel panel-default">
@@ -22,6 +22,7 @@
 					<p class="pull-right"> 
 						<a class="btn btn-warning" href="{{ route('customer.exportExcel') }}">Export Data Customer</a> 
 						<a class="btn btn-warning" href="{{ route('tabung.exportExcel') }}">Export Data Tabung</a>
+						<a class="btn btn-warning" href="{{ route('alat.exportExcel') }}">Export Data Alat</a>
 					</p>
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">

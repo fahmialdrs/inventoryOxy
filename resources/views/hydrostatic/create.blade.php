@@ -7,8 +7,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<ul class="breadcrumb">
-				<li><a href="{{ url('/home') }}">Dashboard</a></li>
-				<li><a href="{{ url('/admin/ujiriksa') }}">Ujiriksa</a></li>
+				<li><a href="{{ url('/admin/home') }}">Dashboard</a></li>
+				<li><a href="{{ url('/admin/ujiriksa') }}">Layanan</a></li>
 				<li class="active">Input Hydrostatic</li>
 			</ul>
 			<div class="panel panel-default">

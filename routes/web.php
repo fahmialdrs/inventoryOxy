@@ -449,6 +449,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'uses' => 'AlatController@printBarcode'
 		]);
 
+	Route::get('exportExcel/alat', [
+		'as' => 'alat.exportExcel',
+		'uses' => 'AlatController@exportExcel'
+		]);
+
+
+
 	Route::get('jenisalat', [
 		'as' => 'jenisalat.index',
 		'uses' => 'JenisalatController@index'

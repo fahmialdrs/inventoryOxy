@@ -7,9 +7,9 @@
 		<div class="row">
 			<div class="col-md-12">
 				<ul class="breadcrumb">
-					<li><a href="{{ url('/home') }}"> Dashboard</a></li>
-					<li><a href="{{ url('/admin/ujiriksa') }}"> Ujiriksa</a></li>
-					<li><a href="{{ url('/admin/ujiriksa/show', $visual->itemujiriksa->formujiriksa->id) }}"> Detail Ujiriksa</a></li>
+					<li><a href="{{ url('/admin/home') }}">Dashboard</a></li>
+					<li><a href="{{ url('/admin/ujiriksa') }}"> Layanan</a></li>
+					<li><a href="{{ url('/admin/ujiriksa/show', $visual->itemujiriksa->formujiriksa->id) }}"> Detail Layanan</a></li>
 					<li class="active">Detail Hasil Visualstatic {{ $visual->itemujiriksa->formujiriksa->no_registrasi }}</li>
 				</ul>
 				<div class="panel panel-default">

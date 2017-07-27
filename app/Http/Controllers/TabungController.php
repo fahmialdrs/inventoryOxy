@@ -188,9 +188,9 @@ class TabungController extends Controller
                     $t->isi_tabung . " liter",
                     $t->tanggal_pembuatan,
                     $t->status,
-                    $t->terakhir_hydrostatic,
-                    $t->terakhir_visualstatic,
-                    $t->terakhir_service
+                    $t->terakhir_hydrostatic->format('d-m-Y'),
+                    $t->terakhir_visualstatic->format('d-m-Y'),
+                    $t->terakhir_service->format('d-m-Y')
                     ]);
                 }
             });
