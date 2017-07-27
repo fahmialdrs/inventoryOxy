@@ -175,7 +175,7 @@ class AlatController extends Controller
     $export = Excel::create('Detail Alat '.$alats->no_alat, function($excel) use ($alats){
         $excel->setTitle('Data Detail Alat NDT Dive')->setCreator(Auth::user()->name);
         $excel->sheet($alats->no_alat, function($sheet) use ($alats){
-            $sheet->loadView('inventory.alat.exportExcel',['alats'=>$alats]);
+            $sheet->loadView('inventory.alat.exportExcelDetail',['alats'=>$alats]);
       });
     })->download('xls');
 
@@ -210,4 +210,18 @@ class AlatController extends Controller
         $filename = 'Barcode-'.' '.$data->no_alat.'.pdf';
         return $pdf->inline();
     }
+
+    public function exportExcel(){
+
+    $alats = Alat::with(['jenisalat', 'merk', 'customer'])->get();
+
+    $export = Excel::create('Data Alat Keseluruhan', function($excel) use ($alats){
+        $excel->setTitle('Data Alat Keseluruhan NDT Dive')->setCreator(Auth::user()->name);
+        $excel->sheet('Data Alat', function($sheet) use ($alats){
+            $sheet->loadView('inventory.alat.exportExcel',['alats'=>$alats]);
+      });
+    })->download('xls');
+
+    return redirect()->route('customer.index');
+   }
 }

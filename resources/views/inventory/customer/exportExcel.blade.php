@@ -29,7 +29,7 @@
     </tr>
     @foreach ($customers->tube as $t)
     <tr>
-        <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
+        <td>{{ $t->no_tabung }}</td>
         <td>{{ $t->gas_diisikan }}</td>
         <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
         <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>

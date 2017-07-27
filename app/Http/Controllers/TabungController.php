@@ -190,7 +190,7 @@ class TabungController extends Controller
                     $t->status,
                     $t->terakhir_hydrostatic->format('d-m-Y'),
                     $t->terakhir_visualstatic->format('d-m-Y'),
-                    $t->terakhir_service->format('d-m-Y')
+                    $t->terakhir_service->format('d-m-Y')   
                     ]);
                 }
             });
