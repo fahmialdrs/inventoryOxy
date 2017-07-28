@@ -37,7 +37,7 @@
 									@include('peralatan.jenisalat.create')
 								</div>
 								<div class="col-md-6">
-									<table class="table table-responsive">
+									<table class="table table-responsive jenisalat">
 									    <thead>
 									        <tr>
 									            <th>Nama Jenis Alat</th>
@@ -85,7 +85,7 @@
 									@include('peralatan.merkalat.create')
 								</div>
 								<div class="col-md-6">
-									<table class="table table-responsive">
+									<table class="table table-responsive display">
 									    <thead>
 									        <tr>
 									            <th>Nama Merk</th>
@@ -130,7 +130,7 @@
 									@include('peralatan.tipealat.create')
 								</div>
 								<div class="col-md-6">
-									<table class="table table-responsive">
+									<table class="table table-responsive display">
 									    <thead>
 									        <tr>
 									            <th>Nama Tipe</th>
@@ -176,4 +176,28 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('scripts')
+<script>
+	$(document).ready( function () {
+	    $('.jenisalat').dataTable( {
+	    "aaSorting": [],
+	  		"columnDefs": [ {
+			    "targets": [ 3 ],
+			    "searchable": false,
+			    "orderable": false
+	    	}]
+} );
+
+	   $('.display').dataTable( {
+	    "aaSorting": [],
+	  		"columnDefs": [ {
+			    "targets": [ 2 ],
+			    "searchable": false,
+			    "orderable": false
+	    	}]
+} );
+	} );
+</script>
 @endsection

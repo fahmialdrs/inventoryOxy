@@ -74,7 +74,7 @@ class MerkController extends Controller
     public function edit($id)
     {
         $merkalats = Merk::findOrFail($id);
-        $merkalat = Merk::all();
+        $merkalat = Merk::orderBy('nama_merk', 'asc')->get();
         return view('peralatan.merkalat.edit', array(
             'merkalats' => $merkalats,
             'merkalat' => $merkalat

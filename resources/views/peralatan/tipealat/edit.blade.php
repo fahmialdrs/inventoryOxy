@@ -30,7 +30,7 @@
 									{!! Form::close() !!}
 								</div>
 								<div class="col-md-6">
-									<table class="table table-responsive">
+									<table class="table table-responsive display">
 									    <thead>
 									        <tr>
 									            <th>Nama Tipe</th>
@@ -76,4 +76,19 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('scripts')
+<script>
+	$(document).ready( function () {
+	    $('.display').dataTable( {
+	    "aaSorting": [],
+	  		"columnDefs": [ {
+			    "targets": [ 2 ],
+			    "searchable": false,
+			    "orderable": false
+	    	}]
+} );
+	} );
+</script>
 @endsection

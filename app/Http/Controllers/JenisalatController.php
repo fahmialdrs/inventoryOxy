@@ -17,9 +17,9 @@ class JenisalatController extends Controller
      */
     public function index()
     {
-        $jenisalat = Jenisalat::all();
-        $merkalat = Merk::all();
-        $tipealat = Tipe::all();
+        $jenisalat = Jenisalat::orderBy('nama_alat', 'asc')->get();
+        $merkalat = Merk::orderBy('nama_merk', 'asc')->get();
+        $tipealat = Tipe::orderBy('nama_tipe', 'asc')->get();
         return view('peralatan.index', array(
             'jenisalat' => $jenisalat,
             'merkalat' => $merkalat,
@@ -84,7 +84,7 @@ class JenisalatController extends Controller
     public function edit($id)
     {
         $jenisalats = Jenisalat::findOrFail($id);
-        $jenisalat = Jenisalat::all();
+        $jenisalat = Jenisalat::orderBy('nama_alat', 'asc')->get();
         return view('peralatan.jenisalat.edit', array(
             'jenisalat' => $jenisalat,
             'jenisalats' => $jenisalats

@@ -74,7 +74,7 @@ class TipeController extends Controller
     public function edit($id)
     {
         $tipealats = Tipe::findOrFail($id);
-        $tipealat = Tipe::all();
+        $tipealat = Tipe::orderBy('nama_tipe', 'asc')->get();
         return view('peralatan.tipealat.edit', array(
             'tipealats' => $tipealats,
             'tipealat' => $tipealat
