@@ -14,7 +14,7 @@ class UpdateFormujiriksasTable extends Migration
     public function up()
     {
         Schema::table('formujiriksas', function (Blueprint $table) {
-             $table->boolean('is_service_alat')->default(0);;
+             $table->boolean('is_service_alat')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateFormujiriksasTable extends Migration
     public function down()
     {
         Schema::table('formujiriksas', function (Blueprint $table) {
-             $table->dropColumn('is_service_alat');      
+             $table->dropColumn('is_service_alat');
         });
     }
 }

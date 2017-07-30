@@ -35,7 +35,7 @@
         </div>                  
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h1 class="panel-title text-center">Form Tanda Terima {{ $ujiriksas->no_Registrasi }}</h1>
+            <h1 class="panel-title text-center">Form Tanda Terima {{ $ujiriksas->no_registrasi }}</h1>
           </div>
           <div class="panel-body">
             <div class="col-md-2">
@@ -65,6 +65,11 @@
                 <td class="text-muted">:</td>
                 <td>{{ $ujiriksas->created_at->format('d-M-Y') }}</td>
               </tr>
+              <tr>
+                <td class="text-muted">Jenis Layanan</td>
+                <td class="text-muted">:</td>
+                <td>{{ $ujiriksas->jenis_uji }}</td>
+              </tr>
             </table>
           </div>
             <table class="table table-responsive">
@@ -73,7 +78,7 @@
                       <th>No</th>
                       <th>Jumlah Barang</th>
                       <th>Nama Barang</th>
-                      @if($ujiriksas->is_service_alat === 0)
+                      @if($ujiriksas->is_service_alat == 0)
                       <th>No Tabung</th>
                       @else
                       <th>No Alat</th>
@@ -88,7 +93,7 @@
                       <td><b><?php $a++ ?> {{ $a }}</b></td>
                       <td>{{ $t->jumlah_barang or '' }}</td>
                       <td>{{ $t->nama_barang or '' }}</td>
-                      @if($ujiriksas->is_service_alat === 0)
+                      @if($ujiriksas->is_service_alat == 0)
                       <td>{{ $t->tube->no_tabung or '' }}</td>
                       @else
                       <td>{{ $t->alat->no_alat or '' }}</td>

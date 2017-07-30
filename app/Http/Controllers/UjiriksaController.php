@@ -139,9 +139,33 @@ class UjiriksaController extends Controller
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
         array_forget($data,'new');
+        array_forget($data,'is_visual');
         $table = new Formujiriksa;
         $table->fill($data);
         $table->save();
+
+        if ($request->is_visual == 1) {
+            // tarik jenis uji
+            $jenisuji = 'Visualstatic';
+
+            $date = Carbon::parse('now');
+            $counter = Formujiriksa::whereDate('created_at','=',date('Y-m-d'))->count()+1;
+            // dd($counter);
+            $kode = $date->format('dm').'-'. $counter . '/UJI/NDT/' . $date->format('Y');
+            
+            // penentuan nomer registrasi berdasarkan jenis uji
+            $noujiV = "VSL-". $kode;
+
+            $data['no_registrasi'] = $noujiV;
+            $data['jenis_uji'] = $jenisuji;
+            $data['progress'] = 'Waiting List';
+            $data['user_id'] = Auth::user()->id;
+            array_forget($data,'itemujiriksa');
+            array_forget($data,'new');
+            $tableV = new Formujiriksa;
+            $tableV->fill($data);
+            $tableV->save();
+        }
 
         // dd($request->itemujiriksa);
         if (isset($request->itemujiriksa)) { 
@@ -154,6 +178,16 @@ class UjiriksaController extends Controller
                     'tube_id' => $key['tube_id'],
                     'keluhan' => $key['keluhan']
                 ]);
+                if ($request->is_visual == 1) {
+                    $itemV = new Itemujiriksa([
+                        'jumlah_barang' => $key['jumlah_barang'],
+                        'nama_barang' => $key['nama_barang'],
+                        'tube_id' => $key['tube_id'],
+                        'keluhan' => $key['keluhan']
+                    ]);
+
+                    $tableV->itemujiriksa()->save($itemV);
+                }
             }                
             elseif (isset($key['alat_id'])) {
                 $item = new Itemujiriksa([
@@ -164,6 +198,7 @@ class UjiriksaController extends Controller
                 ]);
             } 
                 $table->itemujiriksa()->save($item);
+
 
                 // dd($request->hasFile($key['fototabung']));
                 // if ($key->hasFile()) {
@@ -193,24 +228,54 @@ class UjiriksaController extends Controller
                             'foto_tabung_masuk' => $filename,
                             'itemujiriksa_id' => $item->id
                             ]);
-                    // }
+
+                        if ($request->is_visual == 1) {
+                            Fototabung::create([
+                                'foto_tabung_masuk' => $filename,
+                                'itemujiriksa_id' => $itemV->id
+                                ]);
+                        }                        
                     }
                 }
             }
         }
 
-        $status = $date->format('dmYHis');
-        $this->savePdf($table->id, $status);
-
-        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
-            $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
-            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
-        });
         
-        Session::flash("flash_notification", [
+        if ($request->is_visual == 1) {
+            $status = $date->format('dmYHis');
+            $this->savePdf($table->id, $status);
+            $this->savePdf($tableV->id, $status);
+
+            Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
+                $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
+            });
+
+            Mail::send('ujiriksa.emailFormV', compact('tableV'), function ($m) use ($tableV, $status) {
+                $m->to($tableV->customer->email, $tableV->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $tableV->id . $status . '.pdf'));
+            });
+
+            Session::flash("flash_notification", [
+            "level"=>"success",
+            "message" => "Registrasi Ujiriksa dengan no Registrasi <b> $nouji </b> dan <b> $noujiV </b> Berhasil"
+            ]);
+        }
+        else {
+            $status = $date->format('dmYHis');
+            $this->savePdf($table->id, $status);
+
+            Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
+                $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
+            });
+            Session::flash("flash_notification", [
             "level"=>"success",
             "message" => "Registrasi Ujiriksa dengan no Registrasi <b> $nouji </b> Berhasil"
             ]);
+        }
+        
+        
 
         if (isset($request->new)) {
             return redirect()->route('ujiriksa.create');
@@ -219,6 +284,7 @@ class UjiriksaController extends Controller
             return redirect()->route('ujiriksa.index');
         }
     }
+
 
     public function storeAPI(Request $request) {
         // $this->validate($request, [

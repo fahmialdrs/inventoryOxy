@@ -67,7 +67,7 @@
         @endif
     @else
         <label class="radio-inline">
-            <input id="jenis_uji" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
+            <input id="hydrostatic" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
         </label>
         <label class="radio-inline">
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
@@ -83,6 +83,19 @@
                 <strong>{{ $errors->first('jenis_uji') }}</strong>
             </span>
         @endif
+    </div>
+</div>
+
+<div class="form-group" id="radio_hydro">
+    <label for="radio_hydro" class="col-md-4 control-label">Visualstatic Test</label>
+
+    <div class="col-md-4">
+        <label class="radio-inline">
+            <input id="ya" type="radio" name="is_visual" value="1" > Ya
+        </label>
+        <label class="radio-inline">
+            <input id="tidak" type="radio" name="is_visual" value="0" checked> Tidak
+        </label>
     </div>
 </div>
 
@@ -548,7 +561,18 @@ $(document).ready(function() {
 });
 </script>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
+    $('input[name="jenis_uji"]').click(function() {
+       if($(this).attr('id') == 'hydrostatic') {
+            $('#radio_hydro').show();           
+       }
+
+       else {
+            $('#radio_hydro').hide();
+            $('#tidak').prop('checked',true); 
+       }
+   });
+
    $('input[name="jenis_uji"]').click(function() {
        if($(this).attr('id') == 'service') {
             $('#radio_service').show();           
