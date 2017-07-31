@@ -19,6 +19,7 @@
     <link href="{{ asset('css/selectize.bootstrap3.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @yield('css')
 
     <!-- Scripts -->
@@ -112,6 +113,12 @@
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/selectize.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "input[type=date]" ).datepicker({ dateFormat: "yy-mm-dd" }).val();
+        } );
+    </script>
     @yield('scripts')
 </body>
 </html>
