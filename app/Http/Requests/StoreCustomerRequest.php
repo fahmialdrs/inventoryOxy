@@ -26,7 +26,7 @@ class StoreCustomerRequest extends FormRequest
         return [
             'nama' => 'required|max:255',
             'no_telp' => 'required|max:255',
-            'tanggal_member' => 'required|date_format:Y',
+            'tanggal_member' => 'required|date',
             'email' => 'required|email|max:255|unique:customers'
         ];
     }
