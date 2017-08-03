@@ -130,7 +130,7 @@
 </div>
 @endif
 @else
-<div class="form-group" id="radio_service" style="display:none">
+<div class="form-group" id="radio_service" style="display:none;">
     <label for="jenis_uji" class="col-md-4 control-label">Jenis Service</label>
 
     <div class="col-md-4">
@@ -260,14 +260,14 @@
         @foreach($ujiriksas->itemujiriksa as $i)
         <tr>
             <td>
-                <input type="number" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]">
+                <input type="number" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]" required>
             </td>                
             <td>
-                <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]">
+                <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]" required>
             </td>
             @if ($ujiriksas->is_service_alat == 0)
             <td class="form_tabung">
-                <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung">
+                <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung" required>
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
                         <option value="{{ $t->tube->id }}">{{ $t->tube->no_tabung }}</option>
@@ -276,7 +276,7 @@
             </td>
             @else
             <td class="form_alat">
-                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat">
+                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat" required>
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
                         <option value="{{ $t->alat->id }}">{{ $t->alat->no_alat }}</option>
@@ -285,7 +285,7 @@
             </td>
             @endif
             <td>
-                <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]">
+                <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]" required>
             </td>
             <td>
                 <input type="file" class="form-control" value="{{ $i->foto_tabung_masuk }}" name="itemujiriksa[{{$a}}][fototabung][]" multiple>
@@ -303,21 +303,21 @@
         <?php $a=0; ?>
         <tr>
             <td>
-                <input type="number" class="form-control" value="{{ old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]">
+                <input type="number" class="form-control" value="{{ old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]" required>
             </td>                
             <td>
-                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]">
+                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]" required>
             </td>
             <td class="form_tabung">
-                <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%">
+                <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%" required>
                 </select>
             </td>
             <td class="form_alat" style="display:none">
-                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">
+                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%" required>
                 </select>
             </td>
             <td>
-                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]">
+                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]" required>
             </td>
             <td>
                 <input type="file" class="form-control" value="{{ old('itemujiriksa[0][fototabung][]') }}" name="itemujiriksa[0][fototabung][]" multiple />
@@ -455,21 +455,21 @@ $(document).ready(function() {
         if(x < max_fields){ //max input box allowed
             $(wrapper).append('<tr>\
             <td>\
-                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="itemujiriksa[' + x +'][jumlah_barang]">\
+                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="itemujiriksa[' + x +'][jumlah_barang]" required>\
             </td>\
             <td>\
-                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]">\
+                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]" required>\
             </td>\
             <td class="form_tabung">\
-                <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%">\
+                <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%" required>\
                 </select>\
             </td>\
             <td class="form_alat" style="display:none">\
-                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%">\
+                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%" required>\
                 </select>\
             </td>\
             <td>\
-                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]">\
+                <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]" required>\
             </td>\
             <td>\
                 <input type="file" class="form-control" value="{{ old("itemujiriksa['+ x +'][fototabung][]") }}" name="itemujiriksa[' + x +'][fototabung][]" multiple>\
@@ -550,7 +550,19 @@ $(document).ready(function() {
                 cache: true
               },
     });
-    });
+    console.log($('input[name="is_service_alat"]:checked').val());
+    
+    if($('input[name="is_service_alat"]:checked').val() == 1) {
+        $('.form_alat').show();
+        $('.form_tabung').hide();
+    }
+
+    else if($('input[name="is_service_alat"]:checked').val() == 0) {
+        $('.form_alat').hide();
+        $('.form_tabung').show();   
+    }
+});
+    
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parents("tr").remove(); x--;
@@ -590,12 +602,13 @@ $(document).ready(function() {
             $('.form_alat').show();
             $('.form_tabung').hide();
        }
-
        else {
             $('.form_alat').hide();
             $('.form_tabung').show();   
        }
    });
+
+   
 });
 </script>
 @endsection

@@ -44,7 +44,7 @@
             Simpan
         </button>
         @if(request()->route()->getName() != "customer.edit")
-        <button type="submit" name="new" class="btn btn-success">
+        <button type="submit" name="new" class="btn btn-success" onclick="return confirm('Apakah Data Sudah Benar?')>
             Simpan & Buat Baru
         </button>
         @endif
