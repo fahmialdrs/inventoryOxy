@@ -267,7 +267,7 @@
             </td>
             @if ($ujiriksas->is_service_alat == 0)
             <td class="form_tabung">
-                <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung" required>
+                <select name="itemujiriksa[{{$a}}][tube_id]" class="js-selectize form-control" placeholder="Pilih No Tabung" >
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
                         <option value="{{ $t->tube->id }}">{{ $t->tube->no_tabung }}</option>
@@ -276,7 +276,7 @@
             </td>
             @else
             <td class="form_alat">
-                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat" required>
+                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat" >
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
                         <option value="{{ $t->alat->id }}">{{ $t->alat->no_alat }}</option>
@@ -309,11 +309,11 @@
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]" required>
             </td>
             <td class="form_tabung">
-                <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%" required>
+                <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%">
                 </select>
             </td>
             <td class="form_alat" style="display:none">
-                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%" required>
+                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">
                 </select>
             </td>
             <td>
@@ -461,11 +461,11 @@ $(document).ready(function() {
                 <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]" required>\
             </td>\
             <td class="form_tabung">\
-                <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%" required>\
+                <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%">\
                 </select>\
             </td>\
             <td class="form_alat" style="display:none">\
-                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%" required>\
+                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%">\
                 </select>\
             </td>\
             <td>\
