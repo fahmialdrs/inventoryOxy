@@ -22,12 +22,12 @@
 							</li>
 							<li role="presentation">
 								<a href="#table_merk" aria-controls="table_merk" role="tab" data-toggle="tab">
-									<i class="fa fa-cloud-upload"></i> Data Merk Alat
+									<i class="fa fa-pencil-square-o"></i> Data Merk Alat
 								</a>
 							</li>
 							<li role="presentation">
 								<a href="#table_tipe" aria-controls="table_tipe" role="tab" data-toggle="tab">
-									<i class="fa fa-cloud-upload"></i> Data Tipe Alat
+									<i class="fa fa-pencil-square-o"></i> Data Tipe Alat
 								</a>
 							</li>
 						</ul>

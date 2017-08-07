@@ -15,6 +15,6 @@
 
 <div class="form-group">
     <div class="col-md-4 col-md-offset-2">
-        {!! Form::submit('Save', ['class'=>'btn btn-primary', 'onclick' => 'return confirm('Apakah Data Sudah Benar?')']) !!}
+        {!! Form::submit('Save', ['class'=>'btn btn-primary', 'onclick' => "return confirm('Apakah Data Sudah Benar?')"]) !!}
     </div>
 </div>

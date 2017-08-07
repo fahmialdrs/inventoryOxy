@@ -27,12 +27,12 @@
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
 								<a href="#table_customer" aria-controls="table_customer" role="tab" data-toggle="tab">
-									<i class="fa fa-pencil-square-o"></i> Data Customer
+									<i class="fa fa-user"></i> Data Customer
 								</a>
 							</li>
 							<li role="presentation">
 								<a href="#table_tabung" aria-controls="tabung" role="tab" data-toggle="tab">
-									<i class="fa fa-cloud-upload"></i> Data Tabung
+									<i class="fa fa-wrench"></i> Data Tabung
 								</a>
 							</li>
 							<li role="presentation">

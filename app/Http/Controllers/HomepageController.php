@@ -21,7 +21,6 @@ class HomepageController extends Controller
     {
     	$this->validate($request, [
             'no_registrasi' => 'required|exists:formujiriksas,no_registrasi',
-            'g-recaptcha-response' => 'required|captcha',
 
         ]);
 
