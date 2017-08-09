@@ -91,10 +91,10 @@
 
     <div class="col-md-4">
         <label class="radio-inline">
-            <input id="ya" type="radio" name="is_visual" value="1" > Ya
+            <input id="ya" type="radio" name="is_visual" value="1" checked> Ya
         </label>
         <label class="radio-inline">
-            <input id="tidak" type="radio" name="is_visual" value="0" checked> Tidak
+            <input id="tidak" type="radio" name="is_visual" value="0"> Tidak
         </label>
     </div>
 </div>
@@ -135,10 +135,10 @@
 
     <div class="col-md-4">
         <label class="radio-inline">
-            <input id="tabung" type="radio" name="is_service_alat" value="0" checked> Tabung
+            <input id="tabung" type="radio" name="is_service_alat" value="0"> Tabung
         </label>
         <label class="radio-inline">
-            <input id="alat" type="radio" name="is_service_alat" value="1"> Alat
+            <input id="alat" type="radio" name="is_service_alat" value="1" checked> Alat
         </label>
     </div>
 </div>
@@ -203,7 +203,7 @@
             @if(isset($ujiriksas->perkiraan_biaya))
             <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ $ujiriksas->perkiraan_biaya }}" required>
             @else
-            <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
+            <input id="perkiraan_biaya" class="number" size="48" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
             @endif
         </div>
 
@@ -445,7 +445,7 @@ $(document).ready(function() {
 </script>
 <script>
     $(document).ready(function() {
-    var max_fields      = 10; //maximum input boxes allowed
+    var max_fields      = 15; //maximum input boxes allowed
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
     
@@ -586,7 +586,9 @@ $(document).ready(function() {
 
    $('input[name="jenis_uji"]').click(function() {
        if($(this).attr('id') == 'service') {
-            $('#radio_service').show();           
+            $('#radio_service').show();
+            $('.form_alat').show();
+            $('.form_tabung').hide();         
        }
 
        else {

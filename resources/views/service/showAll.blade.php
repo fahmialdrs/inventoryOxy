@@ -70,7 +70,13 @@
                                 <td>{{ $t->serviceresult->keterangan_service}}</td>
                                 <td>
                                 @foreach($t->serviceresult->fotoservice as $ft)
+
+                                @if($ft->foto_tabung_service != null)
                                     <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+                                @else
+                                    <iframe src="{{ asset('storage/foto/'.$ft->video_tabung_service) }}" frameborder="0"></iframe>
+                                @endif
+                                   
                                 @endforeach
                                 </td>
                                 <td><a href="{{ route('service.edit', $t->serviceresult->id) }}" class="btn btn-xs btn-primary">Edit</a></td
@@ -89,7 +95,7 @@
                                 <th class="text-center">Nama Barang</th>
                                 <th class="text-center">Keluhan</th>
                                 <th class="text-center">Keterangan Service</th>
-                                <th class="text-center">Foto Hasil Service</th>
+                                <th class="text-center">Attachment Hasil Service</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -105,7 +111,13 @@
                                 <td>{{ $t->serviceresult->keterangan_service}}</td>
                                 <td>
                                 @foreach($t->serviceresult->fotoservice as $ft)
+
+                                @if($ft->foto_tabung_service != null)
                                     <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+                                @else
+                                    <iframe src="{{ asset('storage/foto/'.$ft->video_tabung_service) }}" frameborder="0"></iframe>
+                                @endif
+                                   
                                 @endforeach
                                 </td>
                                 <td><a href="{{ route('service.edit', $t->serviceresult->id) }}" class="btn btn-xs btn-primary">Edit</a></td
@@ -121,4 +133,12 @@
     </div>
 </div>
 
+@endsection
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/videre.css') }}">
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/videre.js') }}"></script>
 @endsection

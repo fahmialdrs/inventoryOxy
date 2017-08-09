@@ -34,11 +34,19 @@
 								<td>:</td>
 								<td>{{ $service->itemujiriksa->formujiriksa->customer->nama }}</td>
 							</tr>
+							@if(isset($service->itemujiriksa->tube_id))
 							<tr>
 								<td class="text-muted">No Tabung</td>
 								<td>:</td>
 								<td>{{ $service->itemujiriksa->tube->no_tabung }}</td>
 							</tr>
+							@else
+							<tr>
+								<td class="text-muted">No Alat</td>
+								<td>:</td>
+								<td>{{ $service->itemujiriksa->alat->no_alat }}</td>
+							</tr>
+							@endif
 							<tr>
 								<td class="text-muted">Jumlah Barang</td>
 								<td>:</td>
@@ -63,8 +71,12 @@
 								<td class="text-muted">Foto Hasil Service</td>
 								<td>:</td>
 								<td>
-									@foreach ($service->fotoservice as $foto)
-										<img src="{{ asset('storage/foto/'.$foto->foto_tabung_service) }}" class="img-rounded" width="100" height="75"><br>
+									@foreach ($service->fotoservice as $ft)
+										@if($ft->foto_tabung_service != null)
+	                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+	                                    @else
+	                                        <iframe src="{{ asset('storage/foto/'.$ft->video_tabung_service) }}" frameborder="0"></iframe>
+	                                    @endif
 									@endforeach
 								</td>
 							</tr>

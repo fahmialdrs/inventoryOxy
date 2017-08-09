@@ -48,27 +48,39 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
+                                @if(isset($service->tube_id))
                                 <th class="text-center">No Tabung</th>
+                                @else
+                                <th class="text-center">No Alat</th>
+                                @endif
                                 <th class="text-center">Jumlah Barang</th>
                                 <th class="text-center">Nama Barang</th>
                                 <th class="text-center">Keluhan</th>
                                 <th class="text-center">Keterangan Service</th>
-                                <th class="text-center">Foto Hasil Service</th>
+                                <th class="text-center">Attachment Hasil Service</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $a = 0; ?>
                             @foreach($service as $t)
                             <tr>
-                                <td><b> {{ $a+1 }}</b></td>            
+                                <td><b> {{ $a+1 }}</b></td>
+                                @if(isset($t->tube_id))            
                                 <td>{{ $t->tube->no_tabung }}</td>
+                                @else
+                                <td>{{ $t->alat->no_alat }}</td>
+                                @endif
                                 <td>{{ $t->jumlah_barang }}</td>
                                 <td>{{ $t->nama_barang }}</td>
                                 <td>{{ $t->keluhan }}</td>
                                 <td>{{ $t->serviceresult->keterangan_service}}</td>
                                 <td>
                                 @foreach($t->serviceresult->fotoservice as $ft)
-                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75"><br>
+                                    @if($ft->foto_tabung_service != null)
+                                    <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+                                    @else
+                                        <iframe src="{{ asset('storage/foto/'.$ft->video_tabung_service) }}" frameborder="0"></iframe>
+                                    @endif
                                 @endforeach
                                 </td>
                             </tr>

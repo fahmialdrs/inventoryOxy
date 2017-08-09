@@ -3,7 +3,7 @@
 </p>
 
 <p>
-	Dengan ini kami ingin memberikan informasi mengenai tabung dengan nomer pendaftaran uji <b>{{ $tableV->no_registrasi }} </b> telah berhasil didaftarkan.<br>
+	Dengan ini kami ingin memberikan informasi mengenai pendaftaran uji dengan nomer pendaftaran <b>{{ $tableV->no_registrasi }} </b> telah berhasil didaftarkan.<br>
 	<br>
 	Silahkan kunjungi web <a href="http://www.inventory.ndtdive.com">http://www.inventory.ndtdive.com</a> dengan menginputkan nomer registrasi diatas untuk melihat informasi progress pengerjaan.	
 </p>

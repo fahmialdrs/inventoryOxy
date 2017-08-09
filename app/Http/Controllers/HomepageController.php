@@ -77,7 +77,7 @@ class HomepageController extends Controller
 
     public function showService($id)
     {
-        $service = Serviceresult::with(['fotoservice','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer'])->find($id);
+        $service = Serviceresult::with(['fotoservice','itemujiriksa.formujiriksa', 'itemujiriksa.tube.customer', 'itemujiriksa.alat.customer'])->find($id);
         // $form = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('homepage.showService', array(
             'service' => $service
@@ -87,7 +87,7 @@ class HomepageController extends Controller
     public function showAllService($id)
     {
         $form = Formujiriksa::with('customer')->find($id);
-        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'serviceresult.fotoservice'])->get();
+        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'alat.customer', 'serviceresult.fotoservice'])->get();
         // dd($service);
         return view('homepage.showAllService', array(
             'service' => $service,

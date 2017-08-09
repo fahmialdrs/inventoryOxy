@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@if(isset($service->itemujiriksa->first()->tube_id))
+@if(isset($service->itemujiriksa->tube_id))
 <div class="form-group{{ $errors->has('tube_id') ? ' has-error' : '' }}">
     {!! Form::label('tube_id', 'No Tabung', ['class'=>'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
@@ -53,7 +53,7 @@
 </div>
 
 <div class="form-group{{ $errors->has('keterangan_service') ? ' has-error' : '' }}">
-    <label for="keterangan_service" class="col-md-4 control-label">Keterangan Service</label>
+    <label for="keterangan_service" class="col-md-4 control-label">Keterangan Hasil Service</label>
 
     <div class="col-md-4">
         <textarea name="keterangan_service"  class="form-control" cols="30" rows="10" required>{{ $service->keterangan_service or old('keterangan_service') }}</textarea>
@@ -67,12 +67,25 @@
 </div>
 
 <div class="form-group{{ $errors->has('foto_tabung_service') ? ' has-error' : '' }}">
-    <label for="foto_tabung_service" class="col-md-4 control-label">Foto Hasil Service</label>
+    <label for="foto_tabung_service" class="col-md-4 control-label">Attachment Hasil Service</label>
 
     <div class="col-md-4">
-        <input type="file" class="form-control" name="foto_tabung_service[]" multiple>
-        @foreach ($service->fotoservice as $foto)
-            <img src="{{ asset('storage/foto/'.$foto->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+        <label class="radio-inline">
+            <input id="video" class="jenisfile" type="radio" name="jenisfile" value="1" checked> Video
+        </label>
+        <label class="radio-inline">
+            <input id="foto" class="jenisfile" type="radio" name="jenisfile" value="0"> Foto
+        </label>
+
+        <input type="file" id="inputvideo" class="form-control" name="foto_tabung_service[]">
+        <input type="file" id="inputfoto" class="form-control" name="foto_tabung_service[]" style="display:none;" multiple> <br>
+
+        @foreach ($service->fotoservice as $ft)
+            @if($ft->foto_tabung_service != null)
+                <img src="{{ asset('storage/foto/'.$ft->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
+            @else
+                <iframe src="{{ asset('storage/foto/'.$ft->video_tabung_service) }}" frameborder="0"></iframe>
+            @endif
         @endforeach
 
         @if ($errors->has('foto_tabung_service'))
@@ -94,3 +107,25 @@
         </button>
     </div>
 </div>
+
+@section('scripts')
+<script>
+$(document).ready(function() {
+
+    $('input.jenisfile').click( function(){
+        console.log($(this).val());
+        if($(this).val() == 1) {
+            $('#inputvideo').show();
+            $('#inputfoto').hide();
+            $('#inputfoto').val('');
+       }
+
+       else {
+            $('#inputvideo').hide();
+            $('#inputfoto').show();
+            $('#inputvideo').val('');
+       }
+    });
+});
+</script>
+@endsection

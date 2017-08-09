@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered uji">
     <thead>
         <tr>
             <th class="text-center">No</th>
@@ -46,8 +46,8 @@
             <th class="text-center">Jumlah Barang</th>
             <th class="text-center">Nama Barang</th>
             <th class="text-center">Keluhan</th>
-            <th class="text-center">Keterangan Tabung</th>
-            <th class="text-center">Foto Hasil Service</th>
+            <th class="text-center">Keterangan Hasil Service</th>
+            <th class="text-center">Attachment Hasil Service</th>
         </tr>
     </thead>
     <tbody>
@@ -115,7 +115,15 @@
                 </div>
             </td>
             <td>
-                <input type="file" name="serviceresult[{{ $a }}][foto_tabung_service][]" multiple>
+                <label class="radio-inline">
+                    <input id="video" class="jenisfile{{ $a }}" type="radio" name="jenisfile{{ $a }}" value="1" checked> Video
+                </label>
+                <label class="radio-inline">
+                    <input id="foto" class="jenisfile{{ $a }}" type="radio" name="jenisfile{{ $a }}" value="0"> Foto
+                </label>
+
+                <input type="file" id="inputvideo{{ $a }}" name="serviceresult[{{ $a }}][foto_tabung_service][]">
+                <input type="file" id="inputfoto{{ $a }}" name="serviceresult[{{ $a }}][foto_tabung_service][]" multiple style="display:none;">
                 <input type="hidden"  name="serviceresult[{{ $a }}][itemujiriksa_id]" value="{{ $t->id  }}">
             </td>
         </tr>
@@ -136,3 +144,29 @@
         </button>
     </div>
 </div>
+
+@section('scripts')
+<script>
+$(document).ready(function() {
+
+    $('.uji').find('tr').click( function(){
+        var a = $(this).index();
+
+        $('input.jenisfile' + a ).click( function(){
+            console.log($(this).val());
+            if($(this).val() == 1) {
+                $('#inputvideo'+ a).show();
+                $('#inputfoto'+ a).hide();
+                $('#inputfoto').val('');          
+           }
+
+           else {
+                $('#inputvideo'+ a).hide();
+                $('#inputfoto'+ a).show();
+                $('#inputvideo').val('');
+           }
+       });
+    });
+});
+</script>
+@endsection

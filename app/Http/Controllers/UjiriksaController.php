@@ -564,6 +564,10 @@ class UjiriksaController extends Controller
     public function destroy($id)
     {
         $ujiriksas = Formujiriksa::find($id);
+
+        Mail::send('ujiriksa.emailDelete', compact('ujiriksas'), function ($m) use ($ujiriksas) {
+                $m->to($ujiriksas->customer->email, $ujiriksas->customer->nama)->subject('Pembatalan Registrasi');
+            });
         $ujiriksas->delete();
 
         Session::flash("flash_notification", [
