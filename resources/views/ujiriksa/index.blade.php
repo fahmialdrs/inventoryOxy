@@ -28,12 +28,12 @@
 							</li>
 							<li role="presentation">
 								<a href="#table_visual" aria-controls="table_visual" role="tab" data-toggle="tab">
-									<i class="fa fa-cloud-upload"></i> Visualstatic
+									<i class="fa fa-pencil-square-o"></i> Visualstatic
 								</a>
 							</li>
 							<li role="presentation">
 								<a href="#table_service" aria-controls="table_service" role="tab" data-toggle="tab">
-									<i class="fa fa-cloud-upload"></i> Service
+									<i class="fa fa-pencil-square-o"></i> Service
 								</a>
 							</li>
 						</ul>

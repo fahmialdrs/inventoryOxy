@@ -191,13 +191,13 @@
     <div class="col-md-4">
     @if(isset($billings->discount))
         <div class="input-group">
+            <div class="input-group-addon">Rp.</div>
             <input id="discount" type="number" class="form-control" name="discount" value="{{ $billings->discount ?? '0' }}" onblur="grandtotal()">
-            <div class="input-group-addon">%</div>
         </div>
     @else
         <div class="input-group">
+            <div class="input-group-addon">Rp.</div>
             <input id="discount" type="number" class="form-control" name="discount" value="{{ old('discount') ?? '0' }}" onblur="grandtotal()">
-            <div class="input-group-addon">%</div>
         </div>
     @endif
         @if ($errors->has('discount'))
@@ -414,11 +414,11 @@ $(document).ready(function(){
         var total;
         var disc;
         var totalsementara;
-        var totalppn;
+        var totalppn;        
 
-        total = parseInt(subtotal) + parseInt(ongkir);
-        disc = (parseInt(total) * (parseInt(discount) / 100));
-        totalsementara = parseInt(total) - parseInt(disc);
+        total = (parseInt(subtotal) + parseInt(ongkir));
+        totalsementara = (parseInt(total) - parseInt(discount));
+        console.log(discount);
         totalppn = (parseInt(totalsementara) * (parseInt(ppn) / 100));
         $('#total').val(parseInt(totalsementara) + parseInt(totalppn));
     }
