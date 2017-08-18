@@ -79,8 +79,8 @@
 			                      <td><b><?php $a++ ?> {{ $a }}</b></td>
 			                      <td>{{ $t->quantity or '' }}</td>
 			                      <td>{{ $t->deskripsi or '' }}</td>
-			                      <td>{{ $t->unitprice or '' }}</td>
-			                      <td>{{ $t->amount or '' }}</td>
+			                      <td>Rp.{{ $t->unitprice or '' }}</td>
+			                      <td>Rp.{{ $t->amount or '' }}</td>
 			                    </tr>
 			                @endforeach
 			                </tbody>
@@ -90,12 +90,12 @@
 							<tr>
 								<td class="text-muted">Subtotal</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->subtotal }}</td>
+								<td>Rp.{{ $billings->subtotal }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Ongkir</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->ongkir }}</td>
+								<td>Rp.{{ $billings->ongkir }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Discount</td>
@@ -110,7 +110,7 @@
 							<tr>
 								<td class="text-muted"><b>Total</b></td>
 								<td class="text-muted">:</td>
-								<td><b>{{ $billings->total }}</b></td>
+								<td><b>Rp.{{ $billings->total }}</b></td>
 							</tr>
 							<tr>
 								<td class="text-muted">Terbilang</td>
