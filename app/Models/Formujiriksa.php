@@ -27,4 +27,8 @@ class Formujiriksa extends Model
     public function user() {
     	return $this->belongsTo('App\User');
     }
+
+    public function billing() {
+        return $this->hasMany('App\Models\Billing');
+    }
 }

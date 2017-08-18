@@ -15,11 +15,11 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('no_registrasi') ? ' has-error' : '' }}">
-    {!! Form::label('no_registrasi', 'No Registrasi', ['class'=>'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('formujiriksa_id') ? ' has-error' : '' }}">
+    {!! Form::label('formujiriksa_id', 'No Registrasi', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('no_registrasi', [''=>'']+App\Models\Formujiriksa::pluck('no_registrasi','no_registrasi')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'no_registrasi', 'placeholder' => 'Pilih No Registrasi']) !!}
-        {!! $errors->first('no_registrasi', '<p class="help-block">:message</p>') !!}     
+        {!! Form::select('formujiriksa_id', [''=>'']+App\Models\Formujiriksa::pluck('no_registrasi','id')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'no_registrasi', 'placeholder' => 'Pilih No Registrasi']) !!}
+        {!! $errors->first('formujiriksa_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
 

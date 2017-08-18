@@ -14,7 +14,10 @@ class AddNoRegToBillingsTable extends Migration
     public function up()
     {
         Schema::table('billings', function (Blueprint $table) {
-            $table->string('no_registrasi')->nullable();
+            $table->integer('formujiriksa_id')->unsigned()->nullable();
+
+            $table->foreign('formujiriksa_id')->references('id')->on('formujiriksas')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -26,7 +29,7 @@ class AddNoRegToBillingsTable extends Migration
     public function down()
     {
         Schema::table('billings', function (Blueprint $table) {
-            $table->dropColumn('no_registrasi');
+            $table->dropColumn('formujiriksa_id');
         });
     }
 }

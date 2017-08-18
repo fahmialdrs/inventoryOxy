@@ -43,7 +43,7 @@
               <tr>
                 <td class="text-muted">No Registrasi Layanan</td>
                 <td class="text-muted">:</td>
-                <td>{{ $billings->no_registrasi }}</td>
+                <td>{{ $billings->formujiriksa->no_registrasi }}</td>
               </tr>
               <tr>
                 <td class="text-muted">Bill To</td>

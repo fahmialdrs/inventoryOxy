@@ -15,4 +15,8 @@ class Billing extends Model
     public function itembilling() {
     	return $this->hasMany('App\Models\Itembilling');
     }
+
+    public function formujiriksa() {
+    	return $this->belongsTo('App\Models\Formujiriksa');
+    }
 }

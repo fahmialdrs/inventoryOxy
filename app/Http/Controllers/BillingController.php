@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Billing;
 use App\Models\Customer;
+use App\Models\Formujiriksa;
 use App\Models\Itembilling;
 use App\Http\Requests\StoreBillingRequest;
 use App\Http\Requests\UpdateBillingRequest;
@@ -102,7 +103,7 @@ class BillingController extends Controller
      */
     public function show($id)
     {
-        $billings = Billing::find($id);
+        $billings = Billing::with('customer', 'formujiriksa')->find($id);
         $itembillings = Itembilling::where('billing_id', $id)->get();
         return view('billing.show', array(
             'billings' => $billings,
@@ -214,7 +215,7 @@ class BillingController extends Controller
     }
 
     public function exportPdf($id) {
-        $billings = Billing::with('customer','itembilling')->find($id);
+        $billings = Billing::with('customer','itembilling', 'formujiriksa')->find($id);
         // dd($billings);
         $pdf = PDF::loadView('billing.pdf', compact('billings'));
         $filename = 'Invoice-'.' '.$billings->no_invoice.'.pdf';
@@ -244,7 +245,7 @@ class BillingController extends Controller
     } 
 
     public function savePdf($id, $status) {
-        $billings = Billing::with('customer','itembilling')->find($id);
+        $billings = Billing::with('customer','itembilling', 'formujiriksa')->find($id);
         // dd($billings);
         $pdf = PDF::loadView('billing.pdf', compact('billings'));
         $filename = 'Invoice-'. $billings->id . $status .'.pdf';
