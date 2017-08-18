@@ -74,7 +74,7 @@
 								<td>:</td>
 								<td>
 									@foreach ($service->fotoservice as $foto)
-										@if($ft->foto_tabung_service != null)
+										@if($foto->foto_tabung_service != null)
 	                                    <img src="{{ asset('storage/foto/'.$foto->foto_tabung_service) }}" class="img-rounded" width="100" height="75">
 	                                    @else
 	                                        <iframe src="{{ asset('storage/foto/'.$foto->video_tabung_service) }}" frameborder="0"></iframe>
