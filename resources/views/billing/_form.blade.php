@@ -3,15 +3,23 @@
 
     <div class="col-md-4">
     @if(isset($billings->tanggal_invoice))
-        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ $billings->tanggal_invoice or old('tanggal_invoice') }}" required autofocus>
+        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ $billings->tanggal_invoice or old('tanggal_invoice') }}" required>
     @else
-        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ date('Y-m-d') }}" required autofocus>
+        <input id="tanggal_invoice" type="date" class="form-control" name="tanggal_invoice" value="{{ date('Y-m-d') }}" required>
     @endif
         @if ($errors->has('tanggal_invoice'))
             <span class="help-block">
                 <strong>{{ $errors->first('tanggal_invoice') }}</strong>
             </span>
         @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('no_registrasi') ? ' has-error' : '' }}">
+    {!! Form::label('no_registrasi', 'No Registrasi', ['class'=>'col-sm-2 control-label']) !!}
+    <div class="col-sm-4">
+        {!! Form::select('no_registrasi', [''=>'']+App\Models\Formujiriksa::pluck('no_registrasi','no_registrasi')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'no_registrasi', 'placeholder' => 'Pilih No Registrasi']) !!}
+        {!! $errors->first('no_registrasi', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
 
@@ -276,13 +284,9 @@
 
     <div class="col-md-4">
     @if(isset($billings->catatan))
-        <textarea class="form-control" name="catatan" id="catatan">
-            {{ $billings->catatan }}
-        </textarea>
+        <textarea class="form-control" name="catatan" id="catatan">{{ $billings->catatan }}</textarea>
     @else
-        <textarea class="form-control" name="catatan" id="catatan">
-            {{ old('catatan') }}
-        </textarea>
+        <textarea class="form-control" name="catatan" id="catatan">{{ old('catatan') }}</textarea>
     @endif
         @if ($errors->has('catatan'))
             <span class="help-block">
@@ -340,7 +344,7 @@ $(document).ready(function(){
 
 <script>
     $(document).ready(function() {
-    var max_fields      = 10; //maximum input boxes allowed
+    var max_fields      = 50; //maximum input boxes allowed
     var wrapper         = $("#input_fields_wrap"); //Fields wrapper
     var add_button      = $("#add_field_button"); //Add button ID
     

@@ -21,6 +21,11 @@
 						<div class="col-md-6">
 						<table class="table">
 							<tr>
+								<td class="text-muted">No Registrasi Layanan</td>
+								<td class="text-muted">:</td>
+								<td>{{ $billings->no_registrasi }}</td>
+							</tr>
+							<tr>
 								<td class="text-muted">Bill To</td>
 								<td class="text-muted">:</td>
 								<td>{{ $billings->customer->nama }}</td>
@@ -95,7 +100,7 @@
 							<tr>
 								<td class="text-muted">Discount</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->discount }} %</td>
+								<td>Rp.{{ $billings->discount }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">PPN</td>

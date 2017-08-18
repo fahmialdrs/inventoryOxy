@@ -68,7 +68,7 @@
 								<td>{{ $service->keterangan_service }}</td>
 							</tr>
 							<tr>								
-								<td class="text-muted">Foto Hasil Service</td>
+								<td class="text-muted">Attachment Hasil Service</td>
 								<td>:</td>
 								<td>
 									@foreach ($service->fotoservice as $ft)

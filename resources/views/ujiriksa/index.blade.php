@@ -22,6 +22,11 @@
 						</p>
 						<ul class="nav nav-tabs" role="tablist">
 							<li role="presentation" class="active">
+								<a href="#table_service" aria-controls="table_service" role="tab" data-toggle="tab">
+									<i class="fa fa-pencil-square-o"></i> Service
+								</a>
+							</li>
+							<li role="presentation">
 								<a href="#table_hydro" aria-controls="table_hydro" role="tab" data-toggle="tab">
 									<i class="fa fa-pencil-square-o"></i> Hydrostatic
 								</a>
@@ -30,12 +35,7 @@
 								<a href="#table_visual" aria-controls="table_visual" role="tab" data-toggle="tab">
 									<i class="fa fa-pencil-square-o"></i> Visualstatic
 								</a>
-							</li>
-							<li role="presentation">
-								<a href="#table_service" aria-controls="table_service" role="tab" data-toggle="tab">
-									<i class="fa fa-pencil-square-o"></i> Service
-								</a>
-							</li>
+							</li>							
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" role="tabpanel" id="table_hydro">

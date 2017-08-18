@@ -41,6 +41,11 @@
             <div class="col-md-2">
             <table class="table table-responsive">
               <tr>
+                <td class="text-muted">No Registrasi Layanan</td>
+                <td class="text-muted">:</td>
+                <td>{{ $billings->no_registrasi }}</td>
+              </tr>
+              <tr>
                 <td class="text-muted">Bill To</td>
                 <td class="text-muted">:</td>
                 <td>{{ $billings->customer->nama }}</td>
@@ -58,7 +63,7 @@
               <tr>
                 <td class="text-muted">Alamat</td>
                 <td class="text-muted">:</td>
-                <td>{{ $billings->customer->nama }}</td>
+                <td>{{ $billings->customer->alamat }}</td>
               </tr>
               <tr>
                 <td class="text-muted">Tanggal Invoice</td>
