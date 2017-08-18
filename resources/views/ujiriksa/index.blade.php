@@ -37,7 +37,8 @@
 								</a>
 							</li>							
 						</ul>
-						<div class="tab-pane" role="tabpanel" id="table_service">
+						<div class="tab-content">
+						<div class="tab-pane active" role="tabpanel" id="table_service">
 							<table id="service" class="display">
 							    <thead>
 							        <tr>
@@ -119,8 +120,7 @@
 							    </tbody>
 							</table>
 						</div>
-						<div class="tab-content">
-							<div class="tab-pane active" role="tabpanel" id="table_hydro">
+							<div class="tab-pane" role="tabpanel" id="table_hydro">
 								<table id="hydro" class="display">
 								    <thead>
 								        <tr>
