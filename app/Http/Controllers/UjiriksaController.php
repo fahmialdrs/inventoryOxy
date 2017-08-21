@@ -735,7 +735,7 @@ class UjiriksaController extends Controller
     public function exportExcel(){
 
     $ujiriksas = Itemujiriksa::with(['tube','alat.jenisalat', 'alat.tipe', 'alat.merk', 'formujiriksa.customer'])->get();
-    dd($ujiriksas);
+    // dd($ujiriksas);
 
     $export = Excel::create('Data Layanan Keseluruhan NDT Dive', function($excel) use ($ujiriksas){
         $excel->setTitle('Data Layanan Keseluruhan NDT Dive')->setCreator(Auth::user()->name);
