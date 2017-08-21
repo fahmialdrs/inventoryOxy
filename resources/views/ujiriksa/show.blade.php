@@ -97,7 +97,6 @@
 						    <thead>
 						        <tr>
 						        	<th>No</th>
-						            <th>Jumlah Barang</th>
 						            <th>Nama Barang</th>
 						            <th>No Alat</th>
 						            <th>Keluhan</th>
@@ -110,7 +109,6 @@
 						    @foreach ($itemujiriksa as $t)
 						        <tr>
 						        	<td><?php $a++ ?> {{ $a }}</td>
-						            <td>{{ $t->jumlah_barang or '' }}</td>
 						            <td>{{ $t->nama_barang or '' }}</td>
 						            <td><a href="{{ route('alat.show', $t->alat->id) }}">{{ $t->alat->no_alat or '' }}</a></td>
 						            <td>{{ $t->keluhan or '' }}</td>

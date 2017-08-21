@@ -203,7 +203,7 @@
             @if(isset($ujiriksas->perkiraan_biaya))
             <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ $ujiriksas->perkiraan_biaya }}" required>
             @else
-            <input id="perkiraan_biaya" class="number" size="48" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
+            <input id="perkiraan_biaya" class="form-control number" name="perkiraan_biaya" value="{{ old('perkiraan_biaya') }}" required>
             @endif
         </div>
 
@@ -237,7 +237,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Jumlah Barang</th>
+            <th>No</th>
             <th>Nama Barang</th>
             @if (isset($ujiriksas->is_service_alat))
             @if ($ujiriksas->is_service_alat == 0)
@@ -260,7 +260,7 @@
         @foreach($ujiriksas->itemujiriksa as $i)
         <tr>
             <td>
-                <input type="number" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]" required>
+                <input type="hidden" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]" required>
             </td>                
             <td>
                 <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]" required>
@@ -303,7 +303,9 @@
         <?php $a=0; ?>
         <tr>
             <td>
-                <input type="number" class="form-control" value="{{ old('itemujiriksa[0][jumlah_barang]') }}" name="itemujiriksa[0][jumlah_barang]" required>
+                <b>{{ $a+1 }}</b>
+                <input type="hidden" class="form-control" value="{{ 1 }}" name="itemujiriksa[0][jumlah_barang]" required>
+                
             </td>                
             <td>
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]" required>
@@ -455,7 +457,8 @@ $(document).ready(function() {
         if(x < max_fields){ //max input box allowed
             $(wrapper).append('<tr>\
             <td>\
-                <input type="number" class="form-control" value="{{ old('jumlah_barang[]') }}" name="itemujiriksa[' + x +'][jumlah_barang]" required>\
+                <b>'+ (x + 1) +' </b>\
+                <input type="hidden" class="form-control" value="{{ 1 }}" name="itemujiriksa[' + x +'][jumlah_barang]" required>\
             </td>\
             <td>\
                 <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]" required>\
@@ -587,6 +590,7 @@ $(document).ready(function() {
    $('input[name="jenis_uji"]').click(function() {
        if($(this).attr('id') == 'service') {
             $('#radio_service').show();
+            $('#alat').prop('checked',true);
             $('.form_alat').show();
             $('.form_tabung').hide();         
        }

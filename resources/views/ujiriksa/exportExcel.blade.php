@@ -6,7 +6,6 @@
         <th>Jenis Service</th>
         <th>Keterangan</th>
         <th>Tanggal Perkiraan Selesai</th>
-        <th>Jumlah Barang</th>
         <th>Nama Barang</th>
         <th>No Tabung</th>
         <th>No Alat</th>
@@ -27,7 +26,6 @@
 	        <td>Tabung</td>
 	        <td>{{ $u->formujiriksa->keterangan }}</td>
 	        <td>{{ date("d-m-Y", strtotime($u->formujiriksa->perkiraan_selesai)) }}</td>
-	        <td>{{ $u->jumlah_barang }}</td>
 	        <td>{{ $u->nama_barang }}</td>
 	        <td>{{ $u->tube->no_tabung }}</td>
 	        <td>-</td>
@@ -50,7 +48,6 @@
 	        <td>Alat</td>
 	        <td>{{ $u->formujiriksa->keterangan }}</td>
 	        <td>{{ date("d-m-Y", strtotime($u->formujiriksa->perkiraan_selesai)) }}</td>
-	        <td>{{ $u->jumlah_barang }}</td>
 	        <td>{{ $u->nama_barang }}</td>
 	        <td>-</td>
 	        <td>{{ $u->alat->no_alat }}</td>

@@ -76,7 +76,6 @@
                 <thead>
                     <tr>
                       <th>No</th>
-                      <th>Jumlah Barang</th>
                       <th>Nama Barang</th>
                       @if($ujiriksas->is_service_alat == 0)
                       <th>No Tabung</th>
@@ -91,7 +90,6 @@
                 @foreach ($ujiriksas->itemujiriksa as $t)
                     <tr>
                       <td><b><?php $a++ ?> {{ $a }}</b></td>
-                      <td>{{ $t->jumlah_barang or '' }}</td>
                       <td>{{ $t->nama_barang or '' }}</td>
                       @if($ujiriksas->is_service_alat == 0)
                       <td>{{ $t->tube->no_tabung or '' }}</td>
