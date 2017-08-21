@@ -100,11 +100,7 @@
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
 								            <td>{{ $t->keluhan or '' }}</td>								            
 								            <td>{{ $t->formujiriksa->progress or '' }}</td>
-								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y')  }}</td>
-								            @else
-								            <td>{{ "Belum Selesai" }}</td>
-								            @endif
+								            <td>{{ $t->formujiriksa->created_at->format('d-M-Y')  }}</td>
 								            @if($t->formujiriksa->jenis_uji == "Service")
 								            @if(isset($t->serviceresult))
 											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
@@ -123,7 +119,6 @@
 															<a type="button" href="#">Export PDF</a>
 													  	</li>
 													  	<li role="separator" class="divider"></li>
-													    <li><a href="#">Unduh Label</a></li>
 													  </ul>
 													</div>
 												</div>

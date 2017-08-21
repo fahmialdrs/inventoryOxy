@@ -128,19 +128,26 @@
 								            <td><a href="{{ route('tabung.show',$t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
 								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
-								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y') }}</td>
+								            <td>{{ $t->formujiriksa->created_at->format('d-M-Y') }}</td>
 								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
+								            @if(isset($t->hydrostaticresult))
 								            <td><a href="{{ route('hydrostatic.show', $t->hydrostaticresult->id) }}">Hasil</a></td>
-								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
-								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
-								            @elseif($t->formujiriksa->jenis_uji == "Service")
-											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
-											@endif
 								            @else
-								            <td>{{ "Belum Selesai" }}</td>
 								            <td>Hasil Belum Ada</td>
 								            @endif
+								            @elseif($t->formujiriksa->jenis_uji == "Visualstatic")
+								            @if(isset($t->visualresult))
+								            <td><a href="{{ route('visualstatic.show', $t->visualresult->id) }}">Hasil</a></td>
+								            @else
+								            <td>Hasil Belum Ada</td>
+								            @endif
+								            @elseif($t->formujiriksa->jenis_uji == "Service")
+								            @if(isset($t->serviceresult))
+											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
+											@else
+											<td>Hasil Belum Ada</td>
+											@endif
+											@endif								            
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">
@@ -148,9 +155,6 @@
 													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
-													  	<li>
-															<a type="button" href="#">Edit</a>
-													  	</li>
 													  	<li>
 															<a type="button" href="#">Delete</a>
 													  	</li>
@@ -225,11 +229,7 @@
 								            <td><a href="{{ route('alat.show',$t->alat->id) }}">{{ $t->alat->no_alat or '' }}</a></td>
 								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
-								            @if(isset($t->formujiriksa->done_at))
-								            <td>{{ $t->formujiriksa->done_at->format('d-M-Y') }}</td>
-								            @else
-								            <td>Belum Selesai</td>
-								            @endif
+								            <td>{{ $t->formujiriksa->created_at->format('d-M-Y') }}</td>
 								            @if(isset($t->serviceresult))
 											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>
 								            @else
@@ -242,9 +242,6 @@
 													    Aksi <span class="caret"></span>
 													  </button>
 													  <ul class="dropdown-menu ">
-													  	<li>
-															<a type="button" href="#">Edit</a>
-													  	</li>
 													  	<li>
 															<a type="button" href="#">Delete</a>
 													  	</li>
@@ -307,7 +304,10 @@
 				    "targets": [ 4, 5 ],
 				    "searchable": false,
 				    "orderable": false
-			    }]
+			    },
+			    {
+	    			"type": "date-dd-mmm-yyyy", targets :[3]
+	    		}]
 		} );
 		
 			} );

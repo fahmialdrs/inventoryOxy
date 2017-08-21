@@ -44,7 +44,7 @@
 	        @else
 	        	<td>-</td>
 	        @endif
-        @else
+        @elseif($u->formujiriksa->is_service_alat == true)
 	        <td>Alat</td>
 	        <td>{{ $u->formujiriksa->keterangan }}</td>
 	        <td>{{ date("d-m-Y", strtotime($u->formujiriksa->perkiraan_selesai)) }}</td>
