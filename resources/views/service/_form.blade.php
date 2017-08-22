@@ -43,7 +43,7 @@
             @else
             <th class="text-center">No Alat</th>
             @endif
-            <th class="text-center">Jumlah Barang</th>
+            <!-- <th class="text-center">Jumlah Barang</th> -->
             <th class="text-center">Nama Barang</th>
             <th class="text-center">Keluhan</th>
             <th class="text-center">Keterangan Hasil Service</th>
@@ -70,7 +70,7 @@
                 </div>
             </td>
             @endif
-            <td>
+            <!-- <td>
                 <div class="{{ $errors->has('jumlah_barang') ? ' has-error' : '' }}">
                     <input id="jumlah_barang" type="text" class="" name="serviceresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>
 
@@ -80,7 +80,7 @@
                         </span>
                     @endif
                 </div>
-            </td>
+            </td> -->
             <td>
                 <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
                     <input id="nama_barang" type="text" class="" name="serviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>

@@ -287,7 +287,7 @@ class UjiriksaController extends Controller
 
 
     public function storeAPI(Request $request) {
-        // $this->validate($request, [
+       // $this->validate($request, [
         //     'tube_id' => 'required|exists:tubes,id',
         //     'keluhan' => 'required|max:255',
         //     'jenis_uji' => 'required|max:255',
@@ -322,13 +322,38 @@ class UjiriksaController extends Controller
         $data['user_id'] = Auth::user()->id;
         array_forget($data,'itemujiriksa');
         array_forget($data,'new');
+        array_forget($data,'is_visual');
         $table = new Formujiriksa;
         $table->fill($data);
         $table->save();
 
+        if ($request->is_visual == 1) {
+            // tarik jenis uji
+            $jenisuji = 'Visualstatic';
+
+            $date = Carbon::parse('now');
+            $counter = Formujiriksa::whereDate('created_at','=',date('Y-m-d'))->count()+1;
+            // dd($counter);
+            $kode = $date->format('dm').'-'. $counter . '/UJI/NDT/' . $date->format('Y');
+            
+            // penentuan nomer registrasi berdasarkan jenis uji
+            $noujiV = "VSL-". $kode;
+
+            $data['no_registrasi'] = $noujiV;
+            $data['jenis_uji'] = $jenisuji;
+            $data['progress'] = 'Waiting List';
+            $data['user_id'] = Auth::user()->id;
+            array_forget($data,'itemujiriksa');
+            array_forget($data,'new');
+            $tableV = new Formujiriksa;
+            $tableV->fill($data);
+            $tableV->save();
+        }
+
+        // dd($request->itemujiriksa);
         if (isset($request->itemujiriksa)) { 
             foreach ($request->itemujiriksa as $key ) {
-                // dd($key['tube_id'] == null);
+                
             if (isset($key['tube_id'])) {
                 $item = new Itemujiriksa([
                     'jumlah_barang' => $key['jumlah_barang'],
@@ -336,6 +361,16 @@ class UjiriksaController extends Controller
                     'tube_id' => $key['tube_id'],
                     'keluhan' => $key['keluhan']
                 ]);
+                if ($request->is_visual == 1) {
+                    $itemV = new Itemujiriksa([
+                        'jumlah_barang' => $key['jumlah_barang'],
+                        'nama_barang' => $key['nama_barang'],
+                        'tube_id' => $key['tube_id'],
+                        'keluhan' => $key['keluhan']
+                    ]);
+
+                    $tableV->itemujiriksa()->save($itemV);
+                }
             }                
             elseif (isset($key['alat_id'])) {
                 $item = new Itemujiriksa([
@@ -347,11 +382,12 @@ class UjiriksaController extends Controller
             } 
                 $table->itemujiriksa()->save($item);
 
+
                 // dd($request->hasFile($key['fototabung']));
                 // if ($key->hasFile()) {
                     // isi field cover jika ada cover yg di upload
-                
-                if (is_array($key['fototabung'])) {
+                // dd(isset($key['fototabung']));
+                if (isset($key['fototabung'])) {
                     
                     //ambil file yang di upload
                     $uploaded =$key['fototabung'];
@@ -375,21 +411,46 @@ class UjiriksaController extends Controller
                             'foto_tabung_masuk' => $filename,
                             'itemujiriksa_id' => $item->id
                             ]);
-                    // }
+
+                        if ($request->is_visual == 1) {
+                            Fototabung::create([
+                                'foto_tabung_masuk' => $filename,
+                                'itemujiriksa_id' => $itemV->id
+                                ]);
+                        }                        
                     }
                 }
             }
         }
 
-        $status = $data->format('dmYHis');
-        $this->savePdf($table->id, $status);
+        
+        if ($request->is_visual == 1) {
+            $status = $date->format('dmYHis');
+            $this->savePdf($table->id, $status);
+            $this->savePdf($tableV->id, $status);
 
-        Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
-            $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
-            $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
-        });
+            Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
+                $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
+            });
 
-        return response()->json(['error' => false, 'message' => 'Pendaftaran Tabung Masuk Berhasil']);
+            Mail::send('ujiriksa.emailFormV', compact('tableV'), function ($m) use ($tableV, $status) {
+                $m->to($tableV->customer->email, $tableV->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $tableV->id . $status . '.pdf'));
+            });
+
+            return response()->json(['error' => false, 'message' => 'Pendaftaran Tabung Masuk Berhasil']);
+        }
+        else {
+            $status = $date->format('dmYHis');
+            $this->savePdf($table->id, $status);
+
+            Mail::send('ujiriksa.emailForm', compact('table'), function ($m) use ($table, $status) {
+                $m->to($table->customer->email, $table->customer->nama)->subject('Form Ujiriksa NDT Dive');
+                $m->attach(storage_path('app/public/formuji/Form Ujiriksa-'. $table->id . $status . '.pdf'));
+            });
+            return response()->json(['error' => false, 'message' => 'Pendaftaran Tabung Masuk Berhasil']);
+        }
 
     }
 
@@ -409,11 +470,11 @@ class UjiriksaController extends Controller
             ));
     }
 
-    public function showDetail(Request $request)
+    public function showDetail(Request $request, $id)
     {
-        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung')->find($request['id']);
+        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung')->find($id);
         if(!$data) {
-            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+            return response()->json(['error' => 'Data Form Registrasi Uji Tidak Ada.'], 400);
         }
         else {
             return response()->json($data);
@@ -579,7 +640,7 @@ class UjiriksaController extends Controller
 
     public function changeStatus($id)
     {
-        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube')->find($id);
+        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube', 'itemujiriksa.alat')->find($id);
         $status = $ujiriksas->progress;
         if($status == "Waiting List") {
             $ujiriksas->progress = "Sedang Dikerjakan";
@@ -689,17 +750,17 @@ class UjiriksaController extends Controller
         return response()->json($result);
     }
 
-    public function changeStatusAPI(Request $request)
+    public function changeStatusAPI($id)
     {
         // dd($request->all());
-        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube')->find($request->id);
+        $ujiriksas = Formujiriksa::with('customer', 'itemujiriksa.tube', 'itemujiriksa.alat')->find($id);
         // dd($ujiriksas);
         $status = $ujiriksas->progress;
         if($status == "Waiting List") {
             $ujiriksas->progress = "Sedang Dikerjakan";
             $ujiriksas->progress_at = Carbon::today();
             $ujiriksas->save();
-            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui']);   
+            return response()->json(['error' => false, 'message' => 'Status Uji Sedang Dikerjakan']);   
         }
         elseif($status == "Sedang Dikerjakan"){
             $ujiriksas->progress = "Selesai";
@@ -717,9 +778,17 @@ class UjiriksaController extends Controller
                 }
             }
             elseif ($ujiriksas->jenis_uji == "Service") {
-                foreach($ujiriksas->itemujiriksa as $i) {
-                    $i->tube->terakhir_service = Carbon::today();
-                    $i->tube->save();
+                if ($ujiriksas->is_service_alat === 0) {
+                    foreach($ujiriksas->itemujiriksa as $i) {
+                        $i->tube->terakhir_service = Carbon::today();
+                        $i->tube->save();
+                    }
+                }
+                else {
+                    foreach($ujiriksas->itemujiriksa as $i) {
+                        $i->alat->terakhir_service = Carbon::today();
+                        $i->alat->save();
+                    }
                 }
             }
 
@@ -728,7 +797,7 @@ class UjiriksaController extends Controller
             // });
             $ujiriksas->save();
 
-            return response()->json(['error' => false, 'message' => 'Status Uji Telah Diperbaharui']);
+            return response()->json(['error' => false, 'message' => 'Status Uji Telah Selesai']);
         }
     }
 

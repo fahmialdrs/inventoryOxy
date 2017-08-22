@@ -39,7 +39,7 @@
         <tr>
             <th class="text-center">No</th>
             <th class="text-center">No Tabung</th>
-            <th class="text-center">Jumlah Barang</th>
+            <!-- <th class="text-center">Jumlah Barang</th> -->
             <th class="text-center">Nama Barang</th>
             <th class="text-center">Keluhan</th>
             <th class="text-center">Keterangan Hasil Visualstatic</th>
@@ -57,17 +57,17 @@
                     {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
                 </div>
             </td>
-            <td>
+            <!-- <td>
                 <div class="{{ $errors->has('jumlah_barang') ? ' has-error' : '' }}">
                     <input id="jumlah_barang" type="text" class="" name="visualresult[{{ $a }}][jumlah_barang]" value="{{ $t->jumlah_barang or old('jumlah_barang') }}" disabled>
 
-                    @if ($errors->has('kode_tabung'))
+                    @if ($errors->has('jumlah_barang'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('kode_tabung') }}</strong>
+                            <strong>{{ $errors->first('jumlah_barang') }}</strong>
                         </span>
                     @endif
                 </div>
-            </td>
+            </td> -->
             <td>
                 <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
                     <input id="nama_barang" type="text" class="" name="visualresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>

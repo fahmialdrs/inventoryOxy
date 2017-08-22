@@ -89,6 +89,36 @@ class CustomerController extends Controller
         // return view('customer.show')->with(compact('customers'));
     }
 
+    public function showAll(){
+        $data = Customer::get();
+        if(!$data) {
+            return response()->json(['error' => 'Data Customer Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
+    }
+
+    public function tabungShowAll($id){
+        $data = Tube::where('customer_id', $id)->get(); 
+        if(!$data) {
+            return response()->json(['error' => 'Data Tabung Customer Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
+    }
+
+    public function alatShowAll($id){
+        $data = Alat::where('customer_id', $id)->get(); 
+        if(!$data) {
+            return response()->json(['error' => 'Data Tabung Customer Tidak Ada.'], 400);
+        }
+        else {
+            return response()->json($data);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

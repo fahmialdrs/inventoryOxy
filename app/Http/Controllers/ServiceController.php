@@ -102,10 +102,8 @@ class ServiceController extends Controller
                             Fotoservice::create([
                                 'foto_tabung_service' => $filename,
                                 'serviceresult_id' => $service->id
-                                ]);
-                            }
-
-                        
+                            ]);
+                        }                      
                     }
                 }
             }
@@ -129,7 +127,7 @@ class ServiceController extends Controller
     {
         $noform = $request->no_registrasi;
         $data = $request->all();
-        // dd($request->all());
+        // array_forget($data, 'jenisfile');
 
         if(isset($data)){
             $dataService = $request->serviceresult;
@@ -138,7 +136,7 @@ class ServiceController extends Controller
                     'keterangan_service' => $v['keterangan_service'],
                     'itemujiriksa_id' => $v['itemujiriksa_id']
                     ]);
-                                
+                // dd($service->load('itemujiriksa'));
                 $service->save();
 
                 if (is_array($v['foto_tabung_service'])) {
@@ -153,15 +151,31 @@ class ServiceController extends Controller
 
                         // simpan file ke folder storage/foto
 
-                        $destinationPath = storage_path('app/public/foto');
-                        $foto->move($destinationPath, $filename);
+                        if($foto->getClientMimeType() == 'video/mp4') {
+                            
+                            $destinationPath = storage_path('app/public/foto');
+                            $foto->move($destinationPath, $filename);
 
-                        // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                            // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                            
+                            Fotoservice::create([
+                                'video_tabung_service' => $filename,
+                                'serviceresult_id' => $service->id
+                                ]);
+                        }
+                        else {
+                            $destinationPath = storage_path('app/public/foto');
+                            $foto->move($destinationPath, $filename);
+
+                            // mengisi field foto tabung masuk dengan filename yg baru dibuat
+                            
+                            Fotoservice::create([
+                                'foto_tabung_service' => $filename,
+                                'serviceresult_id' => $service->id
+                                ]);
+                            }
+
                         
-                        Fotoservice::create([
-                            'foto_tabung_service' => $filename,
-                            'serviceresult_id' => $service->id
-                            ]);
                     }
                 }
             }

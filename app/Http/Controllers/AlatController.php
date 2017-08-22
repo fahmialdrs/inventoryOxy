@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\CheckReminderTabung;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use App\Models\Olah;
 
 class AlatController extends Controller
 {
@@ -28,13 +29,24 @@ class AlatController extends Controller
         //
     }
 
-    public function indexAll() {
-        $data = Alat::with('customer')->orderBy('created_at', 'desc')->get();
-        if(!$data) {
+    public function indexAll(Request $request) {
+        $table = new Olah(Alat::with('customer'));
+
+        $table->search(function($q) use ($request){
+            if(isset($request->search) && $request->search != ''){
+                $q->where('no_alat', 'ILIKE', '%' . $request->search . '%');
+
+            }
+        });
+
+        $table = $table->ambil();
+
+
+        if(!$table) {
             return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
         }
         else {
-            return response()->json($data);
+            return response()->json($table);
         }
     }
 
@@ -98,7 +110,7 @@ class AlatController extends Controller
 
     public function showDetail($id)
     {
-        $data = Alat::with(['itemujiriksa.formujiriksa'])->findOrFail($id);
+        $data = Alat::with(['itemujiriksa.formujiriksa', 'customer'])->find($id);
         if(!$data) {
             return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
         }
