@@ -5,8 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Tymon\JWTAuth\Contracts\JWTSubject as AuthenticatableUserContract;
 
-class User extends Authenticatable
+class User extends Authenticatable implements
+AuthenticatableUserContract
 {
     use LaratrustUserTrait;
     use Notifiable;
@@ -35,5 +37,25 @@ class User extends Authenticatable
 
     public function formservice() {
         return $this->hasMany('App\Models\FormUjiriksa');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();  // Eloquent model method
+    }
+
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+             'user' => [ 
+                'id' => $this->id,
+             ]
+        ];
     }
 }
