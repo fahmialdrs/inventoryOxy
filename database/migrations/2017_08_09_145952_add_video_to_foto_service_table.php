@@ -27,8 +27,8 @@ class AddVideoToFotoServiceTable extends Migration
     public function down()
     {
         Schema::table('fotoservices', function (Blueprint $table) {
+            $table->string('foto_tabung_service')->change();
             $table->dropColumn('video_tabung_service');
-            $table->string('foto_tabung_service')->nullable(false)->change();
         });
     }
 }

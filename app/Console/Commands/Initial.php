@@ -45,6 +45,12 @@ class Initial extends Command
         $adminRole->display_name = 'Admin';
         $adminRole->save();
 
+        // create pic role
+        $picRole = new Role();
+        $picRole->name = 'pic';
+        $picRole->display_name = 'PIC';
+        $picRole->save();
+
         // create admin
         $admin = new User;
         $admin->name = 'Admin';

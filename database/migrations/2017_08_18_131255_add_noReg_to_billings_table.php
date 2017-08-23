@@ -29,6 +29,7 @@ class AddNoRegToBillingsTable extends Migration
     public function down()
     {
         Schema::table('billings', function (Blueprint $table) {
+            $table->dropForeign('billings_formujiriksa_id_foreign');
             $table->dropColumn('formujiriksa_id');
         });
     }
