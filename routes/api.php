@@ -22,7 +22,7 @@ Route::post('login', 'Auth\LoginController@loginAPI');
 Route::get('ujiriksa', [
 	'as' => 'ujiriksa.indexAll',
 	'uses' => 'UjiriksaController@indexAll',
-	'middleware' => 'auth:api'
+	// 'middleware' => 'auth:api'
 	
 	]);
 
