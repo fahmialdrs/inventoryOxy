@@ -472,7 +472,7 @@ class UjiriksaController extends Controller
 
     public function showDetail(Request $request, $id)
     {
-        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung')->find($id);
+        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung','customer')->find($id);
         if(!$data) {
             return response()->json(['error' => 'Data Form Registrasi Uji Tidak Ada.'], 400);
         }
