@@ -44,7 +44,7 @@
                             </tr>
                         </table>
                     </div>
-                    @if($form->is_service_alat === 0)
+                    @if($form->is_service_alat == 0)
                     <table class="table table-bordered">
                         <thead>
                             <tr>

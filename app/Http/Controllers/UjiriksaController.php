@@ -47,7 +47,17 @@ class UjiriksaController extends Controller
              * Costum Class buat ngolah request dan query
              * @var Olah
              */
-            $table = new Olah(Formujiriksa::with([]));
+            $table = new Olah(Formujiriksa::with([])
+            //     ->where([
+            //     ['jenis_uji', '=', 'Service'],
+            //     ['jenis_uji', '=', 'Visualstatic'],
+            // ])
+           //      ->where(function($q) {
+           // // Query the name field in status table
+           // $q->where('jenis_uji', '=', 'Service'); // '=' is optional
+           // $q->where('jenis_uji', '=', 'Visualstatic'); // '=' is optional
+           //  })
+                );
 
             /**
              * Pannggil Closure di costum class Olah 
@@ -472,7 +482,7 @@ class UjiriksaController extends Controller
 
     public function showDetail(Request $request, $id)
     {
-        $data = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung','customer')->find($id);
+        $data = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.alat','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult', 'itemujiriksa.fototabung','customer')->find($id);
         if(!$data) {
             return response()->json(['error' => 'Data Form Registrasi Uji Tidak Ada.'], 400);
         }

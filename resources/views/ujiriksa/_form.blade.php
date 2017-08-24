@@ -67,7 +67,7 @@
         @endif
     @else
         <label class="radio-inline">
-            <input id="hydrostatic" type="radio" name="jenis_uji" value="Hydrostatic" checked> Hydrostatic
+            <input id="hydrostatic" type="radio" name="jenis_uji" value="Hydrostatic"> Hydrostatic
         </label>
         <label class="radio-inline">
             <input id="jenis_uji" type="radio" name="jenis_uji" value="Visualstatic"> Visualstatic
@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<div class="form-group" id="radio_hydro">
+<div class="form-group" id="radio_hydro" style="display:none;">
     <label for="radio_hydro" class="col-md-4 control-label">Visualstatic Test</label>
 
     <div class="col-md-4">
@@ -578,7 +578,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('input[name="jenis_uji"]').click(function() {
        if($(this).attr('id') == 'hydrostatic') {
-            $('#radio_hydro').show();           
+            $('#radio_hydro').show();
+            $('#ya').prop('checked',true);            
        }
 
        else {

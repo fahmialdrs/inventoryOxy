@@ -25,11 +25,11 @@ class Itemujiriksa extends Model
     }
 
     public function visualresult() {
-    	return $this->hasOne('App\Models\Visualresult');
+    	return $this->hasOne('App\Models\Visualresult')->orderBy('created_at','desc');
     }
 
     public function serviceresult() {
-        return $this->hasOne('App\Models\Serviceresult');
+        return $this->hasOne('App\Models\Serviceresult')->orderBy('created_at','desc');
     }
 
     public function alat() {

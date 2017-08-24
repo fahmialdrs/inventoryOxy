@@ -208,7 +208,8 @@ class ServiceController extends Controller
     public function showAll($id)
     {
         $form = Formujiriksa::with('customer')->find($id);
-        $service = Itemujiriksa::where('formujiriksa_id', $id)->with(['formujiriksa.customer','tube.customer', 'alat.customer', 'serviceresult.fotoservice'])->get();
+        $service = Itemujiriksa::where('formujiriksa_id', $id)->with('formujiriksa.customer','tube.customer', 'alat.customer', 'serviceresult.fotoservice')->get();
+
         return view('service.showAll', array(
             'service' => $service,
             'form' => $form

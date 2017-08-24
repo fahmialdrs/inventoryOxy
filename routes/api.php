@@ -76,12 +76,12 @@ Route::get('customer/showAll', [
 		'uses' => 'CustomerController@showAll'
 		]);
 
-Route::get('customer/{id}/tabung/showAll', [
+Route::get('customer/tabung/showAll/{id}', [
 		'as' => 'customer.tabung/showAll',
 		'uses' => 'CustomerController@tabungShowAll'
 		]);
 
-Route::get('customer/{id}/alat/showAll', [
+Route::get('customer/alat/showAll/{id}', [
 		'as' => 'customer.alat/showAll',
 		'uses' => 'CustomerController@alatShowAll'
 		]);
