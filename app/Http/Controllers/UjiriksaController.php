@@ -735,7 +735,7 @@ class UjiriksaController extends Controller
     }
 
     public function getDataTabung($id) {
-        $tabungs = Tube::where('customer_id', $id)->paginate(15);
+        $tabungs = Tube::where('customer_id', $id)->get();
         foreach ($tabungs as $t) {
             $result[] = ['id' => $t->id, 'name' => $t->no_tabung ];
         }
@@ -743,7 +743,7 @@ class UjiriksaController extends Controller
     }
 
     public function getDataAlat($id) {
-        $alats = Alat::where('customer_id', $id)->paginate(15);
+        $alats = Alat::where('customer_id', $id)->get();
         foreach ($alats as $at) {
             $result[] = ['id' => $at->id, 'name' => $at->no_alat ];
         }
