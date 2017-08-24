@@ -667,7 +667,7 @@ class UjiriksaController extends Controller
                 }
             }
             elseif ($ujiriksas->jenis_uji == "Service") {
-                if ($ujiriksas->is_service_alat === 0) {
+                if ($ujiriksas->is_service_alat == 0) {
                     foreach($ujiriksas->itemujiriksa as $i) {
                         $i->tube->terakhir_service = Carbon::today();
                         $i->tube->save();

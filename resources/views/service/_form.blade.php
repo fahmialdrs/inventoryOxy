@@ -38,7 +38,7 @@
     <thead>
         <tr>
             <th class="text-center">No</th>
-            @if($form->is_service_alat === 0)
+            @if($form->is_service_alat == 0)
             <th class="text-center">No Tabung</th>
             @else
             <th class="text-center">No Alat</th>
@@ -55,7 +55,7 @@
         @foreach($form->itemujiriksa as $t)
         <tr>
             <td><b> {{ $a+1 }}</b></td>
-            @if($form->is_service_alat === 0)            
+            @if($form->is_service_alat == 0)            
             <td>
                 <div class="{{ $errors->has('tube_id') ? ' has-error' : '' }}">
                     <input id="tube_id" type="text" class="" name="serviceresult[{{ $a }}][tube_id]" value="{{ $t->tube->no_tabung or old('tube_id') }}" disabled>

@@ -30,7 +30,7 @@ class AlatController extends Controller
     }
 
     public function indexAll(Request $request) {
-        $table = new Olah(Alat::with('customer'));
+        $table = new Olah(Alat::with('customer', 'jenisalat'));
 
         $table->search(function($q) use ($request){
             if(isset($request->search) && $request->search != ''){
@@ -110,12 +110,12 @@ class AlatController extends Controller
 
     public function showDetail($id)
     {
-        $data = Alat::with(['itemujiriksa.formujiriksa', 'customer'])->find($id);
+        $data = Alat::with('itemujiriksa.formujiriksa', 'customer','jenisalat', 'merk', 'tipe')->where('no_alat', $id)->orWhere('id', $id)->first();
         if(!$data) {
-            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+            return response()->json(['error' => true, 'message' => 'Data Alat Tidak Ada'], 400);
         }
         else {
-            return response()->json($data);
+            return response()->json(['error' => false, 'data' => $data]);
         }
     }
 

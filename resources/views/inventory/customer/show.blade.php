@@ -114,7 +114,7 @@
 								    <thead>
 								        <tr>
 								            <th>No Tabung</th>
-								            <th>Jenis Kegiatan</th>
+								            <th>Jenis Uji</th>
 								            <th>Keluhan</th>
 								            <th>Tanggal Kegiatan</th>
 								            <th>Hasil</th>
@@ -126,8 +126,8 @@
 								    @foreach ($tb->itemujiriksa as $t)							    
 								        <tr>								    
 								            <td><a href="{{ route('tabung.show',$t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
-								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
+								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->created_at->format('d-M-Y') }}</td>
 								            @if($t->formujiriksa->jenis_uji == "Hydrostatic")
 								            @if(isset($t->hydrostaticresult))
@@ -215,7 +215,7 @@
 								    <thead>
 								        <tr>
 								            <th>No Alat</th>
-								            <th>Jenis Kegiatan</th>
+								            <th>Jenis Uji</th>
 								            <th>Keluhan</th>
 								            <th>Tanggal Kegiatan</th>
 								            <th>Hasil</th>
@@ -227,8 +227,8 @@
 								    @foreach ($tb->itemujiriksa as $t)							    
 								        <tr>								    
 								            <td><a href="{{ route('alat.show',$t->alat->id) }}">{{ $t->alat->no_alat or '' }}</a></td>
-								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->jenis_uji or '' }}</td>
+								            <td>{{ $t->keluhan or '' }}</td>
 								            <td>{{ $t->formujiriksa->created_at->format('d-M-Y') }}</td>
 								            @if(isset($t->serviceresult))
 											<td><a href="{{ route('service.show', $t->serviceresult->id) }}">Hasil</a></td>

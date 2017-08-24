@@ -107,12 +107,12 @@ class TabungController extends Controller
 
     public function showDetail($id)
     {
-        $data = Tube::with(['itemujiriksa.formujiriksa', 'customer'])->find($id);
+        $data = Tube::with(['itemujiriksa.formujiriksa', 'customer'])->where('no_tabung', $id)->orWhere('id', $id)->first();
         if(!$data) {
-            return response()->json(['error' => 'Data Alat Tidak Ada.'], 400);
+            return response()->json(['error' => true, 'message' => 'Data Tabung Tidak Ada'], 400);
         }
         else {
-            return response()->json($data);
+            return response()->json(['error' => false, 'data' => $data]);
         }
     }
 
