@@ -310,14 +310,23 @@ class UjiriksaController extends Controller
         // dd($request->all());
         // echo "string";
         // exit();
-        try {
-              JWTAuth::parseToken()->authenticate();
-        }catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        // try {
+        //       JWTAuth::parseToken()->authenticate();
+        // }catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
 
-            // do whatever you want to do if token is expired
-            return response()->json(['error' => true, 'message' => 'Silahkan expired Kembali'], 500);
+        //     // do whatever you want to do if token is expired
+        //     return response()->json(['error' => true, 'message' => 'Silahkan expired Kembali'], 500);
 
-        }
+        // } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+        //     // do whatever you want to do if token is invalid
+        //     return response()->json(['error' => true, 'message' => 'Silahkan invalid Kembali'], 500);
+
+        // } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+        //     // do whatever you want to do if token is not present
+        //     return response()->json(['error' => true, 'message' => 'Silahkan jwte Kembali'], 500);
+        // }
         // elseif (!isset($jenisuji)) {
         //     return response()->json(['error' => true, 'message' => 'No jenis uji tidak ada'], 500);
         // }
