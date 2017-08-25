@@ -387,7 +387,7 @@ class UjiriksaController extends Controller
         $data['no_registrasi'] = $nouji;
         $data['jenis_uji'] = $jenisuji;
         $data['progress'] = 'Waiting List';
-        $data['user_id'] = JWTAuth::parseToken()->authenticate()->id;
+        $data['user_id'] = 1;
         array_forget($data,'itemujiriksa');
         array_forget($data,'new');
         array_forget($data,'is_visual');
