@@ -150,7 +150,6 @@
 						    <thead>
 						        <tr>
 						        	<th>No</th>
-						            <th>Jumlah Barang</th>
 						            <th>Nama Barang</th>
 						            <th>No Tabung</th>
 						            <th>Keluhan</th>
@@ -163,7 +162,6 @@
 						    @foreach ($itemujiriksa as $t)
 						        <tr>
 						        	<td><?php $a++ ?> {{ $a }}</td>
-						            <td>{{ $t->jumlah_barang or '' }}</td>
 						            <td>{{ $t->nama_barang or '' }}</td>
 						            <td><a href="{{ route('tabung.show', $t->tube->id) }}">{{ $t->tube->no_tabung or '' }}</a></td>
 						            <td>{{ $t->keluhan or '' }}</td>

@@ -14,6 +14,7 @@ use App\Models\Visualresult;
 use App\Models\Serviceresult;
 use App\User;
 use Auth;
+use JWTAuth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use PDF;
@@ -307,6 +308,55 @@ class UjiriksaController extends Controller
         // request semua data
         $data = $request->except('keterangan_foto');
         // dd($request->all());
+        // echo "string";
+        // exit();
+        try {
+              JWTAuth::parseToken()->authenticate();
+        }catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+            // do whatever you want to do if token is expired
+            return response()->json(['error' => true, 'message' => 'Silahkan Login Kembali'], 500);
+
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+            // do whatever you want to do if token is invalid
+            return response()->json(['error' => true, 'message' => 'Silahkan Login Kembali'], 500);
+
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+            // do whatever you want to do if token is not present
+            return response()->json(['error' => true, 'message' => 'Silahkan Login Kembali'], 500);
+        }
+        // elseif (!isset($jenisuji)) {
+        //     return response()->json(['error' => true, 'message' => 'No jenis uji tidak ada'], 500);
+        // }
+        // elseif (!isset($data['jenis_uji'])) {
+        //     return response()->json(['error' => true, 'message' => 'No jenis uji tidak ada'], 500);
+        // }
+        // elseif (!isset($data['progress'])) {
+        //     return response()->json(['error' => true, 'message' => 'progress tidak ada'], 500);
+        // }
+        // elseif (!isset($data['user_id'])) {
+        //     return response()->json(['error' => true, 'message' => 'user_id tidak ada'], 500);
+        // }
+        // elseif (!isset($data['customer_id'])) {
+        //     return response()->json(['error' => true, 'message' => 'customer id tidak ada'], 500);
+        // }
+        // elseif (!isset($data['keterangan'])) {
+        //     return response()->json(['error' => true, 'message' => 'keterangan tidak ada'], 500);
+        // }
+        // elseif (!isset($data['perkiraan_selesai'])) {
+        //     return response()->json(['error' => true, 'message' => 'perkiraan_selesai tidak ada'], 500);
+        // }
+        // elseif (!isset($data['perkiraan_biaya'])) {
+        //     return response()->json(['error' => true, 'message' => 'perkiraan biaya tidak ada'], 500);
+        // }
+        // elseif (!isset($data['nama_penyerah'])) {
+        //     return response()->json(['error' => true, 'message' => 'nama penyerahtidak ada'], 500);
+        // }
+        // else {
+        //     return response()->json(['error' => true, 'message' => 'data itemujiriksa tidak ada'], 500);
+        // }
 
         // tarik jenis uji
         $jenisuji = $request->input('jenis_uji');
@@ -326,10 +376,18 @@ class UjiriksaController extends Controller
         elseif ($jenisuji == 'Service') {
             $nouji = "SVC-". $kode;
         }
+
+        $isService = $request->input('is_service_alat');
+        if ($isService == 1) {
+            $data['is_service_alat'] == true;
+        }
+        else {
+            $data['is_service_alat'] == false;
+        }
         $data['no_registrasi'] = $nouji;
         $data['jenis_uji'] = $jenisuji;
         $data['progress'] = 'Waiting List';
-        $data['user_id'] = Auth::user()->id;
+        $data['user_id'] = JWTAuth::parseToken()->authenticate()->id;
         array_forget($data,'itemujiriksa');
         array_forget($data,'new');
         array_forget($data,'is_visual');
