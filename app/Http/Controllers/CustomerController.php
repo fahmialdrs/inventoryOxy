@@ -31,7 +31,6 @@ class CustomerController extends Controller
             'alats' => $alats
             ));
 
-        
     }
 
     /**

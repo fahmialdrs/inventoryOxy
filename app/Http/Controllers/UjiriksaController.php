@@ -66,7 +66,7 @@ class UjiriksaController extends Controller
              */
             $table->search(function($q) use ($request){
                 if(isset($request->search) && $request->search != ''){
-                    $q->where('no_registrasi', 'ILIKE', '%' . $request->search . '%');
+                    $q->where('no_registrasi', 'LIKE', '%' . $request->search . '%');
 
                 }
             });
@@ -487,6 +487,9 @@ class UjiriksaController extends Controller
                                 ]);
                         }                        
                     }
+                }
+                else {
+                    return response()->json(['error' => true, 'message' => 'Harap Masukan Foto!']);
                 }
             }
         }

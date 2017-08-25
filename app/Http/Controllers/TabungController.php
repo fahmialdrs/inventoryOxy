@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tube;
+use App\Models\Alat;
 use App\Models\Customer;
 use App\Models\Itemujiriksa;
 use Session;
@@ -35,7 +36,7 @@ class TabungController extends Controller
 
         $table->search(function($q) use ($request){
             if(isset($request->search) && $request->search != ''){
-                $q->where('no_tabung', 'ILIKE', '%' . $request->search . '%');
+                $q->where('no_tabung', 'LIKE', '%' . $request->search . '%');
 
             }
         });
@@ -56,6 +57,18 @@ class TabungController extends Controller
         // else {
         //     return response()->json($data);
         // }
+    }
+
+    public function search($id){
+
+      $tube = Tube::where('no_tabung', 'LIKE', '%' . $id . '%')->get();
+      $alat = Alat::where('no_alat', 'LIKE', '%' . $id . '%')->get();
+
+      $data = array('tube' => $tube,
+                  'alat' => $alat
+                  );
+
+        return response()->json($data);
     }
 
     /**

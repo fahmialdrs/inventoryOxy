@@ -34,7 +34,7 @@ class AlatController extends Controller
 
         $table->search(function($q) use ($request){
             if(isset($request->search) && $request->search != ''){
-                $q->where('no_alat', 'ILIKE', '%' . $request->search . '%');
+                $q->where('no_alat', 'LIKE', '%' . $request->search . '%');
 
             }
         });

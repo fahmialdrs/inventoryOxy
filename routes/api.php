@@ -100,3 +100,9 @@ Route::post('visualstatic/storeAPI', [
 		'as' => 'visualstatic.storeAPI',
 		'uses' => 'VisualstaticController@storeAPI'
 		]);
+
+Route::get('inventory/search/{id}', [
+	'as' => 'inventory.search',
+	'uses' => 'TabungController@search',
+	// 'middleware' => 'auth:api'
+	]);
