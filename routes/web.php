@@ -484,6 +484,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'jenisalat.destroy',
 		'uses' => 'JenisalatController@destroy'
 		]);
+	Route::get('getDataJenis/alat/{id}', [
+		'as' => 'alat.getDataJenis',
+		'uses' => 'JenisalatController@getDataJenis'
+		]);
 
 
 	Route::get('merk', [

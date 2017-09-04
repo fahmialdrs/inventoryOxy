@@ -14,6 +14,7 @@ use App\Models\CheckReminderTabung;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use App\Models\Olah;
+use Illuminate\Support\Facades\File;
 
 class AlatController extends Controller
 {
@@ -81,8 +82,31 @@ class AlatController extends Controller
         $data = $request->all();
         $data['no_alat'] = $noalat;
         array_forget($data,'new');
-
+        array_forget($data,'foto');
         $alats = Alat::create($data);
+
+        if ($request->hasFile('foto')) {
+            
+            //ambil file yang di upload
+            $uploaded_cover = $request->file('foto');
+
+            // ambil extension file
+            $extension = $uploaded_cover->getClientOriginalExtension();
+
+            // membuat nama file random
+            $filename = md5(time()) . '.' . $extension;
+
+            // simpan file ke folder public/img
+
+            $destinationPath = storage_path('app/public/foto');
+            $uploaded_cover->move($destinationPath, $filename);
+
+            // mengisi field cover di book dengan filename yg baru dibuat
+            $alats->foto = $filename;
+            $alats->save();
+
+
+        }
 
         Session::flash("flash_notification", [
             "level" => "success",
@@ -144,13 +168,48 @@ class AlatController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'jenisalat_id' => 'required|exists:jenisalats,id',
             'merk_id' => 'required|exists:merks,id',
-            'tipe' => 'required|max:255',
+            'tipe_id' => 'required|exists:tipes,id',
             'ukuran' => 'required|max:255',
             'warna' => 'required|max:255',
         ]);
 
         $alats = Alat::findOrFail($id);
-        if (!$alats->update($request->all())) return redirect()->back();
+        $data = $request->all();
+        if (!$alats->update($data)) return redirect()->back();
+
+        if ($request->hasFile('foto')) {
+            
+            //ambil file yang di upload
+            $uploaded_cover = $request->file('foto');
+
+            // ambil extension file
+            $extension = $uploaded_cover->getClientOriginalExtension();
+
+            // membuat nama file random
+            $filename = md5(time()) . '.' . $extension;
+
+            // simpan file ke folder public/img
+
+            $destinationPath = storage_path('app/public/foto');
+            $uploaded_cover->move($destinationPath, $filename);
+
+            //hapus cover lama jika ada
+
+            if($alats->foto) {
+                $old_cover = $alats->foto;
+                $filepath = storage_path('app/public/foto' . $alats->foto);
+
+                try {
+                    File::delete($filepath);
+                } catch (FileNotFoundException $e) {
+                    // file sudah tidak ada
+                }
+            }
+
+            // mengisi field cover di book dengan filename yg baru dibuat
+            $alats->foto = $filename;
+            $alats->save();
+        }
 
         Session::flash("flash_notification", [
             "level"=>"success",

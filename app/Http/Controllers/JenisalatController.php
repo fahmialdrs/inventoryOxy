@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Jenisalat;
 use App\Models\Merk;
 use App\Models\Tipe;
+use App\Models\Alat;
 use Illuminate\Support\Facades\Session;
 
 class JenisalatController extends Controller
@@ -133,5 +134,15 @@ class JenisalatController extends Controller
         ]);
 
         return redirect()->route('jenisalat.index');
+    }
+
+    public function getDataJenis($id) {
+
+        $alats = Alat::with('jenisalat')->find($id);
+        $result[] = ['id' => $alats->id, 'nama_alat' => $alats->jenisalat->nama_alat];
+        return response()->json($alats);
+
+        // $customers = Customer::find($id);
+        // return response()->json($customers);
     }
 }

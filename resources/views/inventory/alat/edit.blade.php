@@ -15,7 +15,7 @@
 					<h2 class="panel-title">Edit Data Alat</h2>
 				</div>
 				<div class="panel-body">
-					{!! Form::model($alats, ['url'=>route('alat.update', $alats->id), 'method'=>'put', 'class'=>'form-horizontal']) !!}
+					{!! Form::model($alats, ['url'=>route('alat.update', $alats->id), 'method'=>'put', 'class'=>'form-horizontal', 'files' => 'true']) !!}
 					<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
 					    <label for="no_alat" class="col-md-4 control-label">Nomer Alat</label>
 

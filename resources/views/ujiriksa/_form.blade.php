@@ -238,7 +238,6 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>Nama Barang</th>
             @if (isset($ujiriksas->is_service_alat))
             @if ($ujiriksas->is_service_alat == 0)
             <th class="form_tabung">No Tabung</th>
@@ -249,6 +248,7 @@
             <th class="form_tabung">No Tabung</th>
             <th class="form_alat" style="display:none">No Alat</th>
             @endif
+            <th>Nama Barang</th>            
             <th>Keluhan</th>
             <th>Foto</th>
             <th><a class="btn btn-default" id='add_field_button'>Tambah Kolom</a></th>
@@ -258,12 +258,9 @@
         @if(isset($ujiriksas->itemujiriksa))
         <?php $a=0; ?>
         @foreach($ujiriksas->itemujiriksa as $i)
-        <tr>
+        <tr class="item">
             <td>
                 <input type="hidden" class="form-control" min="0" value="{{ $i->jumlah_barang }}" name="itemujiriksa[{{$a}}][jumlah_barang]" required>
-            </td>                
-            <td>
-                <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]" required>
             </td>
             @if ($ujiriksas->is_service_alat == 0)
             <td class="form_tabung">
@@ -276,7 +273,7 @@
             </td>
             @else
             <td class="form_alat">
-                <select name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat" >
+                <select id="alat0 name="itemujiriksa[{{$a}}][alat_id]" class="js-selectize form-control" placeholder="Pilih No Alat" >
                     <option disabled selected value></option>
                     @foreach($ujiriksas->itemujiriksa as $t)
                         <option value="{{ $t->alat->id }}">{{ $t->alat->no_alat }}</option>
@@ -284,6 +281,9 @@
                 </select>
             </td>
             @endif
+            <td>
+                <input type="text" class="form-control" value="{{ $i->nama_barang }}" name="itemujiriksa[{{$a}}][nama_barang]" required>
+            </td>
             <td>
                 <input type="text" class="form-control" value="{{ $i->keluhan }}" name="itemujiriksa[{{$a}}][keluhan]" required>
             </td>
@@ -301,22 +301,21 @@
         @endforeach
         @else
         <?php $a=0; ?>
-        <tr>
+        <tr class="item">
             <td>
                 <b>{{ $a+1 }}</b>
-                <input type="hidden" class="form-control" value="{{ 1 }}" name="itemujiriksa[0][jumlah_barang]" required>
-                
-            </td>                
-            <td>
-                <input type="text" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]" required>
-            </td>
+                <input type="hidden" class="form-control" value="{{ 1 }}" name="itemujiriksa[0][jumlah_barang]" required>                
+            </td>            
             <td class="form_tabung">
                 <select name="itemujiriksa[0][tube_id]" class="form-control tube" style="width: 100%">
                 </select>
             </td>
             <td class="form_alat" style="display:none">
-                <select name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">
+                <select id="alat0" name="itemujiriksa[0][alat_id]" class="form-control alat" style="width: 100%">
                 </select>
+            </td>
+            <td>
+                <input type="text" id="nama_barang0" class="form-control" value="{{ old('itemujiriksa[0][nama_barang]') }}" name="itemujiriksa[0][nama_barang]" required>
             </td>
             <td>
                 <input type="text" class="form-control" value="{{ old('itemujiriksa[0][keluhan]') }}" name="itemujiriksa[0][keluhan]" required>
@@ -365,6 +364,7 @@
   });
 });
 </script>
+
 <script type="text/javascript">
 $(document).ready(function() {
   var $select2Elm = $('.tube');
@@ -452,6 +452,7 @@ $(document).ready(function() {
     var add_button      = $("#add_field_button"); //Add button ID
     
     var x = {{$a}}; //initlal text box count
+    var no = x;
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
@@ -460,16 +461,16 @@ $(document).ready(function() {
                 <b>'+ (x + 1) +' </b>\
                 <input type="hidden" class="form-control" value="{{ 1 }}" name="itemujiriksa[' + x +'][jumlah_barang]" required>\
             </td>\
-            <td>\
-                <input type="text" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]" required>\
-            </td>\
             <td class="form_tabung">\
                 <select name="itemujiriksa[' + x +'][tube_id]" class="form-control tube" style="width: 100%">\
                 </select>\
             </td>\
             <td class="form_alat" style="display:none">\
-                <select name="itemujiriksa[' + x +'][alat_id]" class="form-control alat" style="width: 100%">\
+                <select name="itemujiriksa[' + x +'][alat_id]" id="alat' + x + '" class="form-control alat" style="width: 100%">\
                 </select>\
+            </td>\
+            <td>\
+                <input type="text" id="nama_barang' + x + '" class="form-control" value="{{ old('nama_barang[]') }}" name="itemujiriksa[' + x +'][nama_barang]" required>\
             </td>\
             <td>\
                 <input type="text" class="form-control" value="{{ old('keluhan[]') }}" name="itemujiriksa[' + x +'][keluhan]" required>\
@@ -553,7 +554,40 @@ $(document).ready(function() {
                 cache: true
               },
     });
-    console.log($('input[name="is_service_alat"]:checked').val());
+    
+
+console.log(no);
+var index = no;
+
+$("#alat"+index).change(function(){
+    var count = $('.item').length;
+    
+        
+        var alat =$("#alat"+index).val();
+        console.log(alat);
+        var urls = "/admin/getDataJenis/alat/"+alat;
+        console.log(urls);
+        $.ajax({
+        type:"get",
+        url: urls,
+        data: function (params) {
+          return {
+            q: params.term, // search term
+            page: params.page
+          };
+        },
+        success:function(data){
+            console.log(data);
+            var json = data,
+            obj = json;
+              $("#nama_barang" +(index) ).val(obj.jenisalat.nama_alat);
+        }
+         });
+
+    
+   });
+no++;
+
     
     if($('input[name="is_service_alat"]:checked').val() == 1) {
         $('.form_alat').show();
@@ -573,6 +607,68 @@ $(document).ready(function() {
 
 
 });
+</script>
+<script>
+$(document).ready(function(){
+   $("#alat0").change(function(){
+    var alat =$("#alat0").val();
+    var urls = "/admin/getDataJenis/alat/"+alat;
+    console.log(urls);
+    $.ajax({
+    type:"get",
+    url: urls,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+    },
+    success:function(data){
+        console.log(data);
+        var json = data,
+        obj = json;
+          $("#nama_barang0").val(obj.jenisalat.nama_alat);
+    }
+     });
+   });
+});
+</script>
+
+<script>
+$(document).ready(function(){
+    
+    var index = 1;
+
+   $("#alat"+index).change(function(){
+        var count = $('.item').length;
+        
+        for (index; index < count; index++) {
+            
+            var alat =$("#alat"+index).val();
+            console.log(alat);
+            var urls = "/admin/getDataJenis/alat/"+alat;
+            console.log(urls);
+            $.ajax({
+            type:"get",
+            url: urls,
+            data: function (params) {
+              return {
+                q: params.term, // search term
+                page: params.page
+              };
+            },
+            success:function(data){
+                console.log(data);
+                var json = data,
+                obj = json;
+                  $("#nama_barang" +(index-1) ).val(obj.jenisalat.nama_alat);
+            }
+             });
+
+        }
+       });
+});
+    
 </script>
 <script>
 $(document).ready(function() {

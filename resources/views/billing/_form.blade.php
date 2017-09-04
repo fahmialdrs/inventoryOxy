@@ -328,10 +328,10 @@ $(document).ready(function(){
         q: params.term, // search term
         page: params.page
       };
-      console.log(url);
-      console.log(data);
+      console.log(url);      
     },
     success:function(data){
+        console.log(data);
         var json = data,
         obj = json;
           $("#alamat").val(obj.alamat);

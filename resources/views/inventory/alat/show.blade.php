@@ -65,6 +65,13 @@
 									<td>:</td>
 									<td>{{ $alats->catatan }}</td>
 								</tr>
+								<tr>
+									<td>Foto</td>
+									<td>:</td>
+									<td>
+		                                <img src="{{ asset('storage/foto/'.$alats->foto) }}" class="img-rounded" width="100" height="75">
+									</td>
+								</tr>
 							</table>
 						</div>
 

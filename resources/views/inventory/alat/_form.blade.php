@@ -98,6 +98,23 @@
     </div>
 </div>
 
+<div class="form-group{{ $errors->has('foto') ? ' has-error' : '' }}">
+    <label for="foto" class="col-md-4 control-label">Foto</label>
+
+    <div class="col-md-4">
+        <input type="file" id="foto" class="form-control" name="foto" value="{{ old('foto') }}"> <br>
+            @if(isset($alats->foto))
+                <img src="{{ asset('storage/foto/'.$alats->foto) }}" class="img-rounded" width="100" height="75">
+            @endif
+
+        @if ($errors->has('foto'))
+            <span class="help-block">
+                <strong>{{ $errors->first('foto') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
         <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Data Sudah Benar?')"">

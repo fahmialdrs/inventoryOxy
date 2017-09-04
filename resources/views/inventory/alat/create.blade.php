@@ -17,7 +17,7 @@
 				</div>
 
 				<div class="panel-body">
-					{!! Form::open(['url'=> route('alat.store'), 'method'=>'post', 'class'=>'form-horizontal']) !!}
+					{!! Form::open(['url'=> route('alat.store'), 'method'=>'post', 'class'=>'form-horizontal', 'files' => 'true']) !!}
 					@include('inventory.alat._form')
 					{!! Form::close() !!}
 				</div>
