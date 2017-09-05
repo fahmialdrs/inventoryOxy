@@ -15,18 +15,18 @@
     </div>
 </div>
 
-<!-- <div class="form-group{{ $errors->has('formujiriksa_id') ? ' has-error' : '' }}">
+<div class="form-group{{ $errors->has('formujiriksa_id') ? ' has-error' : '' }}">
     {!! Form::label('formujiriksa_id', 'No Registrasi', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('formujiriksa_id', [''=>'']+App\Models\Formujiriksa::pluck('no_registrasi','id')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'no_registrasi', 'placeholder' => 'Pilih No Registrasi']) !!}
+        {!! Form::select('formujiriksa_id', [''=>'']+App\Models\Formujiriksa::pluck('no_registrasi','id')->all(), $form->id, ['class' => 'js-selectize form-control select2', 'id' => 'no_registrasi', 'placeholder' => 'Pilih No Registrasi']) !!}
         {!! $errors->first('formujiriksa_id', '<p class="help-block">:message</p>') !!}     
     </div>
-</div> -->
+</div>
 
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
     {!! Form::label('customer_id', 'Nama Customer', ['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-4">
-        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), null, ['class' => 'js-selectize form-control select2', 'id' => 'customer', 'placeholder' => 'Pilih Nama Customer']) !!}
+        {!! Form::select('customer_id', [''=>'']+App\Models\Customer::pluck('nama','id')->all(), $form->customer->id, ['class' => 'js-selectize form-control select2', 'id' => 'customer', 'placeholder' => 'Pilih Nama Customer']) !!}
         {!! $errors->first('customer_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
@@ -38,7 +38,7 @@
     @if(isset($billings->customer_id))
         <input id="alamat" type="text" class="form-control" name="alamat" value="{{ $billings->customer->alamat or old('alamat') }}" read only required>
     @else
-       <input id="alamat" type="text" class="form-control" name="alamat" value="{{ old('alamat') }}" readonly required> 
+       <input id="alamat" type="text" class="form-control" name="alamat" value="{{ $form->customer->alamat or old('alamat') }}" readonly required> 
     @endif
         @if ($errors->has('alamat'))
             <span class="help-block">
@@ -55,7 +55,7 @@
     @if(isset($billings->customer_id))
         <input id="email" type="email" class="form-control" name="email" value="{{ $billings->customer->email or old('email') }}" required>
     @else
-        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+        <input id="email" type="email" class="form-control" name="email" value="{{ $form->customer->email or old('email') }}" required>
     @endif
 
         @if ($errors->has('email'))
@@ -73,7 +73,7 @@
     @if(isset($billings->perihal))
         <input id="perihal" type="text" class="form-control" name="perihal" value="{{ $billings->perihal or old('perihal') }}" required>
     @else
-        <input id="perihal" type="text" class="form-control" name="perihal" value="{{ old('perihal') }}" required>
+        <input id="perihal" type="text" class="form-control" name="perihal" value="{{ $form->keterangan or old('perihal') }}" required>
     @endif
         @if ($errors->has('perihal'))
             <span class="help-block">
@@ -94,56 +94,29 @@
         </tr>
     </thead>
     <tbody id='input_fields_wrap'>
-        @if(isset($billings->itembilling))
         <?php $a=0; ?>
-        @foreach($billings->itembilling as $i)        
+        @foreach($form->itemujiriksa as $i) 
         <tr class="bill">
             <td>
-                <input id="qty-{{$a}}" type="number" value="{{ $i->quantity }}" name="itembiling[{{$a}}][quantity]" required>
+                <input id="qty-0" class="form-control qty" type="number" value="{{ 1 or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
             </td>                
             <td>
-                <textarea id="des" type="text" name="itembiling[{{$a}}][deskripsi]" required>{{ $i->deskripsi }}</textarea>
-            </td>
+                <textarea id="des" type="text" class="form-control" name="itembiling[0][deskripsi]" required>{{ $i->nama_barang }} - {{ $i->keluhan or old('itembiling[0][deskripsi]') }}</textarea>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="upr-{{$a}}" type="number" value="{{ $i->unitprice }}" name="itembiling[{{$a}}][unitprice]" onblur="calculate()" required>
+                    <input id="upr-0" class="form-control upr" type="number" value="{{ 0 }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
                 </div>                
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-{{$a}}" type="number" value="{{ $i->amount }}" name="itembiling[{{$a}}][amount]" readonly required>
+                    <input id="amnt-0" class="form-control amnt" type="number" value="{{ 0 }}" name="itembiling[0][amount]" readonly required>
                 </div>
             </td>
-            <td><a class="btn btn-danger remove_field" onclick="calculate()">Hapus Kolom</a></td>
         </tr>
         <?php $a++; ?>
         @endforeach
-        @else
-        <?php $a=0; ?>
-        <tr class="bill">
-            <td>
-                <input id="qty-0" class="form-control qty" type="number" value="{{ $i->quantity or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
-            </td>                
-            <td>
-                <textarea id="des" type="text" class="form-control" name="itembiling[0][deskripsi]" required>{{ $i->deskripsi or old('itembiling[0][deskripsi]') }}</textarea>
-            </td>
-            <td>
-                <div class="input-group">
-                    <div class="input-group-addon">Rp.</div>
-                    <input id="upr-0" class="form-control upr" type="number" value="{{ $i->unitprice or old('itembiling[0][unitprice]') }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
-                </div>                
-            </td>
-            <td>
-                <div class="input-group">
-                    <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-0" class="form-control amnt" type="number" value="{{ 0 or old('itembiling[0][amount]') }}" name="itembiling[0][amount]" readonly required>
-                </div>
-            </td>
-        </tr>
-        <?php $a++; ?>
-        @endif
     </tbody>
 </table>
 

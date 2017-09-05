@@ -84,6 +84,9 @@
 														<a type="button" href="{{ route('ujiriksa.edit', $fu->id) }}">Edit</a>
 												  	</li> -->
 												  	<li>
+														<a type="button" name="uji" href="{{ route('billing.createUji', $fu->id)}}">Buat Invoice</a>
+												  	</li>
+												  	<li>
 														<a type="button" href="{{ route('ujiriksa.destroy', $fu->id)}}" onclick="return confirm('Apakah Anda Ingin Menghapus Data?')">Delete</a>
 												  	</li>											  	
 												  	@if($fu->progress == 'Waiting List')

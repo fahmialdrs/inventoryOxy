@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\Formujiriksa;
+use App\Models\Itemujiriksa;
 use App\Models\Itembilling;
 use App\Http\Requests\StoreBillingRequest;
 use App\Http\Requests\UpdateBillingRequest;
@@ -35,6 +36,12 @@ class BillingController extends Controller
     public function create()
     {
         return view('billing.create');
+    }
+
+    public function createUji($id)
+    {
+        $form = Formujiriksa::with('itemujiriksa', 'customer')->find($id);
+        return view('billing.createUji')->with(compact('form'));
     }
 
     /**

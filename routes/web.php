@@ -292,6 +292,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'uses' => 'BillingController@getDataCustomer'
 		]);
 
+	Route::get('billing/create/{id}', [
+		'as' => 'billing.createUji',
+		'uses' => 'BillingController@createUji'
+		]);
+
 	// Route::resource('user', 'UserController');
 	Route::get('user', [
 		'as' => 'user.index',
