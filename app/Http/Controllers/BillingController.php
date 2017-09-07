@@ -226,7 +226,7 @@ class BillingController extends Controller
         // dd($billings);
         $pdf = PDF::loadView('billing.pdf', compact('billings'));
         $filename = 'Invoice-'.' '.$billings->no_invoice.'.pdf';
-        return $pdf->download($filename);
+        return $pdf->stream($filename);
     }
 
     public function kirimEmail($id) {

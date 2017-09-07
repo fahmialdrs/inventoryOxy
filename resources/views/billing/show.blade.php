@@ -33,7 +33,7 @@
 							<tr>
 								<td class="text-muted">Email</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->customer->nama }}</td>
+								<td>{{ $billings->customer->email }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">No Telp</td>
@@ -43,7 +43,7 @@
 							<tr>
 								<td class="text-muted">Alamat</td>
 								<td class="text-muted">:</td>
-								<td>{{ $billings->customer->nama }}</td>
+								<td>{{ $billings->customer->alamat }}</td>
 							</tr>
 							<tr>
 								<td class="text-muted">Tanggal Invoice</td>
@@ -59,6 +59,11 @@
 								<td class="text-muted">Tanggal Terakhir Diubah</td>
 								<td class="text-muted">:</td>
 								<td>{{ $billings->updated_at->format('d-M-Y') }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted">Perihal</td>
+								<td class="text-muted">:</td>
+								<td>{{ $billings->perihal }}</td>
 							</tr>
 						</table>
 						</div>
