@@ -533,7 +533,7 @@ class UjiriksaController extends Controller
      */
     public function show($id)
     {
-        $form = Formujiriksa::with('itemujiriksa.tube','itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult')->find($id);
+        $form = Formujiriksa::with('itemujiriksa.tube', 'itemujiriksa.alat', 'itemujiriksa.alat.merk', 'itemujiriksa.alat.tipe', 'itemujiriksa.hydrostaticresult', 'itemujiriksa.visualresult', 'itemujiriksa.serviceresult')->find($id);
         $itemujiriksa = Itemujiriksa::where('formujiriksa_id', $id)->get();
         return view('ujiriksa.show', array(
             'form' => $form,
@@ -784,8 +784,8 @@ class UjiriksaController extends Controller
     }
 
     public function exportPdf($id) {
-        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'user')->find($id);
-        // dd($billings);
+        $ujiriksas = Formujiriksa::with('customer','itemujiriksa.tube', 'itemujiriksa.alat.tipe', 'itemujiriksa.alat.merk', 'user')->find($id);
+        // dd($ujiriksas);
         $pdf = PDF::loadView('ujiriksa.pdf', compact('ujiriksas'));
         $filename = 'Form Ujiriksa-'.' '.$ujiriksas->no_registrasi.'.pdf';
         return $pdf->stream($filename);

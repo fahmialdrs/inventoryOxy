@@ -81,6 +81,8 @@
                       <th>No Tabung</th>
                       @else
                       <th>No Alat</th>
+                      <th>Nama Merk</th>
+                      <th>Nama Tipe</th>
                       @endif
                       <th>Keluhan</th>
                     </tr>
@@ -95,6 +97,8 @@
                       <td>{{ $t->tube->no_tabung or '' }}</td>
                       @else
                       <td>{{ $t->alat->no_alat or '' }}</td>
+                      <td>{{ $t->alat->merk->nama_merk or '' }}</td>
+                      <td>{{ $t->alat->tipe->nama_tipe or '' }}</td>
                       @endif
                       <td>{{ $t->keluhan or '' }}</td>
                     </tr>

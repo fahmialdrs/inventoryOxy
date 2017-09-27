@@ -99,6 +99,8 @@
 						        	<th>No</th>
 						            <th>Nama Barang</th>
 						            <th>No Alat</th>
+						            <th>Nama Merk</th>
+						            <th>Nama Tipe</th>
 						            <th>Keluhan</th>
 						            <th>Foto Barang Masuk</th>
 						            <th>Hasil</th>
@@ -111,6 +113,8 @@
 						        	<td><?php $a++ ?> {{ $a }}</td>
 						            <td>{{ $t->nama_barang or '' }}</td>
 						            <td><a href="{{ route('alat.show', $t->alat->id) }}">{{ $t->alat->no_alat or '' }}</a></td>
+						            <td>{{ $t->alat->merk->nama_merk or '' }}</td>
+						            <td>{{ $t->alat->tipe->nama_tipe or '' }}</td>
 						            <td>{{ $t->keluhan or '' }}</td>
 						            <td>
 						            	@foreach($t->fototabung as $foto)                     
