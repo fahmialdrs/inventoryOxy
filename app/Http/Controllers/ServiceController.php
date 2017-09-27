@@ -35,7 +35,7 @@ class ServiceController extends Controller
      */
     public function create($id)
     {
-        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube','itemujiriksa.alat')->get()->first();
+        $form = Formujiriksa::where('id', $id)->with('customer','itemujiriksa.tube','itemujiriksa.alat', 'itemujiriksa.alat.merk', 'itemujiriksa.alat.tipe')->get()->first();
         // dd($form);
         return view('service.create')->with(compact('form'));
     }
@@ -224,7 +224,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = Serviceresult::with('fotoservice','itemujiriksa.formujiriksa','itemujiriksa.tube.customer', 'itemujiriksa.alat.customer')->findOrFail($id);
+        $service = Serviceresult::with('fotoservice','itemujiriksa.formujiriksa','itemujiriksa.tube.customer', 'itemujiriksa.alat.customer', 'itemujiriksa.alat.merk', 'itemujiriksa.alat.tipe')->findOrFail($id);
         return view('service.edit')->with(compact('service'));
     }
 

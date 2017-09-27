@@ -40,11 +40,14 @@
             <th class="text-center">No</th>
             @if($form->is_service_alat == 0)
             <th class="text-center">No Tabung</th>
+            <th class="text-center">Nama Barang</th>
             @else
             <th class="text-center">No Alat</th>
+            <th class="text-center">Nama Barang</th>
+            <th class="text-center">Merk</th>
+            <th class="text-center">Tipe</th>
             @endif
             <!-- <th class="text-center">Jumlah Barang</th> -->
-            <th class="text-center">Nama Barang</th>
             <th class="text-center">Keluhan</th>
             <th class="text-center">Keterangan Hasil Service</th>
             <th class="text-center">Attachment Hasil Service</th>
@@ -62,12 +65,56 @@
                     {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
                 </div>
             </td>
+            <td>
+                <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
+                    <input id="nama_barang" type="text" class="" name="serviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
+
+                    @if ($errors->has('nama_barang'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('nama_barang') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
             @else
             <td>
                 <div class="{{ $errors->has('alat_id') ? ' has-error' : '' }}">
                     <input id="alat_id" type="text" class="" name="serviceresult[{{ $a }}][alat_id]" value="{{ $t->alat->no_alat or old('alat_id') }}" disabled>
                     {!! $errors->first('tube_id', '<p class="help-block">:message</p>') !!}
                 </div>
+            </td>
+            <td>
+                <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
+                    <input id="nama_barang" type="text" class="" name="serviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
+
+                    @if ($errors->has('nama_barang'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('nama_barang') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
+            <td>
+                <div class="{{ $errors->has('nama_merk') ? ' has-error' : '' }}">
+                    <input id="nama_merk" type="text" class="" name="serviceresult[{{ $a }}][nama_merk]" value="{{ $t->alat->merk->nama_merk or old('nama_merk') }}" disabled>
+
+                    @if ($errors->has('nama_merk'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('nama_merk') }}</strong>
+                        </span>
+                    @endif
+                </div> 
+            </td>
+            <td>
+                <div class="{{ $errors->has('nama_tipe') ? ' has-error' : '' }}">
+                    <input id="nama_tipe" type="text" class="" name="serviceresult[{{ $a }}][nama_tipe]" value="{{ $t->alat->tipe->nama_tipe or old('nama_tipe') }}" disabled>
+
+                    @if ($errors->has('nama_tipe'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('nama_tipe') }}</strong>
+                        </span>
+                    @endif
+                </div> 
             </td>
             @endif
             <!-- <td>
@@ -81,17 +128,6 @@
                     @endif
                 </div>
             </td> -->
-            <td>
-                <div class="{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
-                    <input id="nama_barang" type="text" class="" name="serviceresult[{{ $a }}][nama_barang]" value="{{ $t->nama_barang or old('nama_barang') }}" disabled>
-
-                    @if ($errors->has('nama_barang'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('nama_barang') }}</strong>
-                        </span>
-                    @endif
-                </div> 
-            </td>
             <td>
                 <div class="{{ $errors->has('keluhan') ? ' has-error' : '' }}">
                     <input id="keluhan" type="text" class="" name="serviceresult[{{ $a }}][keluhan]" value="{{ $t->keluhan or old('keluhan') }}" disabled>

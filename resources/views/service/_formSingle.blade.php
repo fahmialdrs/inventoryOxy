@@ -28,6 +28,45 @@
         {!! $errors->first('alat_id', '<p class="help-block">:message</p>') !!}     
     </div>
 </div>
+
+    <div class="form-group{{ $errors->has('nama_barang') ? ' has-error' : '' }}">
+        {!! Form::label('nama_barang', 'Nama Barang', ['class'=>'col-sm-4 control-label']) !!}
+        <div class="col-sm-4">
+            <input id="nama_barang" type="text" class="form-control" value="{{ $service->itemujiriksa->nama_barang }}" disabled>
+
+            @if ($errors->has('nama_barang'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('nama_barang') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div> 
+
+    <div class="form-group{{ $errors->has('nama_merk') ? ' has-error' : '' }}">
+        {!! Form::label('nama_merk', 'Merk', ['class'=>'col-sm-4 control-label']) !!}
+        <div class="col-sm-4">
+            <input id="nama_merk" type="text" class="form-control" value="{{ $service->itemujiriksa->alat->merk->nama_merk or old('nama_merk') }}" disabled>
+
+            @if ($errors->has('nama_merk'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('nama_merk') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div> 
+
+    <div class="form-group{{ $errors->has('nama_tipe') ? ' has-error' : '' }}">
+        {!! Form::label('nama_tipe', 'Tipe', ['class'=>'col-sm-4 control-label']) !!}
+        <div class="col-sm-4">
+            <input id="nama_tipe" type="text" class="form-control" value="{{ $service->itemujiriksa->alat->tipe->nama_tipe }}" disabled>
+
+            @if ($errors->has('nama_tipe'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('nama_tipe') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
 @endif
 
 <div class="form-group{{ $errors->has('customer_id') ? ' has-error' : '' }}">
