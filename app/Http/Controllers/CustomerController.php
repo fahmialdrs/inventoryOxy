@@ -202,12 +202,26 @@ class CustomerController extends Controller
 
     public function exportExcelDetail($id){
 
-    $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->findOrFail($id);
+        $customers = Customer::with(['tube.itemujiriksa.formujiriksa'])->findOrFail($id);
 
-    $export = Excel::create('Detail Customer '.$customers->nama, function($excel) use ($customers){
-        $excel->setTitle('Data Detail Customer NDT Dive')->setCreator(Auth::user()->name);
+        $export = Excel::create('Detail Tabung Customer '.$customers->nama, function($excel) use ($customers){
+            $excel->setTitle('Data Detail Customer NDT Dive')->setCreator(Auth::user()->name);
+            $excel->sheet($customers->nama, function($sheet) use ($customers){
+                $sheet->loadView('inventory.customer.exportExcel',['customers'=>$customers]);
+          });
+        })->download('xls');
+
+        return redirect()->route('customer.index');
+   }
+
+   public function exportExcelDetailAlat($id){
+
+    $customers = Customer::with('alat.itemujiriksa.formujiriksa', 'alat.tipe', 'alat.merk')->findOrFail($id);
+
+    $export = Excel::create('Detail Alat Customer '.$customers->nama, function($excel) use ($customers){
+        $excel->setTitle('Data Detail Alat NDT Dive')->setCreator(Auth::user()->name);
         $excel->sheet($customers->nama, function($sheet) use ($customers){
-            $sheet->loadView('inventory.customer.exportExcel',['customers'=>$customers]);
+            $sheet->loadView('inventory.customer.exportExcelAlat',['customers'=>$customers]);
       });
     })->download('xls');
 

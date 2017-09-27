@@ -102,6 +102,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth','role:admin']], function 
 		'as' => 'customer.exportExcelDetail',
 		'uses' => 'CustomerController@exportExcelDetail'
 		]);
+	Route::get('exportExcelDetailAlat/customer/{id}', [
+		'as' => 'customer.exportExcelDetailAlat',
+		'uses' => 'CustomerController@exportExcelDetailAlat'
+		]);
 
 
 	// Route::resource('tabung', 'TabungController');

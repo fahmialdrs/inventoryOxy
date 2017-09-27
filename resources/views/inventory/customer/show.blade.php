@@ -170,6 +170,9 @@
 								</table>
 							</div>
 							<div class="tab-pane" role="tabpanel" id="table_alat">
+								<p class="pull-right"> 
+									<a class="btn btn-warning" href="{{ route('customer.exportExcelDetailAlat', $customers->id) }}">Export Data Alat Customer</a>
+								</p>
 								<table id="alat" class="display">
 								    <thead>
 								        <tr>
