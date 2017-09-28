@@ -98,20 +98,20 @@
         @foreach($form->itemujiriksa as $i) 
         <tr class="bill">
             <td>
-                <input id="qty-0" class="form-control qty" type="number" value="{{ 1 or old('itembiling[0][quantity]') }}" name="itembiling[0][quantity]" required>
+                <input id="qty-{{$a}}" class="form-control qty" type="number" value="{{ 1 }}" name="itembiling[{{$a}}][quantity]" required>
             </td>                
             <td>
-                <textarea id="des" type="text" class="form-control" name="itembiling[0][deskripsi]" required>{{ $i->nama_barang }} - {{ $i->keluhan or old('itembiling[0][deskripsi]') }}</textarea>
+                <textarea id="des" type="text" class="form-control" name="itembiling[{{$a}}][deskripsi]" required>{{ $i->nama_barang }} - {{ $i->keluhan }}</textarea>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="upr-0" class="form-control upr" type="number" value="{{ 0 }}" name="itembiling[0][unitprice]" onblur="calculate()" required>
+                    <input id="upr-{{$a}}" class="form-control upr" type="number" value="{{ 0 }}" name="itembiling[{{$a}}][unitprice]" onblur="calculate()" required>
                 </div>                
             </td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon">Rp.</div>
-                    <input id="amnt-0" class="form-control amnt" type="number" value="{{ 0 }}" name="itembiling[0][amount]" readonly required>
+                    <input id="amnt-{{$a}}" class="form-control amnt" type="number" value="{{ 0 }}" name="itembiling[{{$a}}][amount]" readonly required>
                 </div>
             </td>
         </tr>
