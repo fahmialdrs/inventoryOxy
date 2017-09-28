@@ -44,11 +44,19 @@
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Pengerjaan</td>
-                                <td>{{ $form->progress_at->format('d-M-Y') }}</td>
+                                @if(isset($form->progress_at))
+                                    <td>{{ $form->progress_at->format('d-M-Y') }}</td>
+                                @else
+                                    <td>Belum Dikerjakan</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Selesai</td>
-                                <td>{{ $form->done_at->format('d-M-Y') }}</td>
+                                @if(isset($form->progress_at))
+                                    <td>{{ $form->done_at->format('d-M-Y') }}</td>
+                                @else
+                                    <td>Belum Selesai</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td class="text-muted">Hasil Uji</td>
@@ -82,9 +90,15 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Jumlah Barang</th>
+                                    <!-- <th>Jumlah Barang</th>    -->                                 
+                                    @if($form->is_service_alat == 0)
+                                        <th>No Tabung</th>
+                                    @else
+                                        <th>No Alat</th>
+                                        <th>Merk</th>
+                                        <th>Tipe</th>
+                                    @endif
                                     <th>Nama Barang</th>
-                                    <th>No Tabung</th>
                                     <th>Keluhan</th>
                                     <th>Foto</th>
                                     <th>Hasil</th>
@@ -95,9 +109,15 @@
                             @foreach ($form->itemujiriksa as $t)
                                 <tr>
                                     <td><?php $a++ ?> {{ $a }}</td>
-                                    <td>{{ $t->jumlah_barang or '' }}</td>
+                                    <!-- <td>{{ $t->jumlah_barang or '' }}</td> -->
+                                    @if($form->is_service_alat == 0)
+                                        <td>{{ $t->tube->no_tabung or '' }}</td>
+                                    @else
+                                        <td>{{ $t->alat->no_alat or '' }}</td>
+                                        <td>{{ $t->alat->merk->nama_merk or '' }}</td>
+                                        <td>{{ $t->alat->tipe->nama_tipe or '' }}</td>
+                                    @endif
                                     <td>{{ $t->nama_barang or '' }}</td>
-                                    <td>{{ $t->tube->no_tabung or '' }}</td>
                                     <td>{{ $t->keluhan or '' }}</td>
                                     <td>
                                         @foreach($t->fototabung as $foto)                     
