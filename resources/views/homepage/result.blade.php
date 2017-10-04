@@ -52,7 +52,7 @@
                             </tr>
                             <tr>
                                 <td class="text-muted">Tanggal Selesai</td>
-                                @if(isset($form->progress_at))
+                                @if(isset($form->done_at))
                                     <td>{{ $form->done_at->format('d-M-Y') }}</td>
                                 @else
                                     <td>Belum Selesai</td>
