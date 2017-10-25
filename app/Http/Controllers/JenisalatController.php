@@ -102,7 +102,7 @@ class JenisalatController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_alat' => 'required|unique:jenisalats|max:255',
+            'nama_alat' => 'required|max:255',
             'reminder'=>'required',
         ]);
 

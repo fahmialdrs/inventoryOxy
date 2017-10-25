@@ -41,6 +41,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Jenis Alat</th>
+									            <th>Singkatan Jenis Alat</th>
 									            <th>Keterangan</th>
 									            <th>Reminder</th>
 									            <th class="action">Aksi</th>
@@ -50,6 +51,7 @@
 									    @foreach ($jenisalat as $j)
 									        <tr>
 									            <td>{{ $j->nama_alat }}</td>
+									            <td>{{ $j->slugjenis }}</td>
 									            <td>{{ $j->keterangan}}</td>
 									            <td>{{ $j->reminder }}</td>
 									            <td>
@@ -89,6 +91,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Merk</th>
+									            <th>Singkatan Merk Alat</th>
 									            <th>Keterangan</th>
 									            <th>Aksi</th>
 									        </tr>
@@ -97,6 +100,7 @@
 									    @foreach ($merkalat as $m)
 									        <tr>
 									            <td>{{ $m->nama_merk }}</td>
+									            <td>{{ $m->slugmerk }}</td>
 									            <td>{{ $m->keterangan }}</td>
 									            <td>
 									            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -134,6 +138,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Tipe</th>
+									            <th>Singkatan Tipe Alat</th>
 									            <th>Keterangan</th>
 									            <th>Aksi</th>
 									        </tr>
@@ -142,6 +147,7 @@
 									    @foreach ($tipealat as $t)
 									        <tr>
 									            <td>{{ $t->nama_tipe }}</td>
+									            <td>{{ $t->slugtipe }}</td>
 									            <td>{{ $t->keterangan }}</td>
 									            <td>
 									            	<div class="btn-group dropdown" role="group" aria-label="...">

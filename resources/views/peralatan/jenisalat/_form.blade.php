@@ -1,5 +1,5 @@
 <div class="form-group{{ $errors->has('nama_alat') ? ' has-error' : '' }}">
-    <label for="nama_alat" class="col-md-4 control-label">Nama Jenis Alat</label>
+    <label for="nama_alat" class="col-md-4 control-label">Nama Jenis Alat*</label>
 
     <div class="col-md-6">
         <input id="nama_alat" type="text" class="form-control" name="nama_alat" value="{{ $jenisalats->nama_alat or '' }}" required autofocus>
@@ -7,6 +7,20 @@
         @if ($errors->has('nama_alat'))
             <span class="help-block">
                 <strong>{{ $errors->first('nama_alat') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('slugjenis') ? ' has-error' : '' }}">
+    <label for="slugjenis" class="col-md-4 control-label">Singkatan Jenis Alat*</label>
+
+    <div class="col-md-6">
+        <input id="slugjenis" type="text" class="form-control" name="slugjenis" value="{{ $jenisalats->slugjenis or '' }}" required autofocus>
+
+        @if ($errors->has('slugjenis'))
+            <span class="help-block">
+                <strong>{{ $errors->first('slugjenis') }}</strong>
             </span>
         @endif
     </div>

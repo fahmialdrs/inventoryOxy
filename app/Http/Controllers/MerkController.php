@@ -91,7 +91,7 @@ class MerkController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama_merk' => 'required|unique:merks|max:255',
+            'nama_merk' => 'required|max:255',
         ]);
 
         $merkalat = Merk::find($id);

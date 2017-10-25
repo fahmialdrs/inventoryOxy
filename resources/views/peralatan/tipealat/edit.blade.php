@@ -34,6 +34,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Tipe</th>
+									            <th>Singkatan Tipe Alat</th>
 									            <th>Keterangan</th>
 									            <th>Aksi</th>
 									        </tr>
@@ -42,6 +43,7 @@
 									    @foreach ($tipealat as $t)
 									        <tr>
 									            <td>{{ $t->nama_tipe }}</td>
+									            <td>{{ $t->slugtipe }}</td>
 									            <td>{{ $t->keterangan }}</td>
 									            <td>
 									            	<div class="btn-group dropdown" role="group" aria-label="...">

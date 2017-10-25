@@ -34,6 +34,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Merk</th>
+									            <th>Singkatan Merk Alat</th>
 									            <th>Keterangan</th>
 									            <th>Aksi</th>
 									        </tr>
@@ -42,6 +43,7 @@
 									    @foreach ($merkalat as $m)
 									        <tr>
 									            <td>{{ $m->nama_merk }}</td>
+									            <td>{{ $m->slugmerk }}</td>
 									            <td>{{ $m->keterangan }}</td>
 									            <td>
 									            	<div class="btn-group dropdown" role="group" aria-label="...">

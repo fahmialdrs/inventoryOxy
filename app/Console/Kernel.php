@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\CheckReminder',
-        'App\Console\Commands\Initial'
+        'App\Console\Commands\Initial',
+        'App\Console\Commands\updateNoalat'
     ];
 
     /**

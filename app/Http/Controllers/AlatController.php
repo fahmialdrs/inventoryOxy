@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Alat;
 use App\Models\Jenisalat;
 use App\Models\Tipe;
+use App\Models\Merk;
 use Carbon\Carbon;
 use Excel;
 use Illuminate\Support\Facades\Auth;
@@ -78,8 +79,13 @@ class AlatController extends Controller
             'warna' => 'required|max:255',
         ]);
 
-        $noalat = Carbon::now()->format('dmyhis');
         $data = $request->all();
+        $jenis= Jenisalat::find($request->jenisalat_id);
+        $merk= Merk::find($request->merk_id);
+        $tipe= Tipe::find($request->tipe_id);
+        $ukuran= $request->ukuran;
+        $counter= Alat::where('customer_id', $request->customer_id)->count()+1;
+        $noalat = $jenis->slugjenis . '-' . $merk->slugmerk . '-' . $tipe->slugtipe . '-' . $ukuran . '-' . $counter;
         $data['no_alat'] = $noalat;
         array_forget($data,'new');
         array_forget($data,'foto');

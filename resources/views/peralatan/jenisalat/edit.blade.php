@@ -34,6 +34,7 @@
 									    <thead>
 									        <tr>
 									            <th>Nama Jenis Alat</th>
+									            <th>Singkatan Jenis Alat</th>
 									            <th>Keterangan</th>
 									            <th>Reminder</th>
 									            <th class="action">Aksi</th>
@@ -43,6 +44,7 @@
 									    @foreach ($jenisalat as $j)
 									        <tr>
 									            <td>{{ $j->nama_alat }}</td>
+									            <td>{{ $j->slugjenis }}</td>
 									            <td>{{ $j->keterangan}}</td>
 									            <td>{{ $j->reminder }}</td>
 									            <td>
