@@ -7,14 +7,14 @@
 		<td class="text-muted">Pemilik</td>
 		<td>{{ $tabungs->customer->nama }}</td>
 	</tr>
-	<tr>
+<!-- 	<tr>
 		<td class="text-muted">Gas yang Diisikan</td>
 		<td>{{ $tabungs->gas_diisikan }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Kode Tabung</td>
 		<td>{{ $tabungs->kode_tabung }}</td>
-	</tr>
+	</tr> -->
 	<tr>
 		<td class="text-muted">Warna Tabung</td>
 		<td>{{ $tabungs->warna_tabung }}</td>
@@ -33,11 +33,11 @@
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
-		<td>{{ $tabungs->terakhir_hydrostatic->format('d-m-Y') }}</td>
+		<td>{{ $tabungs->terakhir_hydrostatic->format('M-Y') }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Selanjutnya Hydrostatic</td>
-		<td>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('d-m-Y') }}</td>
+		<td>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('M-Y') }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Terakhir Visualstatic</td>

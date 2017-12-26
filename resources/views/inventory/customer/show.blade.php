@@ -71,7 +71,6 @@
 								    <thead>
 								        <tr>
 								            <th>No Tabung</th>
-								            <th>Kandungan Gas</th>
 								            <th>Terakhir Hydrostatic</th>
 								            <th>Terakhir Visualstatic</th>
 								            <th>Status</th>
@@ -82,9 +81,8 @@
 								    @foreach ($customers->tube as $t)
 								        <tr>
 								            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
-								            <td>{{ $t->gas_diisikan }}</td>
-								            <td>{{ $t->terakhir_hydrostatic->format('d-M-Y') }}</td>
-								            <td>{{ $t->terakhir_visualstatic->format('d-M-Y') }}</td>
+								            <td>{{ $t->terakhir_hydrostatic->format('M-Y') }}</td>
+								            <td>{{ $t->terakhir_visualstatic->format('M-Y') }}</td>
 								            <td>{{ $t->status }}</td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
@@ -273,7 +271,7 @@
 		    $('#tabung').dataTable( {
 		    	"aaSorting": [],
 			  	"columnDefs": [ {
-				    "targets": [ 5 ],
+				    "targets": [ 4 ],
 				    "searchable": false,
 				    "orderable": false
 			    },

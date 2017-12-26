@@ -19,7 +19,7 @@
 						    <thead>
 						        <tr>
 						            <th>No Tabung</th>
-						            <th>Kode</th>
+						            <!-- <th>Kode</th> -->
 						            <th>Kapasitas Isi Tabung</th>
 						            <th>Tanggal Pemadatan Terakhir</th>
 						            <th>Tanggal Visual Terakhir</th>
@@ -31,7 +31,7 @@
 						    @foreach ($tabungs as $t)
 						        <tr>
 						            <td><a href="{{ route('tabung.show',$t->id) }}">{{ $t->no_tabung }}</a></td>
-						            <td>{{ $t->kode_tabung }}</td>
+						            <!-- <td>{{ $t->kode_tabung }}</td> -->
 						            <td>{{ $t->isi_tabung }}</td>
 						            <td>{{ $t->formujiriksa->done_at->first() }}</td>
 						            <td>{{ $t->updated_at }}</td>

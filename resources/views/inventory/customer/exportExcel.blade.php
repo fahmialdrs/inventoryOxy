@@ -22,7 +22,7 @@
 
 	<tr>
         <th>No Tabung</th>
-        <th>Kandungan Gas</th>
+        <!-- <th>Kandungan Gas</th> -->
         <th>Terakhir Hydrostatic</th>
         <th>Terakhir Visualstatic</th>
         <th>Status</th>
@@ -31,8 +31,8 @@
     <tr>
         <td>{{ $t->no_tabung }}</td>
         <td>{{ $t->gas_diisikan }}</td>
-        <td>{{ $t->terakhir_hydrostatic->format('d-m-Y') }}</td>
-        <td>{{ $t->terakhir_visualstatic->format('d-m-Y') }}</td>
+        <td>{{ $t->terakhir_hydrostatic->format('M-Y') }}</td>
+        <td>{{ $t->terakhir_visualstatic->format('M-Y') }}</td>
         <td>{{ $t->status }}</td>
     </tr>
     @endforeach

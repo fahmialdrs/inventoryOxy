@@ -30,7 +30,7 @@
 									<td>:</td>
 									<td><a href="{{ route('customer.show', $tabungs->customer_id) }}">{{ $tabungs->customer->nama }}</a></td>
 								</tr>
-								<tr>
+								<!-- <tr>
 									<td class="text-muted">Gas yang Diisikan</td>
 									<td>:</td>
 									<td>{{ $tabungs->gas_diisikan }}</td>
@@ -39,7 +39,7 @@
 									<td class="text-muted">Kode Tabung</td>
 									<td>:</td>
 									<td>{{ $tabungs->kode_tabung }}</td>
-								</tr>
+								</tr> -->
 								<tr>
 									<td class="text-muted">Warna Tabung</td>
 									<td>:</td>

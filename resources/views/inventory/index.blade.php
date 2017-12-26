@@ -160,7 +160,7 @@
 								            <td>{{ $a->jenisalat->nama_alat }}</td>
 								            <td>{{ $a->merk->nama_merk }}</td>
 								            <td>{{ $a->tipe->nama_tipe }}</td>
-								            <td><a href="{{ route('customer.show',['id'=>$a->id]) }}">{{ $a->customer->nama }}</a></td>
+								            <td><a href="{{ route('customer.show',['id'=>$a->customer->id]) }}">{{ $a->customer->nama }}</a></td>
 								            <td>
 								            	<div class="btn-group dropdown" role="group" aria-label="...">
 												  <div class="btn-group navbar-right">

@@ -202,8 +202,6 @@ class TabungController extends Controller
                 $sheet->row($row, [
                 'No Tabung',
                 'Nama Pemilik',
-                'Gas yang Diisikan',
-                'Kode Tabung',
                 'Isi Tabung',
                 'Tanggal Pembuatan Tabung',
                 'Status Tabung',
@@ -215,13 +213,11 @@ class TabungController extends Controller
                     $sheet->row(++$row, [
                     $t->no_tabung,
                     $t->customer->nama,
-                    $t->gas_diisikan,
-                    $t->kode_tabung,
                     $t->isi_tabung . " liter",
                     $t->tanggal_pembuatan,
                     $t->status,
-                    $t->terakhir_hydrostatic->format('d-m-Y'),
-                    $t->terakhir_visualstatic->format('d-m-Y'),
+                    $t->terakhir_hydrostatic->format('M-Y'),
+                    $t->terakhir_visualstatic->format('M-Y'),
                     $t->terakhir_service->format('d-m-Y')   
                     ]);
                 }

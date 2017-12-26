@@ -26,8 +26,6 @@ class StoreTabungRequest extends FormRequest
         return [
             'no_tabung' => 'required|unique:tubes,no_tabung|max:255',
             'customer_id' => 'required|exists:customers,id',
-            'gas_diisikan' => 'required|max:255',
-            'kode_tabung' => 'required|max:255',
             'warna_tabung' => 'required|max:255',
             'isi_tabung' => 'required|max:255',
             'tanggal_pembuatan' => 'required|date',

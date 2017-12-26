@@ -14,7 +14,7 @@
 	</div>
 </div>
 
-<div class="form-group{{ $errors->has('gas_diisikan') ? ' has-error' : '' }}">
+<!-- <div class="form-group{{ $errors->has('gas_diisikan') ? ' has-error' : '' }}">
 	{!! Form::label('gas_diisikan', 'Gas yang diisikan', ['class'=>'col-sm-2 control-label']) !!}
 	<div class="col-sm-4">
 		{!! Form::text('gas_diisikan', null, ['class'=>'form-control', 'placeholder' => 'contoh: Oxygen']) !!}
@@ -28,7 +28,7 @@
 		{!! Form::text('kode_tabung', null, ['class'=>'form-control', 'placeholder' => 'contoh: O2']) !!}
 		{!! $errors->first('kode_tabung', '<p class="help-block">:message</p>') !!}
 	</div>
-</div>
+</div> -->
 
 <div class="form-group{{ $errors->has('warna_tabung') ? ' has-error' : '' }}">
 	{!! Form::label('warna_tabung', 'Warna Tabung', ['class'=>'col-sm-2 control-label']) !!}
