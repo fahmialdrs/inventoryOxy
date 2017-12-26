@@ -214,11 +214,11 @@ class TabungController extends Controller
                     $t->no_tabung,
                     $t->customer->nama,
                     $t->isi_tabung . " liter",
-                    $t->tanggal_pembuatan,
+                    date("M-Y", strtotime($t->tanggal_pembuatan)),
                     $t->status,
                     $t->terakhir_hydrostatic->format('M-Y'),
                     $t->terakhir_visualstatic->format('M-Y'),
-                    $t->terakhir_service->format('d-m-Y')   
+                    $t->terakhir_service->format('d-M-Y')   
                     ]);
                 }
             });

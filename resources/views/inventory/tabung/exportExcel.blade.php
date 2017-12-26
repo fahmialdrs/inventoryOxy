@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Pembuatan Tabung</td>
-		<td>{{ date("d-m-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
+		<td>{{ date("M-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Status Tabung</td>
@@ -41,11 +41,11 @@
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Terakhir Visualstatic</td>
-		<td>{{ $tabungs->terakhir_visualstatic->format('d-m-Y') }}</td>
+		<td>{{ $tabungs->terakhir_visualstatic->format('M-Y') }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Selanjutnya Visualstatic</td>
-		<td>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('d-m-Y') }}</td>
+		<td>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('M-Y') }}</td>
 	</tr>
 	<tr>
 		<td class="text-muted">Tanggal Terakhir Service</td>

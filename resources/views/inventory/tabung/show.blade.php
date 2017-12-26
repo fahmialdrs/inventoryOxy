@@ -53,7 +53,7 @@
 								<tr>
 									<td class="text-muted">Tanggal Pembuatan Tabung</td>
 									<td>:</td>
-									<td>{{ date("d-M-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
+									<td>{{ date("M-Y", strtotime($tabungs->tanggal_pembuatan)) }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted">Status Tabung</td>
@@ -63,22 +63,22 @@
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Hydrostatic</td>
 									<td>:</td>
-									<td>{{ $tabungs->terakhir_hydrostatic->format('d-M-Y') }}</td>
+									<td>{{ $tabungs->terakhir_hydrostatic->format('M-Y') }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted"><b>Tanggal Selanjutnya Hydrostatic</b></td>
 									<td>:</td>
-									<td><b>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('d-M-Y') }}</b></td>
+									<td><b>{{ $tabungs->terakhir_hydrostatic->addYears(1)->format('M-Y') }}</b></td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Visualstatic</td>
 									<td>:</td>
-									<td>{{ $tabungs->terakhir_visualstatic->format('d-M-Y') }}</td>
+									<td>{{ $tabungs->terakhir_visualstatic->format('M-Y') }}</td>
 								</tr>
 								<tr>
 									<td class="text-muted"><b>Tanggal Selanjutnya Visualstatic</b></td>
 									<td>:</td>
-									<td><b>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('d-M-Y') }}</b></td>
+									<td><b>{{ $tabungs->terakhir_visualstatic->addYears(1)->format('M-Y') }}</b></td>
 								</tr>
 								<tr>
 									<td class="text-muted">Tanggal Terakhir Service</td>
